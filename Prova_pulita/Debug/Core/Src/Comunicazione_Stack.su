@@ -1,0 +1,7 @@
+../Core/Src/Comunicazione_Stack.c:25:10:calculate_pec	24	static
+../Core/Src/Comunicazione_Stack.c:52:9:verify_pec	24	static
+../Core/Src/Comunicazione_Stack.c:59:19:ltc6811_send_command	24	static
+../Core/Src/Comunicazione_Stack.c:80:19:ltc6811_write_data	104	dynamic
+../Core/Src/Comunicazione_Stack.c:120:19:ltc6811_read_data	64	dynamic
+../Core/Src/Comunicazione_Stack.c:159:19:ltc6811_configure	24	static
+../Core/Src/Comunicazione_Stack.c:187:20:ltc6811_read_cell_voltages	88	static
