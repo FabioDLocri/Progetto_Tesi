@@ -5,3 +5,4 @@
 ../Core/Src/Comunicazione_Stack.c:120:19:ltc6811_read_data	64	dynamic
 ../Core/Src/Comunicazione_Stack.c:159:19:ltc6811_configure	24	static
 ../Core/Src/Comunicazione_Stack.c:187:20:ltc6811_read_cell_voltages	88	static
+../Core/Src/Comunicazione_Stack.c:228:21:ltc6811_read_gpio_voltages	64	static

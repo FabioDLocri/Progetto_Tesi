@@ -123,9 +123,9 @@ int main(void)
   status1 = ltc6811_read_data(0x0002, &config[0], 6);
   for (int i = 0; i < 6; i++)
   {
-	  char buffer2[80];
+	  char buffer2[40];
            	// Converti float in stringa
-      int length2 = sprintf(buffer2, "Il valore %d della configurazione: %x \n", i+1, config[i]);
+      int length2 = sprintf(buffer2, "Il valore %d della configurazione: %x \n\n", i+1, config[i]);
          	// Invia via UART
        HAL_UART_Transmit(&huart3, (uint8_t*)buffer2, length2, HAL_MAX_DELAY);
    }
@@ -139,19 +139,35 @@ int main(void)
 	   if(timer_flag==1)
 	   {
 	        float cell_voltages[12]={0};
-	        	if (ltc6811_read_cell_voltages(cell_voltages) == HAL_OK)
+	        if (ltc6811_read_cell_voltages(cell_voltages) == HAL_OK)
+	        {
+	        	// Stampa risultati
+	        	for (int i = 0; i < 12; i++)
 	        	{
-	        		// Stampa risultati
-	        		for (int i = 0; i < 12; i++)
-	        		{
-	        			char buffer[32];
-	        			// Converti float in stringa
-	        			int length = sprintf(buffer, "Valore %d: %.2f\r\n",i+1, cell_voltages[i]);
-	        			// Invia via UART
-	        			HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
-	        		}
+	        		char buffer[32];
+	        		// Converti float in stringa
+	        		int length = sprintf(buffer, "Valore %d: %.2f\r\n",i+1, cell_voltages[i]);
+	        		// Invia via UART
+	        		HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
 	        	}
+	        }
+
+	        float GPIO_voltages[6]={0};
+	       	if (ltc6811_read_gpio_voltages(GPIO_voltages) == HAL_OK)
+	       	{
+	       		// Stampa risultati
+	       		for (int i = 0; i < 6; i++)
+	       	    {
+	       			char buffer[32];
+	       	        // Converti float in stringa
+	       	        int length = sprintf(buffer, "Valore GPIO %d: %.2f\r\n",i+1, GPIO_voltages[i]);
+	       	        // Invia via UART
+	       	        HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
+	       	     }
+	        }
+	       	timer_flag=0;
 	   }
+	   HAL_Delay(5000);
   }
   /* USER CODE END 3 */
 }

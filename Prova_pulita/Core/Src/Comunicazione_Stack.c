@@ -190,7 +190,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
     if (status != HAL_OK) return status;
 
     // Attendi fine conversione (290μs)
-    HAL_Delay(3); // 1ms per sicurezza
+    HAL_Delay(3); // 3ms per sicurezza
 
     // Leggi tutti i gruppi di registri
     uint8_t cell_data[48]; // 12 celle × 4 bytes (2 bytes dato + 2 bytes PEC per gruppo)
@@ -223,3 +223,37 @@ HAL_StatusTypeDef ltc6811_configure(void)
 
     return HAL_OK;
 }
+
+	// Legge tensioni GPIO
+		HAL_StatusTypeDef ltc6811_read_gpio_voltages(float *gpio_voltage) {
+	    // Avvia conversione ADC
+	    HAL_StatusTypeDef status = ltc6811_send_command(0x0561); // ADAX - GPIO1, 7kHz
+	    if (status != HAL_OK) return status;
+
+	    // Attendi fine conversione
+	    HAL_Delay(3); // 3ms per sicurezza
+
+	    // Leggi tutti i gruppi di registri
+	    uint8_t GPIO_data[24]; // 6 registri × 4 bytes (2 bytes dato + 2 bytes PEC per gruppo)
+
+	    // Leggi gruppo A (GPIO 1-3)
+	    status = ltc6811_read_data(0x000C, &GPIO_data[0], 6);
+	    if (status != HAL_OK) return status;
+
+	    // Leggi gruppo B (GPIO 4-5 e Second Reference)
+	    status = ltc6811_read_data(0x000E, &GPIO_data[6], 6);
+	    if (status != HAL_OK) return status;
+
+	    // Decodifica tensioni
+	    for (int GPIO = 0; GPIO < 6; GPIO++) {
+	        int group_offset = (GPIO / 3) * 6;
+	        int GPIO_in_group = GPIO % 3;
+	        int byte_offset = group_offset + (GPIO_in_group * 2);
+
+	        uint16_t raw_voltage = (GPIO_data[byte_offset+1] << 8) | GPIO_data[byte_offset];
+	        gpio_voltage[GPIO] = raw_voltage * 0.0001f; // Converti in Volt (100μV per LSB)
+	    }
+
+	    return HAL_OK;
+	}
+
