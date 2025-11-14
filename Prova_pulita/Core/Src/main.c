@@ -47,6 +47,8 @@
 
 SPI_HandleTypeDef hspi3;
 
+TIM_HandleTypeDef htim2;
+
 UART_HandleTypeDef huart3;
 
 /* USER CODE BEGIN PV */
@@ -59,6 +61,7 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_USART3_UART_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -72,6 +75,8 @@ static void MX_USART3_UART_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
+uint8_t timer_flag=0;
+
 int main(void)
 {
 
@@ -102,45 +107,51 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI3_Init();
   MX_USART3_UART_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_TIM_Base_Start_IT(&htim2);
+
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  ltc6811_configure();
+  uint8_t config[6]={0};
+  HAL_StatusTypeDef status1;	//verifichiamo se effettivamente stiamo scrivendo nel modo giusto
+  status1 = ltc6811_read_data(0x0002, &config[0], 6);
+  for (int i = 0; i < 6; i++)
+  {
+	  char buffer2[80];
+           	// Converti float in stringa
+      int length2 = sprintf(buffer2, "Il valore %d della configurazione: %x \n", i+1, config[i]);
+         	// Invia via UART
+       HAL_UART_Transmit(&huart3, (uint8_t*)buffer2, length2, HAL_MAX_DELAY);
+   }
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  	 ltc6811_configure();
-		 uint8_t config[6]={0};
-		 HAL_StatusTypeDef status1;
-		 status1 = ltc6811_read_data(0x0002, &config[0], 6);
-		 for (int i = 0; i < 6; i++) {
-		 	     char buffer2[80];
-		 	            	// Converti float in stringa
-		 	        int length2 = sprintf(buffer2, "Il valore %d della configurazione: %x \n", i+1, config[i]);
 
-		 	            	// Invia via UART
-		 	        HAL_UART_Transmit(&huart3, (uint8_t*)buffer2, length2, HAL_MAX_DELAY);
-		 	            }
-
-	        HAL_Delay(2000);
-
-		 float cell_voltages[12]={0};
-	        if (ltc6811_read_cell_voltages(cell_voltages) == HAL_OK) {
-	            // Stampa risultati
-	            for (int i = 0; i < 12; i++) {
-	            	char buffer[32];
-	            	// Converti float in stringa
-	            	int length = sprintf(buffer, "Valore %d: %.2f\r\n",i+1, cell_voltages[i]);
-	            	// Invia via UART
-	            	HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
-	            }
-	        }
-
-	        HAL_Delay(5000);
+	   if(timer_flag==1)
+	   {
+	        float cell_voltages[12]={0};
+	        	if (ltc6811_read_cell_voltages(cell_voltages) == HAL_OK)
+	        	{
+	        		// Stampa risultati
+	        		for (int i = 0; i < 12; i++)
+	        		{
+	        			char buffer[32];
+	        			// Converti float in stringa
+	        			int length = sprintf(buffer, "Valore %d: %.2f\r\n",i+1, cell_voltages[i]);
+	        			// Invia via UART
+	        			HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
+	        		}
+	        	}
+	   }
   }
   /* USER CODE END 3 */
 }
@@ -248,6 +259,51 @@ static void MX_SPI3_Init(void)
   /* USER CODE BEGIN SPI3_Init 2 */
 
   /* USER CODE END SPI3_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 1999;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 999;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
 
 }
 
@@ -383,6 +439,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
+  if (htim->Instance == TIM2)
+    {
+      /* IL TUO CODICE PER TIM2 - ogni 100ms */
+	  timer_flag=1;
+
+    }
 
   /* USER CODE END Callback 1 */
 }
