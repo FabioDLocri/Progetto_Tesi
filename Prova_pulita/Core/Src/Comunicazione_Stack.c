@@ -225,7 +225,8 @@ HAL_StatusTypeDef ltc6811_configure(void)
 }
 
 	// Legge tensioni GPIO
-		HAL_StatusTypeDef ltc6811_read_gpio_voltages(float *gpio_voltage) {
+	HAL_StatusTypeDef ltc6811_read_gpio_voltages(float *gpio_voltage)
+	{
 	    // Avvia conversione ADC
 	    HAL_StatusTypeDef status = ltc6811_send_command(0x0561); // ADAX - GPIO1, 7kHz
 	    if (status != HAL_OK) return status;
@@ -257,3 +258,31 @@ HAL_StatusTypeDef ltc6811_configure(void)
 	    return HAL_OK;
 	}
 
+
+		// Legge tensioni GPIO
+	HAL_StatusTypeDef ltc6811_read_status_a(float *somma_celle, float *int_temperature, float *analog_power_supply)
+		{
+		    // Avvia conversione ADC
+		    HAL_StatusTypeDef status = ltc6811_send_command(0x0568); // ADAX - GPIO1, 7kHz
+		    if (status != HAL_OK) return status;
+
+		    // Attendi fine conversione
+		    HAL_Delay(3); // 3ms per sicurezza
+
+		    // Leggi tutti i gruppi di registri
+		    uint8_t Status_A[12]; // 3 registri × 4 bytes (2 bytes dato + 2 bytes PEC per gruppo)
+
+		    // Leggi gruppo A (SC, ITMP, VA)
+		    status = ltc6811_read_data(0x0010, &Status_A[0], 6);
+		    if (status != HAL_OK) return status;
+
+		    // Decodifica tensioni
+
+		        *somma_celle= ((Status_A[1] << 8) | Status_A[0]) * 0.0001f*20; // Converti in Volt (100μV per LSB)
+
+		        *int_temperature=((((Status_A[3] << 8) | Status_A[2]) * 0.0001f)/0.0075f)-273; //Converti in temperatura
+
+		        *analog_power_supply= ((Status_A[5] << 8) | Status_A[4]) * 0.0001f; // Converti in Volt (100μV per LSB)
+
+		    return HAL_OK;
+		}

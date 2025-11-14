@@ -1,4 +1,5 @@
 "./Core/Src/Comunicazione_Stack.o"
+"./Core/Src/Comunicazione_UART.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32h7xx_hal_msp.o"
 "./Core/Src/stm32h7xx_hal_timebase_tim.o"

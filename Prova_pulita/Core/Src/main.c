@@ -26,6 +26,7 @@
 #include "string.h"
 #include "stdbool.h"
 #include "Comunicazione_Stack.h"
+#include "Comunicazione_UART.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -129,6 +130,11 @@ int main(void)
          	// Invia via UART
        HAL_UART_Transmit(&huart3, (uint8_t*)buffer2, length2, HAL_MAX_DELAY);
    }
+ 	float Somma_celle=0;
+ 	float Temperatura_interna=1;
+ 	float Tensione_Analogica=0;
+
+
 
   while (1)
   {
@@ -138,33 +144,31 @@ int main(void)
 
 	   if(timer_flag==1)
 	   {
-	        float cell_voltages[12]={0};
-	        if (ltc6811_read_cell_voltages(cell_voltages) == HAL_OK)
+	        float tensione_celle[12]={0};
+	        if (ltc6811_read_cell_voltages(tensione_celle) == HAL_OK)
 	        {
 	        	// Stampa risultati
-	        	for (int i = 0; i < 12; i++)
-	        	{
-	        		char buffer[32];
-	        		// Converti float in stringa
-	        		int length = sprintf(buffer, "Valore %d: %.2f\r\n",i+1, cell_voltages[i]);
-	        		// Invia via UART
-	        		HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
-	        	}
+	        	stampa_tensioni_celle(tensione_celle);
 	        }
 
-	        float GPIO_voltages[6]={0};
-	       	if (ltc6811_read_gpio_voltages(GPIO_voltages) == HAL_OK)
+	        float tensione_GPIO[6]={0};
+	       	if (ltc6811_read_gpio_voltages(tensione_GPIO) == HAL_OK)
 	       	{
 	       		// Stampa risultati
-	       		for (int i = 0; i < 6; i++)
-	       	    {
-	       			char buffer[32];
-	       	        // Converti float in stringa
-	       	        int length = sprintf(buffer, "Valore GPIO %d: %.2f\r\n",i+1, GPIO_voltages[i]);
-	       	        // Invia via UART
-	       	        HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
-	       	     }
+	       		stampa_tensioni_GPIO(tensione_GPIO);
 	        }
+	       	//float Somma_celle=0;
+	       	//float Temperatura_interna=1;
+	       	//float Tensione_Analogica=0;
+	       	if (ltc6811_read_status_a(&Somma_celle, &Temperatura_interna, &Tensione_Analogica) == HAL_OK)
+	       	{
+	       		// Stampa risultati
+	       		HAL_Delay(1);
+	       		stampa_temperatura_interna(Temperatura_interna);
+
+	       		stampa_somma_celle(Somma_celle);
+	       	}
+
 	       	timer_flag=0;
 	   }
 	   HAL_Delay(5000);
