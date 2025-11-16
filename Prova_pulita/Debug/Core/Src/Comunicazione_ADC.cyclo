@@ -1,0 +1,9 @@
+../Core/Src/Comunicazione_ADC.c:21:6:MAX1227_Init	1
+../Core/Src/Comunicazione_ADC.c:32:6:MAX1227_WriteByte	1
+../Core/Src/Comunicazione_ADC.c:41:8:read_all_voltages	2
+../Core/Src/Comunicazione_ADC.c:53:7:read_single_channel	2
+../Core/Src/Comunicazione_ADC.c:85:7:read_shunt_voltage	1
+../Core/Src/Comunicazione_ADC.c:90:7:read_voltage_1	1
+../Core/Src/Comunicazione_ADC.c:91:7:read_voltage_2	1
+../Core/Src/Comunicazione_ADC.c:92:7:read_voltage_3	1
+../Core/Src/Comunicazione_ADC.c:93:7:read_voltage_4	1

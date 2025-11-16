@@ -27,6 +27,8 @@
 #include "stdbool.h"
 #include "Comunicazione_Stack.h"
 #include "Comunicazione_UART.h"
+#include "Comunicazione_ADC.h"
+#include "global.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -47,6 +49,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 SPI_HandleTypeDef hspi3;
+SPI_HandleTypeDef hspi5;
 
 TIM_HandleTypeDef htim2;
 
@@ -63,6 +66,7 @@ static void MX_GPIO_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_SPI5_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -76,8 +80,6 @@ static void MX_TIM2_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
-uint8_t timer_flag=0;
-
 int main(void)
 {
 
@@ -109,6 +111,7 @@ int main(void)
   MX_SPI3_Init();
   MX_USART3_UART_Init();
   MX_TIM2_Init();
+  MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
 
   HAL_TIM_Base_Start_IT(&htim2);
@@ -119,9 +122,9 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   ltc6811_configure();
-  uint8_t config[6]={0};
-  HAL_StatusTypeDef status1;	//verifichiamo se effettivamente stiamo scrivendo nel modo giusto
-  status1 = ltc6811_read_data(0x0002, &config[0], 6);
+
+   //verifichiamo se effettivamente stiamo scrivendo nel modo giusto
+   HAL_StatusTypeDef status1 = ltc6811_read_data(0x0002, &config[0], 6);
   for (int i = 0; i < 6; i++)
   {
 	  char buffer2[40];
@@ -130,9 +133,6 @@ int main(void)
          	// Invia via UART
        HAL_UART_Transmit(&huart3, (uint8_t*)buffer2, length2, HAL_MAX_DELAY);
    }
- 	float Somma_celle=0;
- 	float Temperatura_interna=1;
- 	float Tensione_Analogica=0;
 
 
 
@@ -144,29 +144,24 @@ int main(void)
 
 	   if(timer_flag==1)
 	   {
-	        float tensione_celle[12]={0};
+
 	        if (ltc6811_read_cell_voltages(tensione_celle) == HAL_OK)
 	        {
 	        	// Stampa risultati
 	        	stampa_tensioni_celle(tensione_celle);
 	        }
 
-	        float tensione_GPIO[6]={0};
 	       	if (ltc6811_read_gpio_voltages(tensione_GPIO) == HAL_OK)
 	       	{
 	       		// Stampa risultati
 	       		stampa_tensioni_GPIO(tensione_GPIO);
 	        }
-	       	//float Somma_celle=0;
-	       	//float Temperatura_interna=1;
-	       	//float Tensione_Analogica=0;
-	       	if (ltc6811_read_status_a(&Somma_celle, &Temperatura_interna, &Tensione_Analogica) == HAL_OK)
+
+	       	if (ltc6811_read_status() == HAL_OK)
 	       	{
 	       		// Stampa risultati
-	       		HAL_Delay(1);
-	       		stampa_temperatura_interna(Temperatura_interna);
-
-	       		stampa_somma_celle(Somma_celle);
+	       		stampa_temperatura_interna(int_temperature);
+	       		stampa_somma_celle(somma_celle);
 	       	}
 
 	       	timer_flag=0;
@@ -283,6 +278,54 @@ static void MX_SPI3_Init(void)
 }
 
 /**
+  * @brief SPI5 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI5_Init(void)
+{
+
+  /* USER CODE BEGIN SPI5_Init 0 */
+
+  /* USER CODE END SPI5_Init 0 */
+
+  /* USER CODE BEGIN SPI5_Init 1 */
+
+  /* USER CODE END SPI5_Init 1 */
+  /* SPI5 parameter configuration*/
+  hspi5.Instance = SPI5;
+  hspi5.Init.Mode = SPI_MODE_MASTER;
+  hspi5.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi5.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi5.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi5.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi5.Init.NSS = SPI_NSS_SOFT;
+  hspi5.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32;
+  hspi5.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi5.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi5.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi5.Init.CRCPolynomial = 0x0;
+  hspi5.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi5.Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
+  hspi5.Init.FifoThreshold = SPI_FIFO_THRESHOLD_01DATA;
+  hspi5.Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi5.Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+  hspi5.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
+  hspi5.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
+  hspi5.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
+  hspi5.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+  hspi5.Init.IOSwap = SPI_IO_SWAP_DISABLE;
+  if (HAL_SPI_Init(&hspi5) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI5_Init 2 */
+
+  /* USER CODE END SPI5_Init 2 */
+
+}
+
+/**
   * @brief TIM2 Initialization Function
   * @param None
   * @retval None
@@ -388,6 +431,7 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
@@ -396,12 +440,28 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+
   /*Configure GPIO pin : PD14 */
   GPIO_InitStruct.Pin = GPIO_PIN_14;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB9 */
+  GPIO_InitStruct.Pin = GPIO_PIN_9;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

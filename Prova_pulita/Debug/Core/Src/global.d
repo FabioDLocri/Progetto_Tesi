@@ -1,6 +1,5 @@
-Core/Src/Comunicazione_Stack.o: ../Core/Src/Comunicazione_Stack.c \
- ../Core/Inc/Comunicazione_Stack.h ../Core/Inc/main.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
+Core/Src/global.o: ../Core/Src/global.c ../Core/Inc/global.h \
+ ../Core/Inc/main.h ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
@@ -34,8 +33,8 @@ Core/Src/Comunicazione_Stack.o: ../Core/Src/Comunicazione_Stack.c \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- ../Core/Inc/main.h ../Core/Inc/global.h ../Core/Inc/Config_LTC6811.h
-../Core/Inc/Comunicazione_Stack.h:
+ ../Core/Inc/main.h
+../Core/Inc/global.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -72,5 +71,3 @@ Core/Src/Comunicazione_Stack.o: ../Core/Src/Comunicazione_Stack.c \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 ../Core/Inc/main.h:
-../Core/Inc/global.h:
-../Core/Inc/Config_LTC6811.h:

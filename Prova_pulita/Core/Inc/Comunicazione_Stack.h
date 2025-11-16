@@ -23,7 +23,7 @@ HAL_StatusTypeDef ltc6811_configure();
 
 HAL_StatusTypeDef ltc6811_read_cell_voltages(float *voltages);
 
-HAL_StatusTypeDef ltc6811_read_status_a(float *somma_celle, float *int_temperature, float *analog_power_supply);
+HAL_StatusTypeDef ltc6811_read_status();
 
 HAL_StatusTypeDef ltc6811_read_gpio_voltages(float *gpio_voltage);
 

@@ -12,6 +12,10 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "global.h"
+#include "Config_LTC6811.h"
+#include "stdbool.h"
+
 
 extern SPI_HandleTypeDef hspi3;
 
@@ -52,6 +56,27 @@ uint16_t calculate_pec(uint8_t *data, uint8_t len) {
 uint8_t verify_pec(uint8_t *data, uint8_t len, uint16_t received_pec) {
     uint16_t calculated_pec = calculate_pec(data, len);
     return (calculated_pec == received_pec);
+}
+
+//Creo il comando per ADC voltage
+uint16_t LTC6811_adcv(
+  uint8_t MD, //ADC Mode
+  uint8_t DCP, //Discharge Permit
+  uint8_t CH //Cell Channels to be measured
+  )
+{
+	uint16_t cmd = (1<<9) + (MD<<7) + 0x60 + (DCP<<4) + CH;
+	return cmd;
+}
+
+//Creo il comando per ADC voltage
+uint16_t LTC6811_adax(
+  uint8_t MD, //ADC Mode
+  uint8_t CHG //GPIO Channels to be measured
+  )
+{
+	uint16_t cmd = (1<<10) + (MD<<7) + 0x60 + CHG;
+	return cmd;
 }
 
 //Funzioni di invio dati
@@ -153,62 +178,92 @@ HAL_StatusTypeDef ltc6811_read_data(uint16_t command, uint8_t *rx_data, uint8_t 
     return status;
 }
 
+uint8_t* ltc6811_set_config(
+		bool gpio[5], //GPIO pull-down ON o OFF
+		bool refon,
+		bool dten,
+		bool adcopt,
+		uint16_t uv,
+		uint16_t ov,
+		bool dcc[12],
+		bool dcto[4]
+		)
+{
+    uint8_t config_data[6] = {0};
+    config_data[0]= (refon<<2)+(dten<<1)+adcopt;
+    // CFGR0: GPIO pull-down OFF, REFON=0, ADCOPT=0
+    for(int i=0; i<5; i++)
+    {
+        config_data[0] += (gpio[i]<<(i+3));
+    };
+    //0xFC; // 0b11111100 - tutti GPIO pull-down OFF
+
+    // CFGR1: Undervoltage threshold (esempio: 3.3V)
+    uint16_t vuv = uv / 16; // 3300mV / (16 * 0.1mV)
+    config_data[1] = vuv & 0xFF;
+
+    // CFGR3: Overvoltage threshold (esempio: 4.2V)
+    uint16_t vov = ov / 16; // 4200mV / (16 * 0.1mV)
+    config_data[2] = (vov << 4) | ((vuv >> 8) & 0x0F);
+    config_data[3] = (vov >> 4) & 0xFF;
+
+    // CFGR4-CFGR5: Discharge control disabilitato
+    for (int i=0; i<8; i++)
+        {
+            config_data[4] += dcc[i]<<i;
+        };
+    for (int i=0; i<5; i++)
+        {
+    		config_data[5] += (dcto[i]<<(i+4));
+            config_data[5] += dcc[i+8]<<i;
+        };
+
+    return config_data;
+}
+
 
 
 // Configura LTC6811
 HAL_StatusTypeDef ltc6811_configure(void)
 {
-    uint8_t config_data[6] = {0};
-
-    // CFGR0: GPIO pull-down OFF, REFON=0, ADCOPT=0
-    config_data[0] = 0xFC; // 0b11111100 - tutti GPIO pull-down OFF
-
-    // CFGR1: Undervoltage threshold (esempio: 3.3V)
-    uint16_t vuv = 33000 / 16; // 33000mV / (16 * 0.1mV)
-    config_data[1] = vuv & 0xFF;
-    //config_data[2] = (vuv >> 8) & 0x0F;
-
-    // CFGR3: Overvoltage threshold (esempio: 4.2V)
-    uint16_t vov = 42000 / 16; // 42000mV / (16 * 0.1mV)
-    config_data[2] = (vov << 4) | ((vuv >> 8) & 0x0F);
-    config_data[3] = (vov >> 4) & 0xFF;
-
-    // CFGR4-CFGR5: Discharge control disabilitato
-    config_data[4] = 0x00;
-    config_data[5] = 0x00;
 
     // Invia comando WRCFGA
+	bool gpio_default[5] = {0};
+	bool dcc_default[12] = {0};
+	bool dcto_default[4] = {0};
 
+	uint8_t* config_data=ltc6811_set_config(gpio_default, 0, 0, 0, UV_THRESHOLD, OV_THRESHOLD, dcc_default, dcto_default);
     // Invia dati di configurazione
     return ltc6811_write_data(0x0001, config_data, 6);
 }
 
 // Legge tensioni celle
 	HAL_StatusTypeDef ltc6811_read_cell_voltages(float *voltages) {
-    // Avvia conversione ADC
-    HAL_StatusTypeDef status = ltc6811_send_command(0x0360); // ADCV - tutte le celle, 7kHz
+    // Avvia conversione ADC creando prima il comando a seconda delle impostazioni volute
+	uint16_t cmd= LTC6811_adcv(MD_7KHZ_3KHZ,DCP_DISABLED, CELL_CH_ALL);
+    HAL_StatusTypeDef status = ltc6811_send_command(cmd); // ADCV - tutte le celle, 7kHz
     if (status != HAL_OK) return status;
 
     // Attendi fine conversione (290μs)
     HAL_Delay(3); // 3ms per sicurezza
 
     // Leggi tutti i gruppi di registri
-    uint8_t cell_data[48]; // 12 celle × 4 bytes (2 bytes dato + 2 bytes PEC per gruppo)
+    uint8_t cell_data[24]; // 12 celle × 2 bytes
 
     // Leggi gruppo A (celle 1-3)
-    status = ltc6811_read_data(0x0004, &cell_data[0], 6);
+    status = ltc6811_read_data(RDCVA, &cell_data[0], 6);
     if (status != HAL_OK) return status;
 
     // Leggi gruppo B (celle 4-6)
-    status = ltc6811_read_data(0x0006, &cell_data[6], 6);
+    status = ltc6811_read_data(RDCVB, &cell_data[6], 6);
     if (status != HAL_OK) return status;
 
     // Leggi gruppo C (celle 7-9)
-    status = ltc6811_read_data(0x0008, &cell_data[12], 6);
+    status = ltc6811_read_data(RDCVC, &cell_data[12], 6);
     if (status != HAL_OK) return status;
 
     // Leggi gruppo D (celle 10-12)
-    status = ltc6811_read_data(0x000A, &cell_data[18], 6);
+    status = ltc6811_read_data(RDCVD, &cell_data[18], 6);
     if (status != HAL_OK) return status;
 
     // Decodifica tensioni
@@ -227,22 +282,23 @@ HAL_StatusTypeDef ltc6811_configure(void)
 	// Legge tensioni GPIO
 	HAL_StatusTypeDef ltc6811_read_gpio_voltages(float *gpio_voltage)
 	{
-	    // Avvia conversione ADC
-	    HAL_StatusTypeDef status = ltc6811_send_command(0x0561); // ADAX - GPIO1, 7kHz
+		// Avvia conversione ADC creando prima il comando a seconda delle impostazioni volute
+		uint16_t cmd= LTC6811_adax(MD_7KHZ_3KHZ, AUX_CH_ALL);
+	    HAL_StatusTypeDef status = ltc6811_send_command(cmd); // ADAX - GPIO1, 7kHz
 	    if (status != HAL_OK) return status;
 
 	    // Attendi fine conversione
 	    HAL_Delay(3); // 3ms per sicurezza
 
 	    // Leggi tutti i gruppi di registri
-	    uint8_t GPIO_data[24]; // 6 registri × 4 bytes (2 bytes dato + 2 bytes PEC per gruppo)
+	    uint8_t GPIO_data[12]; // 6 registri × 2 bytes
 
 	    // Leggi gruppo A (GPIO 1-3)
-	    status = ltc6811_read_data(0x000C, &GPIO_data[0], 6);
+	    status = ltc6811_read_data(RDAUXA, &GPIO_data[0], 6);
 	    if (status != HAL_OK) return status;
 
 	    // Leggi gruppo B (GPIO 4-5 e Second Reference)
-	    status = ltc6811_read_data(0x000E, &GPIO_data[6], 6);
+	    status = ltc6811_read_data(RDAUXB, &GPIO_data[6], 6);
 	    if (status != HAL_OK) return status;
 
 	    // Decodifica tensioni
@@ -260,29 +316,37 @@ HAL_StatusTypeDef ltc6811_configure(void)
 
 
 		// Legge tensioni GPIO
-	HAL_StatusTypeDef ltc6811_read_status_a(float *somma_celle, float *int_temperature, float *analog_power_supply)
+	HAL_StatusTypeDef ltc6811_read_status()
 		{
 		    // Avvia conversione ADC
-		    HAL_StatusTypeDef status = ltc6811_send_command(0x0568); // ADAX - GPIO1, 7kHz
+		    HAL_StatusTypeDef status = ltc6811_send_command(0x0568); //ADSTAT 7kHz
 		    if (status != HAL_OK) return status;
 
 		    // Attendi fine conversione
 		    HAL_Delay(3); // 3ms per sicurezza
 
 		    // Leggi tutti i gruppi di registri
-		    uint8_t Status_A[12]; // 3 registri × 4 bytes (2 bytes dato + 2 bytes PEC per gruppo)
+		    uint8_t Status_A[6]; // 3 registri × 2 bytes
+
+		    uint8_t Status_B[6]; // 3 registri × 2 bytes
 
 		    // Leggi gruppo A (SC, ITMP, VA)
-		    status = ltc6811_read_data(0x0010, &Status_A[0], 6);
+		    status = ltc6811_read_data(RDSTATA, &Status_A[0], 6);
+		    if (status != HAL_OK) return status;
+
+		    // Leggi gruppo B (VD, CxOV, CxUV)
+		    status = ltc6811_read_data(RDSTATB, &Status_B[0], 6);
 		    if (status != HAL_OK) return status;
 
 		    // Decodifica tensioni
 
-		        *somma_celle= ((Status_A[1] << 8) | Status_A[0]) * 0.0001f*20; // Converti in Volt (100μV per LSB)
+		        somma_celle= ((Status_A[1] << 8) | Status_A[0]) * 0.0001f*20; // Converti in Volt (100μV per LSB)
 
-		        *int_temperature=((((Status_A[3] << 8) | Status_A[2]) * 0.0001f)/0.0075f)-273; //Converti in temperatura
+		        int_temperature=((((Status_A[3] << 8) | Status_A[2]) * 0.0001f)/0.0075f)-273; //Converti in temperatura
 
-		        *analog_power_supply= ((Status_A[5] << 8) | Status_A[4]) * 0.0001f; // Converti in Volt (100μV per LSB)
+		        analog_power_supply= ((Status_A[5] << 8) | Status_A[4]) * 0.0001f; // Converti in Volt (100μV per LSB)
+
+		        digital_power_supply= ((Status_A[1] << 8) | Status_A[0]) * 0.0001f; // Converti in Volt (100μV per LSB)
 
 		    return HAL_OK;
 		}
