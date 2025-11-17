@@ -32,14 +32,18 @@ void stampa_tensioni_celle(float *cell_voltages){
 
 void stampa_tensioni_GPIO(float *GPIO_voltages){
 	// Stampa risultati
-	for (int i = 0; i < 6; i++)
+	char buffer[32];
+	for (int i = 0; i < 5; i++)
    {
-		char buffer[32];
        // Converti float in stringa
        int length = sprintf(buffer, "Valore GPIO %d: %.2f\r\n",i+1, GPIO_voltages[i]);
        // Invia via UART
        HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
     }
+	    // Converti float in stringa
+	int length = sprintf(buffer, "Valore Second Reference: %.2f\r\n", GPIO_voltages[5]);
+	    // Invia via UART
+	HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
 }
 
 void stampa_somma_celle(float somma_celle){

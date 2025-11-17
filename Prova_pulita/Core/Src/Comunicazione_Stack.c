@@ -189,36 +189,36 @@ uint8_t* ltc6811_set_config(
 		bool dcto[4]
 		)
 {
-    uint8_t config_data[6] = {0};
-    config_data[0]= (refon<<2)+(dten<<1)+adcopt;
+
+    configuration_data[0]= (refon<<2)+(dten<<1)+adcopt;
     // CFGR0: GPIO pull-down OFF, REFON=0, ADCOPT=0
     for(int i=0; i<5; i++)
     {
-        config_data[0] += (gpio[i]<<(i+3));
+    	configuration_data[0] += (gpio[i]<<(i+3));
     };
     //0xFC; // 0b11111100 - tutti GPIO pull-down OFF
 
     // CFGR1: Undervoltage threshold (esempio: 3.3V)
     uint16_t vuv = uv / 16; // 3300mV / (16 * 0.1mV)
-    config_data[1] = vuv & 0xFF;
+    configuration_data[1] = vuv & 0xFF;
 
     // CFGR3: Overvoltage threshold (esempio: 4.2V)
     uint16_t vov = ov / 16; // 4200mV / (16 * 0.1mV)
-    config_data[2] = (vov << 4) | ((vuv >> 8) & 0x0F);
-    config_data[3] = (vov >> 4) & 0xFF;
+    configuration_data[2] = (vov << 4) | ((vuv >> 8) & 0x0F);
+    configuration_data[3] = (vov >> 4) & 0xFF;
 
     // CFGR4-CFGR5: Discharge control disabilitato
     for (int i=0; i<8; i++)
         {
-            config_data[4] += dcc[i]<<i;
+    	configuration_data[4] += dcc[i]<<i;
         };
-    for (int i=0; i<5; i++)
+    for (int i=0; i<4; i++)
         {
-    		config_data[5] += (dcto[i]<<(i+4));
-            config_data[5] += dcc[i+8]<<i;
+    	configuration_data[5] += (dcto[i]<<(i+4));
+    	configuration_data[5] += dcc[i+8]<<i;
         };
 
-    return config_data;
+    return configuration_data;
 }
 
 
@@ -228,7 +228,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
 {
 
     // Invia comando WRCFGA
-	bool gpio_default[5] = {0};
+	bool gpio_default[5] = {1,1,1,1,1};
 	bool dcc_default[12] = {0};
 	bool dcto_default[4] = {0};
 

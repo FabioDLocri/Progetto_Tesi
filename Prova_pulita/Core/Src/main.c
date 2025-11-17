@@ -129,7 +129,7 @@ int main(void)
   {
 	  char buffer2[40];
            	// Converti float in stringa
-      int length2 = sprintf(buffer2, "Il valore %d della configurazione: %x \n\n", i+1, config[i]);
+      int length2 = sprintf(buffer2, "Il valore %d della configurazione: %x \r\n", i+1, config[i]);
          	// Invia via UART
        HAL_UART_Transmit(&huart3, (uint8_t*)buffer2, length2, HAL_MAX_DELAY);
    }
