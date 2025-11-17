@@ -1,0 +1,6 @@
+../Core/Src/Stima_SOC.c:47:7:clamp01	3
+../Core/Src/Stima_SOC.c:53:7:lerp	1
+../Core/Src/Stima_SOC.c:59:7:soc_from_ocv	5
+../Core/Src/Stima_SOC.c:85:6:soc_update_coulomb_count	8
+../Core/Src/Stima_SOC.c:106:6:soc_update_hybrid	4
+../Core/Src/Stima_SOC.c:127:6:compute_cells_soc_from_voltage	5

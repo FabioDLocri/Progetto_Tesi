@@ -3,7 +3,8 @@
 ../Core/Src/Comunicazione_ADC.c:41:8:read_all_voltages	40	static
 ../Core/Src/Comunicazione_ADC.c:53:7:read_single_channel	32	static
 ../Core/Src/Comunicazione_ADC.c:85:7:read_shunt_voltage	8	static
-../Core/Src/Comunicazione_ADC.c:90:7:read_voltage_1	8	static
-../Core/Src/Comunicazione_ADC.c:91:7:read_voltage_2	8	static
-../Core/Src/Comunicazione_ADC.c:92:7:read_voltage_3	8	static
-../Core/Src/Comunicazione_ADC.c:93:7:read_voltage_4	8	static
+../Core/Src/Comunicazione_ADC.c:89:7:voltage_current_convert	16	static
+../Core/Src/Comunicazione_ADC.c:94:7:read_voltage_1	8	static
+../Core/Src/Comunicazione_ADC.c:95:7:read_voltage_2	8	static
+../Core/Src/Comunicazione_ADC.c:96:7:read_voltage_3	8	static
+../Core/Src/Comunicazione_ADC.c:97:7:read_voltage_4	8	static

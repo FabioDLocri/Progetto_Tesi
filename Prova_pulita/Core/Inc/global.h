@@ -29,6 +29,8 @@ typedef struct {
 	float tensione;
 	float corrente;
 	float temperatura;
+	float SOC;
+	float SOH;
 	bool COV;// Cell x 	Overvoltage Flag
 	bool CUV;// Cell x 	Undervoltage Flag
 }Cella;

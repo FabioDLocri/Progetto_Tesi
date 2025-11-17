@@ -166,7 +166,7 @@ int main(void)
 
 	       	timer_flag=0;
 	   }
-	   HAL_Delay(5000);
+	   HAL_Delay(3000);
   }
   /* USER CODE END 3 */
 }
@@ -523,7 +523,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
       /* IL TUO CODICE PER TIM2 - ogni 100ms */
 	  timer_flag=1;
-
     }
 
   /* USER CODE END Callback 1 */

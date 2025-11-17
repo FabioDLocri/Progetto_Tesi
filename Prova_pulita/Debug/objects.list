@@ -1,6 +1,7 @@
 "./Core/Src/Comunicazione_ADC.o"
 "./Core/Src/Comunicazione_Stack.o"
 "./Core/Src/Comunicazione_UART.o"
+"./Core/Src/Stima_SOC.o"
 "./Core/Src/global.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32h7xx_hal_msp.o"

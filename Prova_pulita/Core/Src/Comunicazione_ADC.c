@@ -73,7 +73,7 @@ float read_single_channel(uint8_t channel) {
 
     // Combina i dati ricevuti
     raw_value = (rx_data[0] << 8) | rx_data[1];
-    raw_value = raw_value >> 4;  // Rimuovi 4 bit MSB (zeri)
+    raw_value = raw_value & 0x0FFF;  // Rimuovi 4 bit MSB (zeri)
 
     // Calcola voltaggio (VREF = 2.5V interno)
     voltage = (raw_value * 2.5) / 4096.0;
@@ -81,9 +81,13 @@ float read_single_channel(uint8_t channel) {
     return voltage;
 }
 
-// Per la tensione dello shunt (probabilmente bassa tensione)
+// Per la tensione dello shunt
 float read_shunt_voltage(void) {
     return read_single_channel(0);  // AIN0 per shunt
+}
+
+float voltage_current_convert(float voltage){
+	return voltage*10/12;
 }
 
 // Per le altre tensioni
