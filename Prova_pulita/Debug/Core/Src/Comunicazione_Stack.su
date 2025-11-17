@@ -7,6 +7,6 @@
 ../Core/Src/Comunicazione_Stack.c:145:19:ltc6811_read_data	64	dynamic
 ../Core/Src/Comunicazione_Stack.c:181:10:ltc6811_set_config	32	static
 ../Core/Src/Comunicazione_Stack.c:227:19:ltc6811_configure	56	static
-../Core/Src/Comunicazione_Stack.c:241:20:ltc6811_read_cell_voltages	64	static
+../Core/Src/Comunicazione_Stack.c:241:20:ltc6811_read_cell_voltages	56	static
 ../Core/Src/Comunicazione_Stack.c:283:20:ltc6811_read_gpio_voltages	56	static
 ../Core/Src/Comunicazione_Stack.c:319:20:ltc6811_read_status	24	static

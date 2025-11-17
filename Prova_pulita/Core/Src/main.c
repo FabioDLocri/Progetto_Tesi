@@ -145,10 +145,10 @@ int main(void)
 	   if(timer_flag==1)
 	   {
 
-	        if (ltc6811_read_cell_voltages(tensione_celle) == HAL_OK)
+	        if (ltc6811_read_cell_voltages() == HAL_OK)
 	        {
 	        	// Stampa risultati
-	        	stampa_tensioni_celle(tensione_celle);
+	        	stampa_tensioni_celle();
 	        }
 
 	       	if (ltc6811_read_gpio_voltages(tensione_GPIO) == HAL_OK)

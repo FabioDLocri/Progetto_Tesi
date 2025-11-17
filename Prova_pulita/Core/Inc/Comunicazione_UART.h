@@ -8,7 +8,7 @@
 #ifndef INC_COMUNICAZIONE_UART_H_
 #define INC_COMUNICAZIONE_UART_H_
 
-void stampa_tensioni_celle(float *cell_voltages);
+void stampa_tensioni_celle();
 
 void stampa_tensioni_GPIO(float *GPIO_voltages);
 

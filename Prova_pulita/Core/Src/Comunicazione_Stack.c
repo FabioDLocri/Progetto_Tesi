@@ -238,7 +238,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
 }
 
 // Legge tensioni celle
-	HAL_StatusTypeDef ltc6811_read_cell_voltages(float *voltages) {
+	HAL_StatusTypeDef ltc6811_read_cell_voltages() {
     // Avvia conversione ADC creando prima il comando a seconda delle impostazioni volute
 	uint16_t cmd= LTC6811_adcv(MD_7KHZ_3KHZ,DCP_DISABLED, CELL_CH_ALL);
     HAL_StatusTypeDef status = ltc6811_send_command(cmd); // ADCV - tutte le celle, 7kHz
@@ -273,7 +273,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
         int byte_offset = group_offset + (cell_in_group * 2);
 
         uint16_t raw_voltage = (cell_data[byte_offset+1] << 8) | cell_data[byte_offset];
-        voltages[cell] = raw_voltage * 0.0001f; // Converti in Volt (100μV per LSB)
+        Batteria[cell].tensione = raw_voltage * 0.0001f; // Converti in Volt (100μV per LSB)
     }
 
     return HAL_OK;

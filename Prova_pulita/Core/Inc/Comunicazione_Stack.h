@@ -21,7 +21,7 @@ HAL_StatusTypeDef ltc6811_read_data(uint16_t command,uint8_t *rx_data, uint8_t d
 
 HAL_StatusTypeDef ltc6811_configure();
 
-HAL_StatusTypeDef ltc6811_read_cell_voltages(float *voltages);
+HAL_StatusTypeDef ltc6811_read_cell_voltages();
 
 HAL_StatusTypeDef ltc6811_read_status();
 
