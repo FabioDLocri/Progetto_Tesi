@@ -29,6 +29,7 @@
 #include "Comunicazione_UART.h"
 #include "Comunicazione_ADC.h"
 #include "global.h"
+#include "funzioni_SOC.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -167,6 +168,8 @@ int main(void)
 	       	timer_flag=0;
 	   }
 	   HAL_Delay(3000);
+
+
   }
   /* USER CODE END 3 */
 }

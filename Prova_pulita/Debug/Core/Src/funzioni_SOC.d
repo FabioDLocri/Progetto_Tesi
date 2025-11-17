@@ -1,4 +1,4 @@
-Core/Src/Stima_SOC.o: ../Core/Src/Stima_SOC.c ../Core/Inc/main.h \
+Core/Src/funzioni_SOC.o: ../Core/Src/funzioni_SOC.c ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \

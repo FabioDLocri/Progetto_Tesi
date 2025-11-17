@@ -11,12 +11,16 @@
 #include "stdint.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "global.h"
 
 extern SPI_HandleTypeDef hspi5;
 
 #define NUM_CHANNELS 5
 #define CHANNELS {0, 1, 2, 3, 4}  // AIN0, AIN1, AIN2, AIN3, AIN4
 
+float voltage_current_convert(float voltage){
+	return voltage*10/12;
+}
 
 void MAX1227_Init(void) {
     // 1. Reset dell'ADC
@@ -47,6 +51,9 @@ float* read_all_voltages(void) {
         HAL_Delay(1);
     }
 
+    for(int i = 0; i < NUM_CHANNELS; i++){
+    Batteria[i].corrente = voltage_current_convert(voltages[0]);
+    }
     return voltages;
 }
 
@@ -86,9 +93,7 @@ float read_shunt_voltage(void) {
     return read_single_channel(0);  // AIN0 per shunt
 }
 
-float voltage_current_convert(float voltage){
-	return voltage*10/12;
-}
+
 
 // Per le altre tensioni
 float read_voltage_1(void) { return read_single_channel(1); }

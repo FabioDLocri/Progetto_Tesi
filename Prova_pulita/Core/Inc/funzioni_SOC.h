@@ -5,18 +5,18 @@
  *      Author: faxio
  */
 
-#ifndef INC_STIMA_SOC_H_
-#define INC_STIMA_SOC_H_
+#ifndef INC_FUNZIONI_SOC_H_
+#define INC_FUNZIONI_SOC_H_
 
 
 
 #include <stddef.h>
 #include "stdlib.h"
+#include "global.h"
 
 
 // Configurazione per il calcolo SoC
 typedef struct {
-    const float* soc;     //
     // Capacità cella in Ah (necessaria per il coulomb counting)
     float capacity_Ah;
 
@@ -51,11 +51,8 @@ void soc_update_hybrid(float* soc_estimate,
 // - cell_voltages_V: array di tensioni per cella
 // - out_soc: array di SoC risultante (dimensione n_cells)
 // - n_cells: numero celle
-void compute_cells_soc_from_voltage(const float* cell_voltages_V,
-                                    float* out_soc,
-                                    size_t n_cells,
-                                    const SoCConfig* cfg);
+void compute_cells_soc_from_voltage (Cella* cells);
 
 
 
-#endif /* INC_STIMA_SOC_H_ */
+#endif /* INC_FUNZIONI_SOC_H_ */

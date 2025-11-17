@@ -35,7 +35,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  ../Core/Inc/Comunicazione_Stack.h ../Core/Inc/main.h \
  ../Core/Inc/Comunicazione_UART.h ../Core/Inc/Comunicazione_ADC.h \
- ../Core/Inc/global.h
+ ../Core/Inc/global.h ../Core/Inc/funzioni_SOC.h ../Core/Inc/global.h
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -75,4 +75,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/main.h:
 ../Core/Inc/Comunicazione_UART.h:
 ../Core/Inc/Comunicazione_ADC.h:
+../Core/Inc/global.h:
+../Core/Inc/funzioni_SOC.h:
 ../Core/Inc/global.h:

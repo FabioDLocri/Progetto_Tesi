@@ -218,22 +218,23 @@ Discarded input sections
  .group         0x00000000        0xc ./Core/Src/Comunicazione_ADC.o
  .group         0x00000000        0xc ./Core/Src/Comunicazione_ADC.o
  .group         0x00000000        0xc ./Core/Src/Comunicazione_ADC.o
+ .group         0x00000000        0xc ./Core/Src/Comunicazione_ADC.o
  .text          0x00000000        0x0 ./Core/Src/Comunicazione_ADC.o
  .data          0x00000000        0x0 ./Core/Src/Comunicazione_ADC.o
  .bss           0x00000000        0x0 ./Core/Src/Comunicazione_ADC.o
+ .text.voltage_current_convert
+                0x00000000       0x30 ./Core/Src/Comunicazione_ADC.o
  .text.MAX1227_Init
                 0x00000000       0x1a ./Core/Src/Comunicazione_ADC.o
  .text.MAX1227_WriteByte
                 0x00000000       0x40 ./Core/Src/Comunicazione_ADC.o
  .rodata        0x00000000        0x5 ./Core/Src/Comunicazione_ADC.o
  .text.read_all_voltages
-                0x00000000       0x5c ./Core/Src/Comunicazione_ADC.o
+                0x00000000       0x94 ./Core/Src/Comunicazione_ADC.o
  .text.read_single_channel
                 0x00000000       0xc8 ./Core/Src/Comunicazione_ADC.o
  .text.read_shunt_voltage
                 0x00000000       0x14 ./Core/Src/Comunicazione_ADC.o
- .text.voltage_current_convert
-                0x00000000       0x30 ./Core/Src/Comunicazione_ADC.o
  .text.read_voltage_1
                 0x00000000       0x14 ./Core/Src/Comunicazione_ADC.o
  .text.read_voltage_2
@@ -242,13 +243,13 @@ Discarded input sections
                 0x00000000       0x14 ./Core/Src/Comunicazione_ADC.o
  .text.read_voltage_4
                 0x00000000       0x14 ./Core/Src/Comunicazione_ADC.o
- .debug_info    0x00000000      0xac0 ./Core/Src/Comunicazione_ADC.o
- .debug_abbrev  0x00000000      0x22e ./Core/Src/Comunicazione_ADC.o
+ .debug_info    0x00000000      0xb66 ./Core/Src/Comunicazione_ADC.o
+ .debug_abbrev  0x00000000      0x239 ./Core/Src/Comunicazione_ADC.o
  .debug_aranges
                 0x00000000       0x68 ./Core/Src/Comunicazione_ADC.o
  .debug_rnglists
-                0x00000000       0x4a ./Core/Src/Comunicazione_ADC.o
- .debug_macro   0x00000000      0x34e ./Core/Src/Comunicazione_ADC.o
+                0x00000000       0x4b ./Core/Src/Comunicazione_ADC.o
+ .debug_macro   0x00000000      0x361 ./Core/Src/Comunicazione_ADC.o
  .debug_macro   0x00000000      0xaf6 ./Core/Src/Comunicazione_ADC.o
  .debug_macro   0x00000000      0x23e ./Core/Src/Comunicazione_ADC.o
  .debug_macro   0x00000000       0x2e ./Core/Src/Comunicazione_ADC.o
@@ -322,8 +323,9 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 ./Core/Src/Comunicazione_ADC.o
  .debug_macro   0x00000000       0x16 ./Core/Src/Comunicazione_ADC.o
  .debug_macro   0x00000000       0x29 ./Core/Src/Comunicazione_ADC.o
- .debug_line    0x00000000      0xaa7 ./Core/Src/Comunicazione_ADC.o
- .debug_str     0x00000000   0x163fbf ./Core/Src/Comunicazione_ADC.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/Comunicazione_ADC.o
+ .debug_line    0x00000000      0xadd ./Core/Src/Comunicazione_ADC.o
+ .debug_str     0x00000000   0x164047 ./Core/Src/Comunicazione_ADC.o
  .comment       0x00000000       0x44 ./Core/Src/Comunicazione_ADC.o
  .debug_frame   0x00000000      0x14c ./Core/Src/Comunicazione_ADC.o
  .ARM.attributes
@@ -479,6 +481,7 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 ./Core/Src/Comunicazione_Stack.o
  .debug_macro   0x00000000       0x16 ./Core/Src/Comunicazione_Stack.o
  .debug_macro   0x00000000       0x29 ./Core/Src/Comunicazione_Stack.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/Comunicazione_Stack.o
  .group         0x00000000        0xc ./Core/Src/Comunicazione_UART.o
  .group         0x00000000        0xc ./Core/Src/Comunicazione_UART.o
  .group         0x00000000        0xc ./Core/Src/Comunicazione_UART.o
@@ -708,27 +711,18 @@ Discarded input sections
  .text          0x00000000        0x0 ./Core/Src/Stima_SOC.o
  .data          0x00000000        0x0 ./Core/Src/Stima_SOC.o
  .bss           0x00000000        0x0 ./Core/Src/Stima_SOC.o
- .data.ocv_table
-                0x00000000      0x194 ./Core/Src/Stima_SOC.o
- .data.soc_table
-                0x00000000      0x194 ./Core/Src/Stima_SOC.o
- .text.clamp01  0x00000000       0x4a ./Core/Src/Stima_SOC.o
- .text.lerp     0x00000000       0x3c ./Core/Src/Stima_SOC.o
- .text.soc_from_ocv
-                0x00000000      0x128 ./Core/Src/Stima_SOC.o
- .text.soc_update_coulomb_count
-                0x00000000       0xf8 ./Core/Src/Stima_SOC.o
- .text.soc_update_hybrid
-                0x00000000       0xb2 ./Core/Src/Stima_SOC.o
- .text.compute_cells_soc_from_voltage
-                0x00000000       0x62 ./Core/Src/Stima_SOC.o
- .debug_info    0x00000000      0x3ab ./Core/Src/Stima_SOC.o
- .debug_abbrev  0x00000000      0x16a ./Core/Src/Stima_SOC.o
+ .bss.initialized
+                0x00000000        0x1 ./Core/Src/Stima_SOC.o
+ .data.cfg      0x00000000        0xc ./Core/Src/Stima_SOC.o
+ .text.calcolo_SOC
+                0x00000000       0xcc ./Core/Src/Stima_SOC.o
+ .debug_info    0x00000000      0x242 ./Core/Src/Stima_SOC.o
+ .debug_abbrev  0x00000000      0x12f ./Core/Src/Stima_SOC.o
  .debug_aranges
-                0x00000000       0x48 ./Core/Src/Stima_SOC.o
+                0x00000000       0x20 ./Core/Src/Stima_SOC.o
  .debug_rnglists
-                0x00000000       0x34 ./Core/Src/Stima_SOC.o
- .debug_macro   0x00000000      0x362 ./Core/Src/Stima_SOC.o
+                0x00000000       0x14 ./Core/Src/Stima_SOC.o
+ .debug_macro   0x00000000      0x366 ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000      0xaf6 ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000      0x23e ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000       0x2e ./Core/Src/Stima_SOC.o
@@ -797,19 +791,199 @@ Discarded input sections
  .debug_macro   0x00000000       0x3c ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000       0x16 ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000       0x29 ./Core/Src/Stima_SOC.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000       0x1c ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000       0x10 ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000       0x1c ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000       0x16 ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000      0x146 ./Core/Src/Stima_SOC.o
- .debug_macro   0x00000000       0x22 ./Core/Src/Stima_SOC.o
  .debug_macro   0x00000000      0x13c ./Core/Src/Stima_SOC.o
- .debug_line    0x00000000      0xb64 ./Core/Src/Stima_SOC.o
- .debug_str     0x00000000   0x163bf6 ./Core/Src/Stima_SOC.o
+ .debug_line    0x00000000      0x9c4 ./Core/Src/Stima_SOC.o
+ .debug_str     0x00000000   0x163b99 ./Core/Src/Stima_SOC.o
  .comment       0x00000000       0x44 ./Core/Src/Stima_SOC.o
- .debug_frame   0x00000000       0xf4 ./Core/Src/Stima_SOC.o
+ .debug_frame   0x00000000       0x34 ./Core/Src/Stima_SOC.o
  .ARM.attributes
                 0x00000000       0x32 ./Core/Src/Stima_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .group         0x00000000        0xc ./Core/Src/funzioni_SOC.o
+ .text          0x00000000        0x0 ./Core/Src/funzioni_SOC.o
+ .data          0x00000000        0x0 ./Core/Src/funzioni_SOC.o
+ .bss           0x00000000        0x0 ./Core/Src/funzioni_SOC.o
+ .data.ocv_table
+                0x00000000      0x194 ./Core/Src/funzioni_SOC.o
+ .data.soc_table
+                0x00000000      0x194 ./Core/Src/funzioni_SOC.o
+ .text.clamp01  0x00000000       0x4a ./Core/Src/funzioni_SOC.o
+ .text.lerp     0x00000000       0x3c ./Core/Src/funzioni_SOC.o
+ .text.soc_from_ocv
+                0x00000000      0x128 ./Core/Src/funzioni_SOC.o
+ .text.soc_update_coulomb_count
+                0x00000000       0xf8 ./Core/Src/funzioni_SOC.o
+ .text.soc_update_hybrid
+                0x00000000       0xb2 ./Core/Src/funzioni_SOC.o
+ .text.compute_cells_soc_from_voltage
+                0x00000000       0x5e ./Core/Src/funzioni_SOC.o
+ .debug_info    0x00000000      0x3e0 ./Core/Src/funzioni_SOC.o
+ .debug_abbrev  0x00000000      0x16a ./Core/Src/funzioni_SOC.o
+ .debug_aranges
+                0x00000000       0x48 ./Core/Src/funzioni_SOC.o
+ .debug_rnglists
+                0x00000000       0x34 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x366 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0xaf6 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x23e ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x2e ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x3b ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x103 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x6a ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x1df ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x1c ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0xfb ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000     0x1305 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x11f ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x27 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000    0x261cc ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x6d ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000     0x3d79 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x190 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x61 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x29 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x43 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x34 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x370 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x4a ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x34 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x10 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x58 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x8e ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x1c ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x185 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x19b ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x5d ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000     0x240e ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000     0x102c ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x154 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x114 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x3b6 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0xac ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x72d ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x228 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x66 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x3bb ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x3e4 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x275 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x3ca ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x408 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x51 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x4a ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x22c ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x67 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0xa5 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x1c4 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x25e ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x35 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x5e4 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0xc1 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0xafa ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x29f ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x693 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0xa6 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x5ac ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x3c ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x29 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x22 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x1c ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x10 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x1c ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000       0x16 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x146 ./Core/Src/funzioni_SOC.o
+ .debug_macro   0x00000000      0x13c ./Core/Src/funzioni_SOC.o
+ .debug_line    0x00000000      0xb5c ./Core/Src/funzioni_SOC.o
+ .debug_str     0x00000000   0x163c06 ./Core/Src/funzioni_SOC.o
+ .comment       0x00000000       0x44 ./Core/Src/funzioni_SOC.o
+ .debug_frame   0x00000000       0xf4 ./Core/Src/funzioni_SOC.o
+ .ARM.attributes
+                0x00000000       0x32 ./Core/Src/funzioni_SOC.o
  .group         0x00000000        0xc ./Core/Src/global.o
  .group         0x00000000        0xc ./Core/Src/global.o
  .group         0x00000000        0xc ./Core/Src/global.o
@@ -6388,6 +6562,7 @@ LOAD ./Core/Src/Comunicazione_ADC.o
 LOAD ./Core/Src/Comunicazione_Stack.o
 LOAD ./Core/Src/Comunicazione_UART.o
 LOAD ./Core/Src/Stima_SOC.o
+LOAD ./Core/Src/funzioni_SOC.o
 LOAD ./Core/Src/global.o
 LOAD ./Core/Src/main.o
 LOAD ./Core/Src/stm32h7xx_hal_msp.o
@@ -7803,105 +7978,104 @@ LOAD C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_rnglists
                 0x00000e64       0x7f ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
 
-.debug_macro    0x00000000     0x48be
+.debug_macro    0x00000000     0x48ae
  .debug_macro   0x00000000      0x35e ./Core/Src/Comunicazione_Stack.o
- .debug_macro   0x0000035e       0x22 ./Core/Src/Comunicazione_Stack.o
- .debug_macro   0x00000380      0x13c ./Core/Src/Comunicazione_Stack.o
- .debug_macro   0x000004bc      0x355 ./Core/Src/Comunicazione_UART.o
- .debug_macro   0x00000811      0x2e3 ./Core/Src/global.o
- .debug_macro   0x00000af4      0x399 ./Core/Src/main.o
- .debug_macro   0x00000e8d       0x16 ./Core/Src/main.o
- .debug_macro   0x00000ea3       0x20 ./Core/Src/main.o
- .debug_macro   0x00000ec3      0x2cc ./Core/Src/stm32h7xx_hal_msp.o
- .debug_macro   0x0000118f      0x2c2 ./Core/Src/stm32h7xx_hal_timebase_tim.o
- .debug_macro   0x00001451      0x2d6 ./Core/Src/stm32h7xx_it.o
- .debug_macro   0x00001727      0x274 ./Core/Src/syscalls.o
- .debug_macro   0x0000199b       0x5b ./Core/Src/syscalls.o
- .debug_macro   0x000019f6       0x94 ./Core/Src/syscalls.o
- .debug_macro   0x00001a8a       0x57 ./Core/Src/syscalls.o
+ .debug_macro   0x0000035e      0x13c ./Core/Src/Comunicazione_Stack.o
+ .debug_macro   0x0000049a      0x355 ./Core/Src/Comunicazione_UART.o
+ .debug_macro   0x000007ef      0x2e3 ./Core/Src/global.o
+ .debug_macro   0x00000ad2      0x3ab ./Core/Src/main.o
+ .debug_macro   0x00000e7d       0x16 ./Core/Src/main.o
+ .debug_macro   0x00000e93       0x20 ./Core/Src/main.o
+ .debug_macro   0x00000eb3      0x2cc ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_macro   0x0000117f      0x2c2 ./Core/Src/stm32h7xx_hal_timebase_tim.o
+ .debug_macro   0x00001441      0x2d6 ./Core/Src/stm32h7xx_it.o
+ .debug_macro   0x00001717      0x274 ./Core/Src/syscalls.o
+ .debug_macro   0x0000198b       0x5b ./Core/Src/syscalls.o
+ .debug_macro   0x000019e6       0x94 ./Core/Src/syscalls.o
+ .debug_macro   0x00001a7a       0x57 ./Core/Src/syscalls.o
+ .debug_macro   0x00001ad1       0x10 ./Core/Src/syscalls.o
  .debug_macro   0x00001ae1       0x10 ./Core/Src/syscalls.o
  .debug_macro   0x00001af1       0x10 ./Core/Src/syscalls.o
  .debug_macro   0x00001b01       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x00001b11       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x00001b21       0x1c ./Core/Src/syscalls.o
- .debug_macro   0x00001b3d       0x52 ./Core/Src/syscalls.o
- .debug_macro   0x00001b8f       0x22 ./Core/Src/syscalls.o
- .debug_macro   0x00001bb1       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x00001bc1       0x52 ./Core/Src/syscalls.o
- .debug_macro   0x00001c13       0xcf ./Core/Src/syscalls.o
- .debug_macro   0x00001ce2       0x1c ./Core/Src/syscalls.o
- .debug_macro   0x00001cfe       0x3d ./Core/Src/syscalls.o
- .debug_macro   0x00001d3b       0x35 ./Core/Src/syscalls.o
- .debug_macro   0x00001d70      0x12c ./Core/Src/syscalls.o
- .debug_macro   0x00001e9c       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x00001eac      0x242 ./Core/Src/syscalls.o
- .debug_macro   0x000020ee       0x10 ./Core/Src/syscalls.o
- .debug_macro   0x000020fe      0x18a ./Core/Src/syscalls.o
- .debug_macro   0x00002288       0x16 ./Core/Src/syscalls.o
- .debug_macro   0x0000229e       0xce ./Core/Src/syscalls.o
- .debug_macro   0x0000236c      0x112 ./Core/Src/sysmem.o
- .debug_macro   0x0000247e      0x23c ./Core/Src/sysmem.o
- .debug_macro   0x000026ba      0x2c2 ./Core/Src/system_stm32h7xx.o
- .debug_macro   0x0000297c      0x2ec ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
- .debug_macro   0x00002c68      0x2c2 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
- .debug_macro   0x00002f2a      0x2c9 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
- .debug_macro   0x000031f3      0x2fb ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
- .debug_macro   0x000034ee      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
- .debug_macro   0x000037d4      0x2e0 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
- .debug_macro   0x00003ab4      0x2ca ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
- .debug_macro   0x00003d7e      0x2c3 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
- .debug_macro   0x00004041      0x2c2 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
- .debug_macro   0x00004303      0x2ed ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
- .debug_macro   0x000045f0      0x2ce ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
+ .debug_macro   0x00001b11       0x1c ./Core/Src/syscalls.o
+ .debug_macro   0x00001b2d       0x52 ./Core/Src/syscalls.o
+ .debug_macro   0x00001b7f       0x22 ./Core/Src/syscalls.o
+ .debug_macro   0x00001ba1       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00001bb1       0x52 ./Core/Src/syscalls.o
+ .debug_macro   0x00001c03       0xcf ./Core/Src/syscalls.o
+ .debug_macro   0x00001cd2       0x1c ./Core/Src/syscalls.o
+ .debug_macro   0x00001cee       0x3d ./Core/Src/syscalls.o
+ .debug_macro   0x00001d2b       0x35 ./Core/Src/syscalls.o
+ .debug_macro   0x00001d60      0x12c ./Core/Src/syscalls.o
+ .debug_macro   0x00001e8c       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x00001e9c      0x242 ./Core/Src/syscalls.o
+ .debug_macro   0x000020de       0x10 ./Core/Src/syscalls.o
+ .debug_macro   0x000020ee      0x18a ./Core/Src/syscalls.o
+ .debug_macro   0x00002278       0x16 ./Core/Src/syscalls.o
+ .debug_macro   0x0000228e       0xce ./Core/Src/syscalls.o
+ .debug_macro   0x0000235c      0x112 ./Core/Src/sysmem.o
+ .debug_macro   0x0000246e      0x23c ./Core/Src/sysmem.o
+ .debug_macro   0x000026aa      0x2c2 ./Core/Src/system_stm32h7xx.o
+ .debug_macro   0x0000296c      0x2ec ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
+ .debug_macro   0x00002c58      0x2c2 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
+ .debug_macro   0x00002f1a      0x2c9 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
+ .debug_macro   0x000031e3      0x2fb ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
+ .debug_macro   0x000034de      0x2e6 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
+ .debug_macro   0x000037c4      0x2e0 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
+ .debug_macro   0x00003aa4      0x2ca ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
+ .debug_macro   0x00003d6e      0x2c3 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
+ .debug_macro   0x00004031      0x2c2 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
+ .debug_macro   0x000042f3      0x2ed ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
+ .debug_macro   0x000045e0      0x2ce ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
 
-.debug_line     0x00000000    0x19e9f
+.debug_line     0x00000000    0x19eb1
  .debug_line    0x00000000      0xf01 ./Core/Src/Comunicazione_Stack.o
  .debug_line    0x00000f01      0xa12 ./Core/Src/Comunicazione_UART.o
  .debug_line    0x00001913      0x901 ./Core/Src/global.o
- .debug_line    0x00002214      0xd18 ./Core/Src/main.o
- .debug_line    0x00002f2c      0xa84 ./Core/Src/stm32h7xx_hal_msp.o
- .debug_line    0x000039b0      0x976 ./Core/Src/stm32h7xx_hal_timebase_tim.o
- .debug_line    0x00004326      0x9e5 ./Core/Src/stm32h7xx_it.o
- .debug_line    0x00004d0b      0x8ac ./Core/Src/syscalls.o
- .debug_line    0x000055b7      0x588 ./Core/Src/sysmem.o
- .debug_line    0x00005b3f      0xb0a ./Core/Src/system_stm32h7xx.o
- .debug_line    0x00006649       0x7b ./Core/Startup/startup_stm32h753zitx.o
- .debug_line    0x000066c4      0xee3 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
- .debug_line    0x000075a7      0xecd ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
- .debug_line    0x00008474      0xd6c ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
- .debug_line    0x000091e0     0x1067 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
- .debug_line    0x0000a247     0x158a ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
- .debug_line    0x0000b7d1     0x1e96 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
- .debug_line    0x0000d667     0x2275 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
- .debug_line    0x0000f8dc     0x4037 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
- .debug_line    0x00013913     0x1da9 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
- .debug_line    0x000156bc     0x396a ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
- .debug_line    0x00019026      0xe79 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
+ .debug_line    0x00002214      0xd2a ./Core/Src/main.o
+ .debug_line    0x00002f3e      0xa84 ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_line    0x000039c2      0x976 ./Core/Src/stm32h7xx_hal_timebase_tim.o
+ .debug_line    0x00004338      0x9e5 ./Core/Src/stm32h7xx_it.o
+ .debug_line    0x00004d1d      0x8ac ./Core/Src/syscalls.o
+ .debug_line    0x000055c9      0x588 ./Core/Src/sysmem.o
+ .debug_line    0x00005b51      0xb0a ./Core/Src/system_stm32h7xx.o
+ .debug_line    0x0000665b       0x7b ./Core/Startup/startup_stm32h753zitx.o
+ .debug_line    0x000066d6      0xee3 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
+ .debug_line    0x000075b9      0xecd ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
+ .debug_line    0x00008486      0xd6c ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
+ .debug_line    0x000091f2     0x1067 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
+ .debug_line    0x0000a259     0x158a ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
+ .debug_line    0x0000b7e3     0x1e96 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
+ .debug_line    0x0000d679     0x2275 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
+ .debug_line    0x0000f8ee     0x4037 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
+ .debug_line    0x00013925     0x1da9 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
+ .debug_line    0x000156ce     0x396a ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
+ .debug_line    0x00019038      0xe79 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
 
-.debug_str      0x00000000   0x16bdb6
- .debug_str     0x00000000   0x16bdb6 ./Core/Src/Comunicazione_Stack.o
+.debug_str      0x00000000   0x16bdcb
+ .debug_str     0x00000000   0x16bdcb ./Core/Src/Comunicazione_Stack.o
                              0x16448d (size before relaxing)
- .debug_str     0x0016bdb6   0x163eb8 ./Core/Src/Comunicazione_UART.o
- .debug_str     0x0016bdb6   0x16317f ./Core/Src/global.o
- .debug_str     0x0016bdb6   0x164db7 ./Core/Src/main.o
- .debug_str     0x0016bdb6   0x164b24 ./Core/Src/stm32h7xx_hal_msp.o
- .debug_str     0x0016bdb6   0x1642cf ./Core/Src/stm32h7xx_hal_timebase_tim.o
- .debug_str     0x0016bdb6   0x1637a9 ./Core/Src/stm32h7xx_it.o
- .debug_str     0x0016bdb6     0x9a44 ./Core/Src/syscalls.o
- .debug_str     0x0016bdb6     0x77e2 ./Core/Src/sysmem.o
- .debug_str     0x0016bdb6   0x163634 ./Core/Src/system_stm32h7xx.o
- .debug_str     0x0016bdb6       0x86 ./Core/Startup/startup_stm32h753zitx.o
- .debug_str     0x0016bdb6   0x16451a ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
- .debug_str     0x0016bdb6   0x163f55 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
- .debug_str     0x0016bdb6   0x1635ac ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
- .debug_str     0x0016bdb6   0x163a6d ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
- .debug_str     0x0016bdb6   0x163990 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
- .debug_str     0x0016bdb6   0x163e71 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
- .debug_str     0x0016bdb6   0x163cb4 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
- .debug_str     0x0016bdb6   0x16472f ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
- .debug_str     0x0016bdb6   0x164057 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
- .debug_str     0x0016bdb6   0x1644d1 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
- .debug_str     0x0016bdb6   0x163a91 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
+ .debug_str     0x0016bdcb   0x163eb8 ./Core/Src/Comunicazione_UART.o
+ .debug_str     0x0016bdcb   0x16317f ./Core/Src/global.o
+ .debug_str     0x0016bdcb   0x164dcc ./Core/Src/main.o
+ .debug_str     0x0016bdcb   0x164b24 ./Core/Src/stm32h7xx_hal_msp.o
+ .debug_str     0x0016bdcb   0x1642cf ./Core/Src/stm32h7xx_hal_timebase_tim.o
+ .debug_str     0x0016bdcb   0x1637a9 ./Core/Src/stm32h7xx_it.o
+ .debug_str     0x0016bdcb     0x9a44 ./Core/Src/syscalls.o
+ .debug_str     0x0016bdcb     0x77e2 ./Core/Src/sysmem.o
+ .debug_str     0x0016bdcb   0x163634 ./Core/Src/system_stm32h7xx.o
+ .debug_str     0x0016bdcb       0x86 ./Core/Startup/startup_stm32h753zitx.o
+ .debug_str     0x0016bdcb   0x16451a ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
+ .debug_str     0x0016bdcb   0x163f55 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
+ .debug_str     0x0016bdcb   0x1635ac ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
+ .debug_str     0x0016bdcb   0x163a6d ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
+ .debug_str     0x0016bdcb   0x163990 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
+ .debug_str     0x0016bdcb   0x163e71 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
+ .debug_str     0x0016bdcb   0x163cb4 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
+ .debug_str     0x0016bdcb   0x16472f ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
+ .debug_str     0x0016bdcb   0x164057 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
+ .debug_str     0x0016bdcb   0x1644d1 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
+ .debug_str     0x0016bdcb   0x163a91 ./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Core/Src/Comunicazione_Stack.o

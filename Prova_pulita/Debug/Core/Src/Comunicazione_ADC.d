@@ -34,7 +34,7 @@ Core/Src/Comunicazione_ADC.o: ../Core/Src/Comunicazione_ADC.c \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- ../Core/Inc/main.h
+ ../Core/Inc/main.h ../Core/Inc/global.h
 ../Core/Inc/Comunicazione_ADC.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -72,3 +72,4 @@ Core/Src/Comunicazione_ADC.o: ../Core/Src/Comunicazione_ADC.c \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 ../Core/Inc/main.h:
+../Core/Inc/global.h:

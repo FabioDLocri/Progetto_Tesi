@@ -1,0 +1,6 @@
+../Core/Src/funzioni_SOC.c:48:7:clamp01	16	static
+../Core/Src/funzioni_SOC.c:54:7:lerp	24	static
+../Core/Src/funzioni_SOC.c:60:7:soc_from_ocv	56	static
+../Core/Src/funzioni_SOC.c:86:6:soc_update_coulomb_count	40	static
+../Core/Src/funzioni_SOC.c:107:6:soc_update_hybrid	48	static
+../Core/Src/funzioni_SOC.c:128:6:compute_cells_soc_from_voltage	32	static
