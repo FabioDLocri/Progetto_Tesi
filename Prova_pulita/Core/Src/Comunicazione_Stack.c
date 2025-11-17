@@ -340,13 +340,24 @@ HAL_StatusTypeDef ltc6811_configure(void)
 
 		    // Decodifica tensioni
 
-		        somma_celle= ((Status_A[1] << 8) | Status_A[0]) * 0.0001f*20; // Converti in Volt (100μV per LSB)
+	        somma_celle= ((Status_A[1] << 8) | Status_A[0]) * 0.0001f*20; // Converti in Volt (100μV per LSB)
 
-		        int_temperature=((((Status_A[3] << 8) | Status_A[2]) * 0.0001f)/0.0075f)-273; //Converti in temperatura
+	        int_temperature=((((Status_A[3] << 8) | Status_A[2]) * 0.0001f)/0.0075f)-273; //Converti in temperatura
 
-		        analog_power_supply= ((Status_A[5] << 8) | Status_A[4]) * 0.0001f; // Converti in Volt (100μV per LSB)
+	        analog_power_supply= ((Status_A[5] << 8) | Status_A[4]) * 0.0001f; // Converti in Volt (100μV per LSB)
 
-		        digital_power_supply= ((Status_A[1] << 8) | Status_A[0]) * 0.0001f; // Converti in Volt (100μV per LSB)
+	        digital_power_supply= ((Status_B[1] << 8) | Status_B[0]) * 0.0001f; // Converti in Volt (100μV per LSB)
+
+	        for(int i=0;i<4;i++)
+	        {
+	        	Batteria[i].CUV=(Status_B[2]>>(2*i))&(0x01);
+	        	Batteria[i+4].CUV=(Status_B[3]>>(2*i))&(0x01);
+	        	Batteria[i+8].CUV=(Status_B[4]>>(2*i))&(0x01);
+
+	        	Batteria[i].COV=(Status_B[2]>>(2*i+1))&(0x01);
+	        	Batteria[i+4].COV=(Status_B[3]>>(2*i+1))&(0x01);
+	        	Batteria[i+8].COV=(Status_B[4]>>(2*i+1))&(0x01);
+	        }
 
 		    return HAL_OK;
 		}

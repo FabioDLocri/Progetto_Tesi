@@ -73,7 +73,7 @@
 #define NUM_IC 1
 
 
-#define UV_THRESHOLD 33000//2095
-#define OV_THRESHOLD 41000//2600
+#define UV_THRESHOLD 33000
+#define OV_THRESHOLD 42000
 
 #endif /* INC_CONFIG_LTC6811_H_ */
