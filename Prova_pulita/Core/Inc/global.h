@@ -35,6 +35,18 @@ typedef struct {
 	bool CUV;// Cell x 	Undervoltage Flag
 }Cella;
 
+// Configurazione per il calcolo SoC
+typedef struct {
+    // Capacità cella in Ah (necessaria per il coulomb counting)
+    float capacity_Ah;
+
+    // Efficienze per correzione coulomb counting (facoltative, usare 1.0 se non si vuole compensare)
+    float eta_charge;     // es: 0.995 (perdita in carica)
+    float eta_discharge;  // es: 1.000 o 0.999
+} SoCConfig;
+
 extern Cella Batteria[12];
+
+extern SoCConfig cfg;
 
 #endif /* INC_GLOBAL_H_ */

@@ -15,15 +15,7 @@
 #include "global.h"
 
 
-// Configurazione per il calcolo SoC
-typedef struct {
-    // Capacità cella in Ah (necessaria per il coulomb counting)
-    float capacity_Ah;
 
-    // Efficienze per correzione coulomb counting (facoltative, usare 1.0 se non si vuole compensare)
-    float eta_charge;     // es: 0.995 (perdita in carica)
-    float eta_discharge;  // es: 1.000 o 0.999
-} SoCConfig;
 
 // Calcolo SoC da OCV (tensione a circuito aperto o tensione a riposo/filtrata)
 // Restituisce SoC in [0..1] clampato.
@@ -52,6 +44,8 @@ void soc_update_hybrid(float* soc_estimate,
 // - out_soc: array di SoC risultante (dimensione n_cells)
 // - n_cells: numero celle
 void compute_cells_soc_from_voltage (Cella* cells);
+
+void calcolo_SOC();
 
 
 

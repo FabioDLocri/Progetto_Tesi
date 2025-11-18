@@ -133,3 +133,27 @@ void compute_cells_soc_from_voltage(Cella* cells)
         cells[i].SOC = soc_from_ocv(cells[i].tensione);
     }
 }
+
+static bool initialized = false;
+
+	   // Inizializzo la stima con l'OCV calcolato sopra
+void calcolo_SOC(){
+
+	if(!initialized){
+		compute_cells_soc_from_voltage (Batteria);
+		initialized= true;
+	}
+	float soc_est[12];
+	for (int i = 0;i < 12; i++){
+	soc_est[i] = Batteria[i].SOC;
+	}
+
+    float dt_s = 0.0001f;
+    float alpha = 0.98f;
+    float Ic = 0.1f;
+	// Un passo di aggiornamento ibrido (ripetere a ogni ciclo temporale)
+	for (int i = 0; i < 12; ++i) {
+	     soc_update_hybrid(&soc_est[i], Batteria[i].tensione, Ic, dt_s, &cfg, alpha);
+	}
+
+}

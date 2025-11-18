@@ -167,7 +167,7 @@ int main(void)
 
 	       	timer_flag=0;
 	   }
-	   HAL_Delay(3000);
+	   HAL_Delay(5000);
 
 
   }
