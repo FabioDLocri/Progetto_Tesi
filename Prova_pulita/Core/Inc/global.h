@@ -17,7 +17,6 @@ extern uint8_t timer_flag;
 extern uint8_t config[6];
 extern uint8_t configuration_data[6];
 
-
 extern float tensione_GPIO[6];
 
 extern float somma_celle;

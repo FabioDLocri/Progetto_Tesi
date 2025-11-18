@@ -4,4 +4,4 @@
 ../Core/Src/funzioni_SOC.c:86:6:soc_update_coulomb_count	40	static
 ../Core/Src/funzioni_SOC.c:107:6:soc_update_hybrid	48	static
 ../Core/Src/funzioni_SOC.c:128:6:compute_cells_soc_from_voltage	32	static
-../Core/Src/funzioni_SOC.c:140:6:calcolo_SOC	80	static
+../Core/Src/funzioni_SOC.c:140:6:calcolo_SOC	32	static

@@ -165,9 +165,12 @@ int main(void)
 	       		stampa_somma_celle(somma_celle);
 	       	}
 
+	       	calcolo_SOC();
+	       	stampa_somma_celle(Batteria[1].SOC);
+
 	       	timer_flag=0;
 	   }
-	   HAL_Delay(5000);
+	   HAL_Delay(1000);
 
 
   }

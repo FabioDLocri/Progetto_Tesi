@@ -47,7 +47,7 @@ float soc_table[] = {
 
 float clamp01(float x) {
     if (x < 0.0f) return 0.0f;
-    if (x > 1.0f) return 1.0f;
+    if (x > 100.0f) return 100.0f;
     return x;
 }
 
@@ -60,19 +60,19 @@ float lerp(float a, float b, float t) {
 float soc_from_ocv(float voltage_V) {
 
     // Clamp se fuori dalla tabella
-    if (voltage_V <= ocv_table[0]) return clamp01(soc_table[0]);
-    if (voltage_V >= ocv_table[100]) return clamp01(soc_table[100]);
+    if (voltage_V <= (ocv_table[0]/1000-3.0f)) return clamp01(soc_table[0]);
+    if (voltage_V >= (ocv_table[100]/1000-3.0f)) return clamp01(soc_table[100]);
 
     // Trova segmento [i, i+1] tale che ocv_v[i] <= V < ocv_v[i+1]
     size_t lo = 0, hi = 100;
     while (hi - lo > 1) {
         size_t mid = lo + (hi - lo) / 2;
-        if (ocv_table[mid] <= voltage_V) lo = mid;
+        if ((ocv_table[mid]/1000-3.0f) <= voltage_V) lo = mid;
         else hi = mid;
     }
 
-    float v0 = ocv_table[lo];
-    float v1 = ocv_table[lo + 1];
+    float v0 = ocv_table[lo]/1000-3;
+    float v1 = ocv_table[lo + 1]/1000-3;
     float s0 = soc_table[lo];
     float s1 = soc_table[lo + 1];
 
@@ -134,26 +134,27 @@ void compute_cells_soc_from_voltage(Cella* cells)
     }
 }
 
-static bool initialized = false;
+
 
 	   // Inizializzo la stima con l'OCV calcolato sopra
 void calcolo_SOC(){
-
+	static bool initialized=false;
 	if(!initialized){
 		compute_cells_soc_from_voltage (Batteria);
 		initialized= true;
 	}
-	float soc_est[12];
-	for (int i = 0;i < 12; i++){
-	soc_est[i] = Batteria[i].SOC;
-	}
 
-    float dt_s = 0.0001f;
+
+	static uint32_t last_ms = 0;
+	uint32_t now_ms = HAL_GetTick();
+	float dt_s = (last_ms == 0) ? 0.0f : (now_ms - last_ms) / 1000.0f;
+	last_ms = now_ms;
+
     float alpha = 0.98f;
     float Ic = 0.1f;
 	// Un passo di aggiornamento ibrido (ripetere a ogni ciclo temporale)
-	for (int i = 0; i < 12; ++i) {
-	     soc_update_hybrid(&soc_est[i], Batteria[i].tensione, Ic, dt_s, &cfg, alpha);
-	}
+    for (int i = 0; i < 12; ++i) {
+        soc_update_hybrid(&Batteria[i].SOC, Batteria[i].tensione, Ic, dt_s, &cfg, alpha);
+    }
 
 }
