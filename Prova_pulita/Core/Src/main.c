@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -52,10 +53,14 @@
 SPI_HandleTypeDef hspi3;
 SPI_HandleTypeDef hspi5;
 
-TIM_HandleTypeDef htim2;
-
 UART_HandleTypeDef huart3;
 
+osThreadId defaultTaskHandle;
+osThreadId Task_MisureHandle;
+osThreadId Task_CommHandle;
+osThreadId Task_SocHandle;
+osThreadId MainTaskHandle;
+osSemaphoreId BinSemHandle;
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -66,8 +71,13 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_USART3_UART_Init(void);
-static void MX_TIM2_Init(void);
 static void MX_SPI5_Init(void);
+void StartDefaultTask(void const * argument);
+void StartMisure(void const * argument);
+void StartComm(void const * argument);
+void StartSoc(void const * argument);
+void StartMainTask(void const * argument);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -111,7 +121,6 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI3_Init();
   MX_USART3_UART_Init();
-  MX_TIM2_Init();
   MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
 
@@ -119,6 +128,57 @@ int main(void)
 
 
   /* USER CODE END 2 */
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* definition and creation of BinSem */
+  osSemaphoreDef(BinSem);
+  BinSemHandle = osSemaphoreCreate(osSemaphore(BinSem), 1);
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+
+  /* Create the thread(s) */
+  /* definition and creation of defaultTask */
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  /* definition and creation of Task_Misure */
+  osThreadDef(Task_Misure, StartMisure, osPriorityHigh, 0, 128);
+  Task_MisureHandle = osThreadCreate(osThread(Task_Misure), NULL);
+
+  /* definition and creation of Task_Comm */
+  osThreadDef(Task_Comm, StartComm, osPriorityNormal, 0, 128);
+  Task_CommHandle = osThreadCreate(osThread(Task_Comm), NULL);
+
+  /* definition and creation of Task_Soc */
+  osThreadDef(Task_Soc, StartSoc, osPriorityNormal, 0, 128);
+  Task_SocHandle = osThreadCreate(osThread(Task_Soc), NULL);
+
+  /* definition and creation of MainTask */
+  osThreadDef(MainTask, StartMainTask, osPriorityNormal, 0, 128);
+  MainTaskHandle = osThreadCreate(osThread(MainTask), NULL);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+  /* USER CODE END RTOS_THREADS */
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -332,51 +392,6 @@ static void MX_SPI5_Init(void)
 }
 
 /**
-  * @brief TIM2 Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_TIM2_Init(void)
-{
-
-  /* USER CODE BEGIN TIM2_Init 0 */
-
-  /* USER CODE END TIM2_Init 0 */
-
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-
-  /* USER CODE BEGIN TIM2_Init 1 */
-
-  /* USER CODE END TIM2_Init 1 */
-  htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 1999;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 999;
-  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN TIM2_Init 2 */
-
-  /* USER CODE END TIM2_Init 2 */
-
-}
-
-/**
   * @brief USART3 Initialization Function
   * @param None
   * @retval None
@@ -442,12 +457,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_1, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PD14 */
   GPIO_InitStruct.Pin = GPIO_PIN_14;
@@ -469,6 +488,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : PE1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
   /* USER CODE END MX_GPIO_Init_2 */
@@ -477,6 +503,96 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/* USER CODE BEGIN Header_StartDefaultTask */
+/**
+  * @brief  Function implementing the defaultTask thread.
+  * @param  argument: Not used
+  * @retval None
+  */
+/* USER CODE END Header_StartDefaultTask */
+void StartDefaultTask(void const * argument)
+{
+  /* USER CODE BEGIN 5 */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_StartMisure */
+/**
+* @brief Function implementing the Task_Misure thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartMisure */
+void StartMisure(void const * argument)
+{
+  /* USER CODE BEGIN StartMisure */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartMisure */
+}
+
+/* USER CODE BEGIN Header_StartComm */
+/**
+* @brief Function implementing the Task_Comm thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartComm */
+void StartComm(void const * argument)
+{
+  /* USER CODE BEGIN StartComm */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartComm */
+}
+
+/* USER CODE BEGIN Header_StartSoc */
+/**
+* @brief Function implementing the Task_Soc thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartSoc */
+void StartSoc(void const * argument)
+{
+  /* USER CODE BEGIN StartSoc */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartSoc */
+}
+
+/* USER CODE BEGIN Header_StartMainTask */
+/**
+* @brief Function implementing the MainTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartMainTask */
+void StartMainTask(void const * argument)
+{
+  /* USER CODE BEGIN StartMainTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartMainTask */
+}
 
  /* MPU Configuration */
 
