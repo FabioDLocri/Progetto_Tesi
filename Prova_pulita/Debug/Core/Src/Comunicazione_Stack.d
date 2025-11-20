@@ -34,7 +34,8 @@ Core/Src/Comunicazione_Stack.o: ../Core/Src/Comunicazione_Stack.c \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- ../Core/Inc/main.h ../Core/Inc/global.h ../Core/Inc/Config_LTC6811.h
+ ../Core/Inc/main.h ../Core/Inc/global.h ../Core/Inc/Config_LTC6811.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 ../Core/Inc/Comunicazione_Stack.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -74,3 +75,4 @@ Core/Src/Comunicazione_Stack.o: ../Core/Src/Comunicazione_Stack.c \
 ../Core/Inc/main.h:
 ../Core/Inc/global.h:
 ../Core/Inc/Config_LTC6811.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:

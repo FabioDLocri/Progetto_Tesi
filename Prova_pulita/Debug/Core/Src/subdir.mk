@@ -9,6 +9,7 @@ C_SRCS += \
 ../Core/Src/Comunicazione_Stack.c \
 ../Core/Src/Comunicazione_UART.c \
 ../Core/Src/MainTask.c \
+../Core/Src/Manage_bms.c \
 ../Core/Src/TaskCalcoloSOC.c \
 ../Core/Src/TaskComunicazione.c \
 ../Core/Src/TaskMisure.c \
@@ -29,6 +30,7 @@ OBJS += \
 ./Core/Src/Comunicazione_Stack.o \
 ./Core/Src/Comunicazione_UART.o \
 ./Core/Src/MainTask.o \
+./Core/Src/Manage_bms.o \
 ./Core/Src/TaskCalcoloSOC.o \
 ./Core/Src/TaskComunicazione.o \
 ./Core/Src/TaskMisure.o \
@@ -49,6 +51,7 @@ C_DEPS += \
 ./Core/Src/Comunicazione_Stack.d \
 ./Core/Src/Comunicazione_UART.d \
 ./Core/Src/MainTask.d \
+./Core/Src/Manage_bms.d \
 ./Core/Src/TaskCalcoloSOC.d \
 ./Core/Src/TaskComunicazione.d \
 ./Core/Src/TaskMisure.d \
@@ -72,7 +75,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/Comunicazione_ADC.cyclo ./Core/Src/Comunicazione_ADC.d ./Core/Src/Comunicazione_ADC.o ./Core/Src/Comunicazione_ADC.su ./Core/Src/Comunicazione_Stack.cyclo ./Core/Src/Comunicazione_Stack.d ./Core/Src/Comunicazione_Stack.o ./Core/Src/Comunicazione_Stack.su ./Core/Src/Comunicazione_UART.cyclo ./Core/Src/Comunicazione_UART.d ./Core/Src/Comunicazione_UART.o ./Core/Src/Comunicazione_UART.su ./Core/Src/MainTask.cyclo ./Core/Src/MainTask.d ./Core/Src/MainTask.o ./Core/Src/MainTask.su ./Core/Src/TaskCalcoloSOC.cyclo ./Core/Src/TaskCalcoloSOC.d ./Core/Src/TaskCalcoloSOC.o ./Core/Src/TaskCalcoloSOC.su ./Core/Src/TaskComunicazione.cyclo ./Core/Src/TaskComunicazione.d ./Core/Src/TaskComunicazione.o ./Core/Src/TaskComunicazione.su ./Core/Src/TaskMisure.cyclo ./Core/Src/TaskMisure.d ./Core/Src/TaskMisure.o ./Core/Src/TaskMisure.su ./Core/Src/Tasks.cyclo ./Core/Src/Tasks.d ./Core/Src/Tasks.o ./Core/Src/Tasks.su ./Core/Src/freertos.cyclo ./Core/Src/freertos.d ./Core/Src/freertos.o ./Core/Src/freertos.su ./Core/Src/funzioni_SOC.cyclo ./Core/Src/funzioni_SOC.d ./Core/Src/funzioni_SOC.o ./Core/Src/funzioni_SOC.su ./Core/Src/global.cyclo ./Core/Src/global.d ./Core/Src/global.o ./Core/Src/global.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32h7xx_hal_msp.cyclo ./Core/Src/stm32h7xx_hal_msp.d ./Core/Src/stm32h7xx_hal_msp.o ./Core/Src/stm32h7xx_hal_msp.su ./Core/Src/stm32h7xx_hal_timebase_tim.cyclo ./Core/Src/stm32h7xx_hal_timebase_tim.d ./Core/Src/stm32h7xx_hal_timebase_tim.o ./Core/Src/stm32h7xx_hal_timebase_tim.su ./Core/Src/stm32h7xx_it.cyclo ./Core/Src/stm32h7xx_it.d ./Core/Src/stm32h7xx_it.o ./Core/Src/stm32h7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32h7xx.cyclo ./Core/Src/system_stm32h7xx.d ./Core/Src/system_stm32h7xx.o ./Core/Src/system_stm32h7xx.su
+	-$(RM) ./Core/Src/Comunicazione_ADC.cyclo ./Core/Src/Comunicazione_ADC.d ./Core/Src/Comunicazione_ADC.o ./Core/Src/Comunicazione_ADC.su ./Core/Src/Comunicazione_Stack.cyclo ./Core/Src/Comunicazione_Stack.d ./Core/Src/Comunicazione_Stack.o ./Core/Src/Comunicazione_Stack.su ./Core/Src/Comunicazione_UART.cyclo ./Core/Src/Comunicazione_UART.d ./Core/Src/Comunicazione_UART.o ./Core/Src/Comunicazione_UART.su ./Core/Src/MainTask.cyclo ./Core/Src/MainTask.d ./Core/Src/MainTask.o ./Core/Src/MainTask.su ./Core/Src/Manage_bms.cyclo ./Core/Src/Manage_bms.d ./Core/Src/Manage_bms.o ./Core/Src/Manage_bms.su ./Core/Src/TaskCalcoloSOC.cyclo ./Core/Src/TaskCalcoloSOC.d ./Core/Src/TaskCalcoloSOC.o ./Core/Src/TaskCalcoloSOC.su ./Core/Src/TaskComunicazione.cyclo ./Core/Src/TaskComunicazione.d ./Core/Src/TaskComunicazione.o ./Core/Src/TaskComunicazione.su ./Core/Src/TaskMisure.cyclo ./Core/Src/TaskMisure.d ./Core/Src/TaskMisure.o ./Core/Src/TaskMisure.su ./Core/Src/Tasks.cyclo ./Core/Src/Tasks.d ./Core/Src/Tasks.o ./Core/Src/Tasks.su ./Core/Src/freertos.cyclo ./Core/Src/freertos.d ./Core/Src/freertos.o ./Core/Src/freertos.su ./Core/Src/funzioni_SOC.cyclo ./Core/Src/funzioni_SOC.d ./Core/Src/funzioni_SOC.o ./Core/Src/funzioni_SOC.su ./Core/Src/global.cyclo ./Core/Src/global.d ./Core/Src/global.o ./Core/Src/global.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/stm32h7xx_hal_msp.cyclo ./Core/Src/stm32h7xx_hal_msp.d ./Core/Src/stm32h7xx_hal_msp.o ./Core/Src/stm32h7xx_hal_msp.su ./Core/Src/stm32h7xx_hal_timebase_tim.cyclo ./Core/Src/stm32h7xx_hal_timebase_tim.d ./Core/Src/stm32h7xx_hal_timebase_tim.o ./Core/Src/stm32h7xx_hal_timebase_tim.su ./Core/Src/stm32h7xx_it.cyclo ./Core/Src/stm32h7xx_it.d ./Core/Src/stm32h7xx_it.o ./Core/Src/stm32h7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32h7xx.cyclo ./Core/Src/system_stm32h7xx.d ./Core/Src/system_stm32h7xx.o ./Core/Src/system_stm32h7xx.su
 
 .PHONY: clean-Core-2f-Src
 

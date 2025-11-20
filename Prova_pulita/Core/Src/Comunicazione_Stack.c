@@ -15,6 +15,7 @@
 #include "global.h"
 #include "Config_LTC6811.h"
 #include "stdbool.h"
+#include "cmsis_os2.h"
 
 
 extern SPI_HandleTypeDef hspi3;
@@ -95,7 +96,7 @@ HAL_StatusTypeDef ltc6811_send_command(uint16_t command)
     tx_data[3] = pec & 0xFF;            // PEC1
 
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-    HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi3, tx_data, 4, HAL_MAX_DELAY);
+    HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4, HAL_MAX_DELAY);
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 
     return status;
@@ -288,7 +289,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
 	    if (status != HAL_OK) return status;
 
 	    // Attendi fine conversione
-	    HAL_Delay(3); // 3ms per sicurezza
+	    osDelay(3); // 3ms per sicurezza
 
 	    // Leggi tutti i gruppi di registri
 	    uint8_t GPIO_data[12]; // 6 registri × 2 bytes
@@ -323,7 +324,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
 		    if (status != HAL_OK) return status;
 
 		    // Attendi fine conversione
-		    HAL_Delay(3); // 3ms per sicurezza
+		    osDelay(3); // 3ms per sicurezza
 
 		    // Leggi tutti i gruppi di registri
 		    uint8_t Status_A[6]; // 3 registri × 2 bytes

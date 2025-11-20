@@ -1,7 +1,5 @@
-Core/Src/MainTask.o: ../Core/Src/MainTask.c ../Core/Inc/Tasks.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../Core/Inc/Comunicazione_Stack.h ../Core/Inc/main.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
+Core/Src/Manage_bms.o: ../Core/Src/Manage_bms.c ../Core/Inc/global.h \
+ ../Core/Inc/main.h ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
@@ -34,13 +32,8 @@ Core/Src/MainTask.o: ../Core/Src/MainTask.c ../Core/Inc/Tasks.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- ../Core/Inc/Comunicazione_UART.h ../Core/Inc/Comunicazione_ADC.h \
- ../Core/Inc/global.h ../Core/Inc/funzioni_SOC.h ../Core/Inc/global.h \
- ../Core/Inc/Manage_bms.h
-../Core/Inc/Tasks.h:
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-../Core/Inc/Comunicazione_Stack.h:
+ ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h
+../Core/Inc/global.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -76,9 +69,3 @@ Core/Src/MainTask.o: ../Core/Src/MainTask.c ../Core/Inc/Tasks.h \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
-../Core/Inc/Comunicazione_UART.h:
-../Core/Inc/Comunicazione_ADC.h:
-../Core/Inc/global.h:
-../Core/Inc/funzioni_SOC.h:
-../Core/Inc/global.h:
-../Core/Inc/Manage_bms.h:

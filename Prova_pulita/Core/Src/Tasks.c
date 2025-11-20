@@ -6,16 +6,26 @@
  */
 
 
-#include "tasks.h"
+#include "Tasks.h"
 #include "cmsis_os2.h"
 
 
 
-osThreadId_t MainTaskHandle = NULL;
-osThreadId_t TaskMisureHandle = NULL;
-osThreadId_t TaskComunicazioneHandle = NULL;
-osThreadId_t TaskCalcoloSOCHandle = NULL;
+osThreadId_t MainTaskHandle=NULL;
+osThreadId_t TaskMisureHandle=NULL;
+osThreadId_t TaskComunicazioneHandle=NULL;
+osThreadId_t TaskCalcoloSOCHandle=NULL;
 
+/* Definitions for BinSem */
+osSemaphoreId_t BinSemHandle;
+const osSemaphoreAttr_t BinSem_attributes = {
+  .name = "BinSem"
+};
+
+osSemaphoreId_t SPISemHandle;
+const osSemaphoreAttr_t SPISem_attributes = {
+  .name = "SPISem"
+};
 void StartTasks(void)
 {
   const osThreadAttr_t mainTaskAttr = {
@@ -26,7 +36,7 @@ void StartTasks(void)
 
   const osThreadAttr_t misureAttr = {
     .name = "TaskMisure",
-    .stack_size = 1024,
+    .stack_size = 1024*10,
     .priority = osPriorityNormal1
   };
 
@@ -37,7 +47,7 @@ void StartTasks(void)
   };
 
   const osThreadAttr_t SOCAttr = {
-    .name = "TaskCalcoloCOC",
+    .name = "TaskCalcoloSOC",
     .stack_size = 1024,
     .priority = osPriorityNormal
   };
@@ -48,4 +58,14 @@ void StartTasks(void)
   TaskComunicazioneHandle = osThreadNew(TaskComunicazione, NULL, &ComunicazioneAttr);
   TaskCalcoloSOCHandle = osThreadNew(TaskCalcoloSOC, NULL, &SOCAttr);
 
+  BinSemHandle = osSemaphoreNew(1, 0, &BinSem_attributes);
+  SPISemHandle = osSemaphoreNew(1, 0, &SPISem_attributes);
+
 }
+
+void SPICompleteCallback(SPI_HandleTypeDef *spi)
+{
+      osSemaphoreRelease(SPISemHandle);
+}
+
+

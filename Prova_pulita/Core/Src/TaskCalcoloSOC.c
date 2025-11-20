@@ -18,6 +18,6 @@ void TaskCalcoloSOC(void *argument)
   for (;;)
   {
 	  calcolo_SOC();
-      osThreadSuspend (TaskCalcoloSOC);
+      osThreadSuspend (TaskCalcoloSOCHandle);
   }
 }

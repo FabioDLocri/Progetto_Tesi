@@ -151,10 +151,11 @@ void calcolo_SOC(){
 	last_ms = now_ms;
 
     float alpha = 0.98f;
-    float Ic = 0.1f;
+    float Ic = -0.1f;
+    Batteria[1].corrente=Ic;
 	// Un passo di aggiornamento ibrido (ripetere a ogni ciclo temporale)
     for (int i = 0; i < 12; ++i) {
-        soc_update_hybrid(&Batteria[i].SOC, Batteria[i].tensione, Ic, dt_s, &cfg, alpha);
+        soc_update_hybrid(&Batteria[i].SOC, Batteria[i].tensione, Batteria[1].corrente, dt_s, &cfg, alpha);
     }
 
 }

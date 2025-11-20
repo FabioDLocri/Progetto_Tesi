@@ -2,6 +2,7 @@
 "./Core/Src/Comunicazione_Stack.o"
 "./Core/Src/Comunicazione_UART.o"
 "./Core/Src/MainTask.o"
+"./Core/Src/Manage_bms.o"
 "./Core/Src/TaskCalcoloSOC.o"
 "./Core/Src/TaskComunicazione.o"
 "./Core/Src/TaskMisure.o"

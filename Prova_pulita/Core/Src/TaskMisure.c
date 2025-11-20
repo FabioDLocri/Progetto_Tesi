@@ -6,7 +6,7 @@
  */
 
 
-#include "tasks.h"
+#include "Tasks.h"
 #include "stdio.h"
 #include <stdint.h>
 #include "global.h"
@@ -17,6 +17,7 @@ extern UART_HandleTypeDef huart3;
 
 void TaskMisure(void *argument)
 {
+	osSemaphoreAcquire(BinSemHandle,osWaitForever);
 	ltc6811_configure();
 
 	//verifichiamo se effettivamente stiamo scrivendo nel modo giusto
@@ -34,9 +35,9 @@ void TaskMisure(void *argument)
 	  ltc6811_read_cell_voltages();
 	  ltc6811_read_gpio_voltages(tensione_GPIO);
 	  ltc6811_read_status();
-	  osDelay(100);
-      osThreadResume(TaskCalcoloSOC);
+      osThreadResume(TaskCalcoloSOCHandle);
 
-      osThreadSuspend (TaskMisure);
+      osSemaphoreRelease(BinSemHandle);
+      osThreadSuspend (TaskMisureHandle);
   }
 }

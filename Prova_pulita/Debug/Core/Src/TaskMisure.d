@@ -1,4 +1,4 @@
-Core/Src/TaskMisure.o: ../Core/Src/TaskMisure.c ../Core/Inc/tasks.h \
+Core/Src/TaskMisure.o: ../Core/Src/TaskMisure.c ../Core/Inc/Tasks.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  ../Core/Inc/global.h ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
@@ -36,7 +36,7 @@ Core/Src/TaskMisure.o: ../Core/Src/TaskMisure.c ../Core/Inc/tasks.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
  ../Core/Inc/Comunicazione_Stack.h ../Core/Inc/Comunicazione_UART.h
-../Core/Inc/tasks.h:
+../Core/Inc/Tasks.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 ../Core/Inc/global.h:
 ../Core/Inc/main.h:
