@@ -1,7 +1,9 @@
-../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:239:19:HAL_SPI_Init	24
-../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:489:19:HAL_SPI_DeInit	2
+../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:239:19:HAL_SPI_Init	25
+../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:489:19:HAL_SPI_DeInit	3
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:533:13:HAL_SPI_MspInit	1
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:549:13:HAL_SPI_MspDeInit	1
+../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:571:19:HAL_SPI_RegisterCallback	17
+../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:684:19:HAL_SPI_UnRegisterCallback	16
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:824:19:HAL_SPI_Transmit	32
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:1048:19:HAL_SPI_Receive	35
 ../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c:1318:19:HAL_SPI_TransmitReceive	54

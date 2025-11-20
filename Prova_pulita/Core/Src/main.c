@@ -22,6 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "cmsis_os2.h"
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
@@ -31,6 +32,8 @@
 #include "Comunicazione_ADC.h"
 #include "global.h"
 #include "funzioni_SOC.h"
+
+#include "Tasks.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,12 +58,18 @@ SPI_HandleTypeDef hspi5;
 
 UART_HandleTypeDef huart3;
 
-osThreadId defaultTaskHandle;
-osThreadId Task_MisureHandle;
-osThreadId Task_CommHandle;
-osThreadId Task_SocHandle;
-osThreadId MainTaskHandle;
-osSemaphoreId BinSemHandle;
+/* Definitions for defaultTask */
+osThreadId_t defaultTaskHandle;
+const osThreadAttr_t defaultTask_attributes = {
+  .name = "defaultTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for BinSem */
+osSemaphoreId_t BinSemHandle;
+const osSemaphoreAttr_t BinSem_attributes = {
+  .name = "BinSem"
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -72,11 +81,7 @@ static void MX_GPIO_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_USART3_UART_Init(void);
 static void MX_SPI5_Init(void);
-void StartDefaultTask(void const * argument);
-void StartMisure(void const * argument);
-void StartComm(void const * argument);
-void StartSoc(void const * argument);
-void StartMainTask(void const * argument);
+void StartDefaultTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -124,19 +129,19 @@ int main(void)
   MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_TIM_Base_Start_IT(&htim2);
-
 
   /* USER CODE END 2 */
+
+  /* Init scheduler */
+  osKernelInitialize();
 
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
   /* Create the semaphores(s) */
-  /* definition and creation of BinSem */
-  osSemaphoreDef(BinSem);
-  BinSemHandle = osSemaphoreCreate(osSemaphore(BinSem), 1);
+  /* creation of BinSem */
+  BinSemHandle = osSemaphoreNew(1, 0, &BinSem_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -151,29 +156,17 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-
-  /* definition and creation of Task_Misure */
-  osThreadDef(Task_Misure, StartMisure, osPriorityHigh, 0, 128);
-  Task_MisureHandle = osThreadCreate(osThread(Task_Misure), NULL);
-
-  /* definition and creation of Task_Comm */
-  osThreadDef(Task_Comm, StartComm, osPriorityNormal, 0, 128);
-  Task_CommHandle = osThreadCreate(osThread(Task_Comm), NULL);
-
-  /* definition and creation of Task_Soc */
-  osThreadDef(Task_Soc, StartSoc, osPriorityNormal, 0, 128);
-  Task_SocHandle = osThreadCreate(osThread(Task_Soc), NULL);
-
-  /* definition and creation of MainTask */
-  osThreadDef(MainTask, StartMainTask, osPriorityNormal, 0, 128);
-  MainTaskHandle = osThreadCreate(osThread(MainTask), NULL);
+  /* creation of defaultTask */
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  StartTasks();
   /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_EVENTS */
+  /* add events, ... */
+  /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
   osKernelStart();
@@ -182,56 +175,12 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  ltc6811_configure();
-
-   //verifichiamo se effettivamente stiamo scrivendo nel modo giusto
-   HAL_StatusTypeDef status1 = ltc6811_read_data(0x0002, &config[0], 6);
-  for (int i = 0; i < 6; i++)
-  {
-	  char buffer2[40];
-           	// Converti float in stringa
-      int length2 = sprintf(buffer2, "Il valore %d della configurazione: %x \r\n", i+1, config[i]);
-         	// Invia via UART
-       HAL_UART_Transmit(&huart3, (uint8_t*)buffer2, length2, HAL_MAX_DELAY);
-   }
-
-
 
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	   if(timer_flag==1)
-	   {
-
-	        if (ltc6811_read_cell_voltages() == HAL_OK)
-	        {
-	        	// Stampa risultati
-	        	stampa_tensioni_celle();
-	        }
-
-	       	if (ltc6811_read_gpio_voltages(tensione_GPIO) == HAL_OK)
-	       	{
-	       		// Stampa risultati
-	       		stampa_tensioni_GPIO(tensione_GPIO);
-	        }
-
-	       	if (ltc6811_read_status() == HAL_OK)
-	       	{
-	       		// Stampa risultati
-	       		stampa_temperatura_interna(int_temperature);
-	       		stampa_somma_celle(somma_celle);
-	       	}
-
-	       	calcolo_SOC();
-	       	stampa_somma_celle(Batteria[1].SOC);
-
-	       	timer_flag=0;
-	   }
-	   HAL_Delay(1000);
-
 
   }
   /* USER CODE END 3 */
@@ -511,7 +460,7 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void const * argument)
+void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
@@ -520,78 +469,6 @@ void StartDefaultTask(void const * argument)
     osDelay(1);
   }
   /* USER CODE END 5 */
-}
-
-/* USER CODE BEGIN Header_StartMisure */
-/**
-* @brief Function implementing the Task_Misure thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartMisure */
-void StartMisure(void const * argument)
-{
-  /* USER CODE BEGIN StartMisure */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartMisure */
-}
-
-/* USER CODE BEGIN Header_StartComm */
-/**
-* @brief Function implementing the Task_Comm thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartComm */
-void StartComm(void const * argument)
-{
-  /* USER CODE BEGIN StartComm */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartComm */
-}
-
-/* USER CODE BEGIN Header_StartSoc */
-/**
-* @brief Function implementing the Task_Soc thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartSoc */
-void StartSoc(void const * argument)
-{
-  /* USER CODE BEGIN StartSoc */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartSoc */
-}
-
-/* USER CODE BEGIN Header_StartMainTask */
-/**
-* @brief Function implementing the MainTask thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartMainTask */
-void StartMainTask(void const * argument)
-{
-  /* USER CODE BEGIN StartMainTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
-  /* USER CODE END StartMainTask */
 }
 
  /* MPU Configuration */

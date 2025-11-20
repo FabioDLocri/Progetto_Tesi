@@ -245,7 +245,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
     if (status != HAL_OK) return status;
 
     // Attendi fine conversione (290μs)
-    HAL_Delay(3); // 3ms per sicurezza
+    osDelay(3); // 3ms per sicurezza
 
     // Leggi tutti i gruppi di registri
     uint8_t cell_data[24]; // 12 celle × 2 bytes
