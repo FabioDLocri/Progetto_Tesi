@@ -22,9 +22,19 @@ const osSemaphoreAttr_t BinSem_attributes = {
   .name = "BinSem"
 };
 
-osSemaphoreId_t SPISemHandle;
-const osSemaphoreAttr_t SPISem_attributes = {
-  .name = "SPISem"
+osSemaphoreId_t SPITXSemHandle;
+const osSemaphoreAttr_t SPITXSem_attributes = {
+  .name = "SPITXSem"
+};
+
+osSemaphoreId_t SPIRXSemHandle;
+const osSemaphoreAttr_t SPIRXSem_attributes = {
+  .name = "SPIRXSem"
+};
+
+osSemaphoreId_t UARTSemHandle;
+const osSemaphoreAttr_t UARTSem_attributes = {
+  .name = "UARTSem"
 };
 void StartTasks(void)
 {
@@ -59,13 +69,21 @@ void StartTasks(void)
   TaskCalcoloSOCHandle = osThreadNew(TaskCalcoloSOC, NULL, &SOCAttr);
 
   BinSemHandle = osSemaphoreNew(1, 0, &BinSem_attributes);
-  SPISemHandle = osSemaphoreNew(1, 0, &SPISem_attributes);
-
+  SPITXSemHandle = osSemaphoreNew(1, 0, &SPITXSem_attributes);
+  SPIRXSemHandle = osSemaphoreNew(1, 0, &SPIRXSem_attributes);
+  UARTSemHandle = osSemaphoreNew(1, 0, &UARTSem_attributes);
 }
 
-void SPICompleteCallback(SPI_HandleTypeDef *spi)
+void SPITXCompleteCallback(SPI_HandleTypeDef *spi)
 {
-      osSemaphoreRelease(SPISemHandle);
+      osSemaphoreRelease(SPITXSemHandle);
 }
-
+void SPIRXCompleteCallback(SPI_HandleTypeDef *spi)
+{
+      osSemaphoreRelease(SPIRXSemHandle);
+}
+void UARTCompleteCallback(UART_HandleTypeDef *huart)
+{
+      osSemaphoreRelease(UARTSemHandle);
+}
 

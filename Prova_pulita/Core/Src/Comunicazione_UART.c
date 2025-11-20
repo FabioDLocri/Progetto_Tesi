@@ -14,7 +14,8 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "global.h"
-
+#include "cmsis_os.h"
+#include "Tasks.h"
 
 extern UART_HandleTypeDef huart3;
 
@@ -27,7 +28,8 @@ void stampa_tensioni_celle(){
 		      // Converti float in stringa
 		      int length = sprintf(buffer, "Valore %d: %.2f V\r\n",i+1, Batteria[i].tensione);
 		       // Invia via UART
-		      HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
+		      HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
+		      osSemaphoreAcquire(UARTSemHandle, osWaitForever);
 		   }
 }
 
@@ -39,12 +41,14 @@ void stampa_tensioni_GPIO(float *GPIO_voltages){
        // Converti float in stringa
        int length = sprintf(buffer, "Valore GPIO %d: %.2f V\r\n",i+1, GPIO_voltages[i]);
        // Invia via UART
-       HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
+       HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
+	      osSemaphoreAcquire(UARTSemHandle, osWaitForever);
     }
 	    // Converti float in stringa
 	int length = sprintf(buffer, "Valore Second Reference: %.2f V\r\n", GPIO_voltages[5]);
 	    // Invia via UART
-	HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
+	HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
+    osSemaphoreAcquire(UARTSemHandle, osWaitForever);
 }
 
 void stampa_somma_celle(float somma_celle){
@@ -63,6 +67,7 @@ void stampa_temperatura_interna(float temperatura){
        // Converti float in stringa
        int length = sprintf(buffer, "La temperatura interna del chip è: %.2f\r\n", temperatura);
        // Invia via UART
-       HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
+       HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
+	      osSemaphoreAcquire(UARTSemHandle, osWaitForever);
 }
 

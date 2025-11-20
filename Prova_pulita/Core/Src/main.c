@@ -123,8 +123,9 @@ int main(void)
   MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_SPI_RegisterCallback(&hspi3, HAL_SPI_TX_COMPLETE_CB_ID, SPICompleteCallback);
-
+  HAL_SPI_RegisterCallback(&hspi3, HAL_SPI_TX_COMPLETE_CB_ID, SPITXCompleteCallback);
+  HAL_SPI_RegisterCallback(&hspi3, HAL_SPI_RX_COMPLETE_CB_ID, SPIRXCompleteCallback);
+  HAL_UART_RegisterCallback(&huart3, HAL_UART_TX_COMPLETE_CB_ID, UARTCompleteCallback);
 
   /* USER CODE END 2 */
 

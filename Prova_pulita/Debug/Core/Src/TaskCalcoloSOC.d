@@ -1,7 +1,6 @@
 Core/Src/TaskCalcoloSOC.o: ../Core/Src/TaskCalcoloSOC.c \
  ../Core/Inc/Tasks.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- ../Core/Inc/funzioni_SOC.h ../Core/Inc/global.h ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
@@ -36,12 +35,10 @@ Core/Src/TaskCalcoloSOC.o: ../Core/Src/TaskCalcoloSOC.c \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
+ ../Core/Inc/funzioni_SOC.h ../Core/Inc/global.h ../Core/Inc/main.h \
  ../Core/Inc/global.h
 ../Core/Inc/Tasks.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
-../Core/Inc/funzioni_SOC.h:
-../Core/Inc/global.h:
-../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h:
@@ -76,4 +73,7 @@ Core/Src/TaskCalcoloSOC.o: ../Core/Src/TaskCalcoloSOC.c \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
+../Core/Inc/funzioni_SOC.h:
+../Core/Inc/global.h:
+../Core/Inc/main.h:
 ../Core/Inc/global.h:

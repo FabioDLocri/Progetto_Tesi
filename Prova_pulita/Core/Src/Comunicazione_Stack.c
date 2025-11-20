@@ -16,6 +16,7 @@
 #include "Config_LTC6811.h"
 #include "stdbool.h"
 #include "cmsis_os2.h"
+#include "Tasks.h"
 
 
 extern SPI_HandleTypeDef hspi3;
@@ -96,7 +97,8 @@ HAL_StatusTypeDef ltc6811_send_command(uint16_t command)
     tx_data[3] = pec & 0xFF;            // PEC1
 
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-    HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4, HAL_MAX_DELAY);
+    HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4);
+    osSemaphoreAcquire(SPITXSemHandle, osWaitForever);
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 
     return status;
@@ -136,7 +138,8 @@ HAL_StatusTypeDef ltc6811_write_data(uint16_t command, uint8_t *data, uint8_t da
     }
 
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-    HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi3, tx_send, data_len + 6, HAL_MAX_DELAY);
+    HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_send, data_len + 6);
+    osSemaphoreAcquire(SPITXSemHandle, osWaitForever);
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 
     return status;
@@ -159,8 +162,10 @@ HAL_StatusTypeDef ltc6811_read_data(uint16_t command, uint8_t *rx_data, uint8_t 
 
 
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
-    HAL_StatusTypeDef status1 = HAL_SPI_Transmit(&hspi3, tx_data, 4, 10);
-    HAL_StatusTypeDef status = HAL_SPI_Receive(&hspi3, rx_buffer, data_len+2, HAL_MAX_DELAY);
+    HAL_StatusTypeDef status1 = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4);
+    osSemaphoreAcquire(SPITXSemHandle, osWaitForever);
+    HAL_StatusTypeDef status = HAL_SPI_Receive_IT(&hspi3, rx_buffer, data_len+2);
+    osSemaphoreAcquire(SPIRXSemHandle, osWaitForever);
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
 
     if (status == HAL_OK) {
