@@ -62,12 +62,13 @@ void StartTasks(void)
     .priority = osPriorityNormal
   };
 
-  /* crea i thread */
+  /* creo i thread */
   MainTaskHandle = osThreadNew(MainTask, NULL, &mainTaskAttr);
   TaskMisureHandle = osThreadNew(TaskMisure, NULL, &misureAttr);
   TaskComunicazioneHandle = osThreadNew(TaskComunicazione, NULL, &ComunicazioneAttr);
   TaskCalcoloSOCHandle = osThreadNew(TaskCalcoloSOC, NULL, &SOCAttr);
 
+  //Creo i semafori per i task e le interrupt
   BinSemHandle = osSemaphoreNew(1, 0, &BinSem_attributes);
   SPITXSemHandle = osSemaphoreNew(1, 0, &SPITXSem_attributes);
   SPIRXSemHandle = osSemaphoreNew(1, 0, &SPIRXSem_attributes);

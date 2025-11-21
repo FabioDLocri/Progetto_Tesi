@@ -16,7 +16,7 @@
 #include "Config_LTC6811.h"
 #include "stdbool.h"
 
-//tabelle corrispondenti alla curva OCV_SOC
+//tabelle corrispondenti alla curva OCV_SOC per ora ho preso solo un esempio
 
 float ocv_table[] = {
 		3270.7, 3320.1, 3362.5, 3378.6, 3394.7, 3410.9, 3427.0, 3443.1, 3459.2, 3475.3,
@@ -56,10 +56,12 @@ float lerp(float a, float b, float t) {
 }
 
 // Interpolazione lineare inversa OCV->SoC:
-// Assunzione: cfg->ocv_v è crescente, cfg->soc è monotono e in [0..1].
+
 float soc_from_ocv(float voltage_V) {
 
-    // Clamp se fuori dalla tabella
+	//Ho ridotto i valori di 3 volt per poterlo testare con l'alimentatore per ora
+
+	// Clamp se fuori dalla tabella
     if (voltage_V <= (ocv_table[0]/1000-3.0f)) return clamp01(soc_table[0]);
     if (voltage_V >= (ocv_table[100]/1000-3.0f)) return clamp01(soc_table[100]);
 
@@ -143,8 +145,6 @@ void calcolo_SOC(){
 		compute_cells_soc_from_voltage (Batteria);
 		initialized= true;
 	}
-
-
 	static uint32_t last_ms = 0;
 	uint32_t now_ms = HAL_GetTick();
 	float dt_s = (last_ms == 0) ? 0.0f : (now_ms - last_ms) / 1000.0f;
@@ -153,7 +153,7 @@ void calcolo_SOC(){
     float alpha = 0.98f;
     float Ic = -0.1f;
     Batteria[1].corrente=Ic;
-	// Un passo di aggiornamento ibrido (ripetere a ogni ciclo temporale)
+	// Un passo di aggiornamento ibrido
     for (int i = 0; i < 12; ++i) {
         soc_update_hybrid(&Batteria[i].SOC, Batteria[i].tensione, Batteria[1].corrente, dt_s, &cfg, alpha);
     }

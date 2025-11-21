@@ -1,4 +1,5 @@
 ../Core/Src/Comunicazione_UART.c:23:6:stampa_tensioni_celle	56	static
-../Core/Src/Comunicazione_UART.c:36:6:stampa_tensioni_GPIO	72	static
+../Core/Src/Comunicazione_UART.c:36:6:stampa_tensioni_GPIO	88	static
 ../Core/Src/Comunicazione_UART.c:54:6:stampa_somma_celle	72	static
-../Core/Src/Comunicazione_UART.c:64:6:stampa_temperatura_interna	72	static
+../Core/Src/Comunicazione_UART.c:65:6:stampa_temperatura_interna	72	static
+../Core/Src/Comunicazione_UART.c:75:6:stampa_SOC	64	static

@@ -12,8 +12,6 @@
 #include "stdbool.h"
 
 
-extern uint8_t timer_flag;
-
 extern uint8_t config[6];
 extern uint8_t configuration_data[6];
 

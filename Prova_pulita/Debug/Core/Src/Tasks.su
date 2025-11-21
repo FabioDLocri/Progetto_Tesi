@@ -1,4 +1,4 @@
 ../Core/Src/Tasks.c:39:6:StartTasks	152	static
-../Core/Src/Tasks.c:77:6:SPITXCompleteCallback	16	static
-../Core/Src/Tasks.c:81:6:SPIRXCompleteCallback	16	static
-../Core/Src/Tasks.c:85:6:UARTCompleteCallback	16	static
+../Core/Src/Tasks.c:78:6:SPITXCompleteCallback	16	static
+../Core/Src/Tasks.c:82:6:SPIRXCompleteCallback	16	static
+../Core/Src/Tasks.c:86:6:UARTCompleteCallback	16	static

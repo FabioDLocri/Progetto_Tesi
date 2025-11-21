@@ -72,7 +72,7 @@
 #define NUM_CELLS 12
 #define NUM_IC 1
 
-
+//Tensioni di UnderVoltage e OverVoltage
 #define UV_THRESHOLD 33000
 #define OV_THRESHOLD 42000
 

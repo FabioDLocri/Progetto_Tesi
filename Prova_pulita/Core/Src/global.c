@@ -9,7 +9,7 @@
 #include "global.h"
 #include "main.h"
 #include "stdbool.h"
-uint8_t timer_flag=0;
+
 
 uint8_t config[6]={0};
 uint8_t configuration_data[6] = {0};

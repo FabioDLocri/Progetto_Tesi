@@ -16,4 +16,6 @@ void stampa_temperatura_interna(float temp);
 
 void stampa_somma_celle(float somma_celle);
 
+void stampa_SOC(void);
+
 #endif /* INC_COMUNICAZIONE_UART_H_ */

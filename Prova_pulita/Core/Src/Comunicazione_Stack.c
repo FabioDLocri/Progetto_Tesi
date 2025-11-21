@@ -71,7 +71,7 @@ uint16_t LTC6811_adcv(
 	return cmd;
 }
 
-//Creo il comando per ADC voltage
+//Creo il comando per ADC dei GPIO
 uint16_t LTC6811_adax(
   uint8_t MD, //ADC Mode
   uint8_t CHG //GPIO Channels to be measured
@@ -104,7 +104,7 @@ HAL_StatusTypeDef ltc6811_send_command(uint16_t command)
     return status;
 }
 
-// Scrive dati all'LTC6811 (per comandi WRCFGA, WRPWM, etc.)
+// Scrive dati sull'LTC6811 nei registri
 HAL_StatusTypeDef ltc6811_write_data(uint16_t command, uint8_t *data, uint8_t data_len)
 {
 	uint8_t tx_data[4];
@@ -141,11 +141,10 @@ HAL_StatusTypeDef ltc6811_write_data(uint16_t command, uint8_t *data, uint8_t da
     HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_send, data_len + 6);
     osSemaphoreAcquire(SPITXSemHandle, osWaitForever);
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
-
     return status;
 }
 
-// Legge dati dall'LTC6811 (per comandi RDCFGA, RDCVA, etc.)
+// Legge dati dall'LTC6811
 HAL_StatusTypeDef ltc6811_read_data(uint16_t command, uint8_t *rx_data, uint8_t data_len)
 {
 	uint8_t tx_data[4];
@@ -167,7 +166,6 @@ HAL_StatusTypeDef ltc6811_read_data(uint16_t command, uint8_t *rx_data, uint8_t 
     HAL_StatusTypeDef status = HAL_SPI_Receive_IT(&hspi3, rx_buffer, data_len+2);
     osSemaphoreAcquire(SPIRXSemHandle, osWaitForever);
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
-
     if (status == HAL_OK) {
         // Copia dati (escludi PEC)
         for (int i = 0; i < data_len; i++) {

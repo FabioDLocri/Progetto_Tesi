@@ -34,8 +34,8 @@ void stampa_tensioni_celle(){
 }
 
 void stampa_tensioni_GPIO(float *GPIO_voltages){
-	// Stampa risultati
-	char buffer[32];
+	// Stampa risultati Misurazione tensione su GPIO
+	char buffer[50];
 	for (int i = 0; i < 5; i++)
    {
        // Converti float in stringa
@@ -52,20 +52,31 @@ void stampa_tensioni_GPIO(float *GPIO_voltages){
 }
 
 void stampa_somma_celle(float somma_celle){
-	// Stampa risultati
+	// Stampa Misurazione somma celle
 
 		char buffer[50];
        // Converti float in stringa
        int length = sprintf(buffer, "La tensione di somma delle celle è: %.2f V\r\n", somma_celle);
        // Invia via UART
-       HAL_UART_Transmit(&huart3, (uint8_t*)buffer, length, HAL_MAX_DELAY);
+       HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
+       osSemaphoreAcquire(UARTSemHandle, osWaitForever);
 }
 
 void stampa_temperatura_interna(float temperatura){
-	// Stampa risultati
+	// Stampa Temperatura interna del chip
 		char buffer[50];
        // Converti float in stringa
        int length = sprintf(buffer, "La temperatura interna del chip è: %.2f\r\n", temperatura);
+       // Invia via UART
+       HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
+	      osSemaphoreAcquire(UARTSemHandle, osWaitForever);
+}
+
+void stampa_SOC(void){
+	// Stampa SOC della prima cella
+		char buffer[50];
+       // Converti float in stringa
+       int length = sprintf(buffer, "Il SOC della prima cella è: %.2f\r\n", Batteria[1].SOC);
        // Invia via UART
        HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
 	      osSemaphoreAcquire(UARTSemHandle, osWaitForever);

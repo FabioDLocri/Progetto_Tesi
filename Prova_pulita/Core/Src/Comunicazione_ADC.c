@@ -61,8 +61,8 @@ float read_single_channel(uint8_t channel) {
     uint16_t raw_value;
     float voltage;
 
-    // Byte di conversione: 1 CCCX XX01
-    // dove CCCX sono i bit del canale
+    // Byte di conversione: 1 CCCC SS 1
+    // dove CCCC sono i bit del canale
     uint8_t conv_byte = 0x80 | (channel << 3) | 0x01;
 
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);  // CS low
