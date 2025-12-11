@@ -15,6 +15,17 @@ SemaphoreHandle_t SPITXSemHandle;
 SemaphoreHandle_t SPIRXSemHandle;
 SemaphoreHandle_t UARTSemHandle;
 
+
+QueueHandle_t Queuemisuretomain;
+QueueHandle_t Queuemisuretocom;
+QueueHandle_t Queueuarttomain;
+ QueueHandle_t QueueSOCtocom;
+
+StreamBufferHandle_t BuffertoSOC;
+
+QueueSetHandle_t Settomain;
+QueueSetHandle_t Settocom;
+
 static uint8_t uartbuffer;
 extern UART_HandleTypeDef huart3;
 

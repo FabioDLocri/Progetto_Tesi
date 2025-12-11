@@ -14,7 +14,7 @@
 #include "stdlib.h"
 #include "global.h"
 
-
+/*
 
 
 // Calcolo SoC da OCV (tensione a circuito aperto o tensione a riposo/filtrata)
@@ -47,6 +47,6 @@ void compute_cells_soc_from_voltage (Cella* cells);
 
 void calcolo_SOC();
 
-
+*/
 
 #endif /* INC_FUNZIONI_SOC_H_ */

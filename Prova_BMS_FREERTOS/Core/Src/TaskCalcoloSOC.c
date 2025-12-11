@@ -18,6 +18,5 @@ void TaskCalcoloSOC(void *argument)
   for (;;)
   {
 	  xStreamBufferReceive( BuffertoSOC, ( void * ) Pacco,sizeof( Pacco[8] ), pdMS_TO_TICKS( 20 ) );
-	  calcolo_SOC();
   }
 }
