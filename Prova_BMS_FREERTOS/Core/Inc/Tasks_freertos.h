@@ -41,5 +41,6 @@ void StartTasks(void);
 void SPITXCompleteCallback(SPI_HandleTypeDef *spi);
 void SPIRXCompleteCallback(SPI_HandleTypeDef *spi);
 void UARTCompleteCallback(UART_HandleTypeDef *huart);
+void UARTRXCompleteCallback(UART_HandleTypeDef *huart);
 
 #endif /* INC_TASKS_FREERTOS_H_ */

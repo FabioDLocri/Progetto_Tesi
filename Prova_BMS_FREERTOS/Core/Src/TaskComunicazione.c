@@ -13,6 +13,7 @@
 #include "Comunicazione_UART.h"
 #include "global.h"
 #include "funzioni_SOC.h"
+#include "FreeRTOS.h"
 
 void TaskComunicazione(void *argument)
 {

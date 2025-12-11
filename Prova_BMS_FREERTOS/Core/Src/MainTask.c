@@ -24,7 +24,6 @@ void MainTask(void *argument)
 	  Batteria Pacco_bat;
 	  char stringa[50];
 
-
 	  if( xHandle == NULL )
 	       {
 		  	  debugprint("è passato troppo tempo dalla richiesta\n");
@@ -38,7 +37,5 @@ void MainTask(void *argument)
 	       {
 	          xQueueReceive(Queueuarttomain,(void *) &stringa, 0 );
 	       }
-
-      osDelay(1);
   }
 }

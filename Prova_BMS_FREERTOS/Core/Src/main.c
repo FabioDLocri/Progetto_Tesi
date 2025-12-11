@@ -132,6 +132,7 @@ int main(void)
   HAL_SPI_RegisterCallback(&hspi3, HAL_SPI_TX_COMPLETE_CB_ID, SPITXCompleteCallback);
   HAL_SPI_RegisterCallback(&hspi3, HAL_SPI_RX_COMPLETE_CB_ID, SPIRXCompleteCallback);
   HAL_UART_RegisterCallback(&huart3, HAL_UART_TX_COMPLETE_CB_ID, UARTCompleteCallback);
+  HAL_UART_RegisterCallback(&huart3, HAL_UART_RX_COMPLETE_CB_ID, UARTRXCompleteCallback);
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -159,6 +160,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  StartTasks();
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */

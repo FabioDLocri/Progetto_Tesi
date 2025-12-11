@@ -24,6 +24,7 @@ void TaskMisure(void *argument)
 	Status_register Status;
 	Datatocom Misura;
 
+
 	ltc6811_configure();
 
 	for (;;){
