@@ -1,0 +1,4 @@
+../Core/Src/Tasks_freertos.c:18:6:StartTasks	1
+../Core/Src/Tasks_freertos.c:46:6:SPITXCompleteCallback	1
+../Core/Src/Tasks_freertos.c:50:6:SPIRXCompleteCallback	1
+../Core/Src/Tasks_freertos.c:54:6:UARTCompleteCallback	1

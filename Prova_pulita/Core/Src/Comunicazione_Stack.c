@@ -139,7 +139,12 @@ HAL_StatusTypeDef ltc6811_write_data(uint16_t command, uint8_t *data, uint8_t da
 
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_RESET);
     HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_send, data_len + 6);
-    osSemaphoreAcquire(SPITXSemHandle, osWaitForever);
+    osStatus_t ret = osSemaphoreAcquire(SPITXSemHandle, osWaitForever);
+
+    if (ret != osOK){
+    	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+    }
+
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, GPIO_PIN_SET);
     return status;
 }

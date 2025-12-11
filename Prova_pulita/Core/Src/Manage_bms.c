@@ -22,7 +22,7 @@ void Manage_bms(void){
 	if(Batteria[1].corrente<0){
 
 		//accendi un led per segnalare la scarica
-	    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
+	    //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
 
 	}else if (Batteria[1].corrente>0.0f){
 

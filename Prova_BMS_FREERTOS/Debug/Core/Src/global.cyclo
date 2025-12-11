@@ -1,0 +1,8 @@
+../Core/Src/global.c:23:6:ledredoff	1
+../Core/Src/global.c:27:6:ledyellowoff	1
+../Core/Src/global.c:31:6:ledgreenoff	1
+../Core/Src/global.c:36:6:ledredon	1
+../Core/Src/global.c:40:6:ledyellowon	1
+../Core/Src/global.c:44:6:ledgreenon	1
+../Core/Src/global.c:48:6:CSSPION	2
+../Core/Src/global.c:58:6:CSSPIOFF	2

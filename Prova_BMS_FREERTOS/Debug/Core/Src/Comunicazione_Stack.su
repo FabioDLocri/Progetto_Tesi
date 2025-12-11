@@ -1,0 +1,12 @@
+../Core/Src/Comunicazione_Stack.c:31:10:calculate_pec	24	static
+../Core/Src/Comunicazione_Stack.c:58:9:verify_pec	24	static
+../Core/Src/Comunicazione_Stack.c:64:10:LTC6811_adcv	24	static
+../Core/Src/Comunicazione_Stack.c:75:10:LTC6811_adax	24	static
+../Core/Src/Comunicazione_Stack.c:86:19:ltc6811_send_command	24	static
+../Core/Src/Comunicazione_Stack.c:108:19:ltc6811_write_data	104	dynamic
+../Core/Src/Comunicazione_Stack.c:148:19:ltc6811_read_data	64	dynamic
+../Core/Src/Comunicazione_Stack.c:185:10:ltc6811_set_config	40	static
+../Core/Src/Comunicazione_Stack.c:231:19:ltc6811_configure	56	static
+../Core/Src/Comunicazione_Stack.c:246:20:ltc6811_read_cell_voltages	64	static
+../Core/Src/Comunicazione_Stack.c:290:20:ltc6811_read_gpio_voltages	56	static
+../Core/Src/Comunicazione_Stack.c:326:20:ltc6811_read_status	40	static
