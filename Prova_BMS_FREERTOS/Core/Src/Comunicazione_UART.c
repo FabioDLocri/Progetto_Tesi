@@ -87,8 +87,5 @@ void stampa_SOC(float *SOC){
 
 
 void debugprint(const char *msg){
-
-	HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg, strlen(msg));
-    osSemaphoreAcquire(UARTSemHandle, osWaitForever);
-
+	HAL_UART_Transmit_IT(&huart3, (uint8_t*)msg, strlen(msg));
 }

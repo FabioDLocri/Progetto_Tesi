@@ -16,7 +16,7 @@
 
 extern UART_HandleTypeDef huart3;
 
-void TaskMisure(void *argument)
+/*void TaskMisure(void *argument)
 {
 	TickType_t xLastExecutionTime = xTaskGetTickCount();
 	Batteria Pacco_bat;
@@ -39,6 +39,30 @@ void TaskMisure(void *argument)
 		xQueueSend( Queuemisuretocom, &Misura,0 );
 
 		xStreamBufferSend( BuffertoSOC, (void *)&Pacco_bat, sizeof(Pacco_bat), 0 );
+
+		vTaskDelayUntil(&xLastExecutionTime, pdMS_TO_TICKS(100));
+  }
+}*/
+
+
+void TaskMisure(void *argument)
+{
+	TickType_t xLastExecutionTime = xTaskGetTickCount();
+	uint8_t numero=0;
+	BaseType_t xreturn;
+	for (;;){
+		numero=numero+1;
+
+		xreturn = xQueueSend( Queuemisuretomain, &numero, 0 );
+		if (xreturn!=pdTRUE){
+			debugprint("non scrive nella coda da misure a main");
+		}
+		xreturn = xQueueSend( Queuemisuretocom, &numero,0 );
+		if (xreturn!=pdTRUE){
+			debugprint("non scrive nella coda da misure a com");
+		}
+
+		xStreamBufferSend( BuffertoSOC, (void *)&numero, sizeof(numero), 0 );
 
 		vTaskDelayUntil(&xLastExecutionTime, pdMS_TO_TICKS(100));
   }

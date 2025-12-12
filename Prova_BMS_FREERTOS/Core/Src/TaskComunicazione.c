@@ -14,7 +14,7 @@
 #include "global.h"
 #include "funzioni_SOC.h"
 #include "FreeRTOS.h"
-
+/*
 void TaskComunicazione(void *argument)
 {
 	Datatocom Misure;
@@ -43,3 +43,34 @@ void TaskComunicazione(void *argument)
 
   }
 }
+*/
+void TaskComunicazione(void *argument)
+{
+	uint8_t incremento;
+	uint8_t sommabuffer;
+	QueueSetMemberHandle_t xHandle;
+	char uart_buf[50];
+  for (;;)
+  {
+	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(200) );
+
+	  if( xHandle == NULL )
+	       {
+		  	  debugprint("è passato troppo tempo dalla richiesta\n");
+	       }
+	       else if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretocom )
+	       {
+	          xQueueReceive( Queuemisuretocom, &incremento, 0 );
+	          snprintf(uart_buf, sizeof(uart_buf), "incremento = %d\n",incremento);
+	          debugprint(uart_buf);
+	       }
+	       else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtocom )
+	       {
+	          xQueueReceive(QueueSOCtocom, &sommabuffer, 0 );
+	          snprintf(uart_buf, sizeof(uart_buf), "la somma del buffer è = %d\n",sommabuffer);
+	          debugprint(uart_buf);
+	       }
+
+  }
+}
+

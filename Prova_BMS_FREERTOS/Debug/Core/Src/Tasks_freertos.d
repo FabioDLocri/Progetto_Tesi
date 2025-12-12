@@ -47,7 +47,8 @@ Core/Src/Tasks_freertos.o: ../Core/Src/Tasks_freertos.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/stream_buffer.h \
- ../Core/Inc/global.h ../Core/Inc/main.h
+ ../Core/Inc/global.h ../Core/Inc/main.h ../Core/Inc/Comunicazione_UART.h \
+ ../Core/Inc/global.h
 ../Core/Inc/Tasks_freertos.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -98,3 +99,5 @@ Core/Src/Tasks_freertos.o: ../Core/Src/Tasks_freertos.c \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/stream_buffer.h:
 ../Core/Inc/global.h:
 ../Core/Inc/main.h:
+../Core/Inc/Comunicazione_UART.h:
+../Core/Inc/global.h:
