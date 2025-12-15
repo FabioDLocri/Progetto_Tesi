@@ -68,19 +68,25 @@ void MainTask(void *argument)
 
 	    	   xQueueReceive(Queueuarttomain,(void *) &carattere, 0 );
 
-	    	   if(carattere != '\n' || carattere != '\r'){
-	    		   stringa[i]=carattere;
-	    		   i++;
-	    		   ledyellowoff();
-	    	   }
+	    	   	    if(carattere != '\n' && carattere != '\r')
+	    	   	    {
+	    	   	    	stringa[i] = carattere;
+	    	   	    	i++;
+	    	   	    }
+	    	   	    else
+	    	   	    {
+	    	   			// Aggiungi il carattere nullo per terminare la stringa
+	    	   			stringa[i] = '\0';
+	    	   		 // Confronta la stringa ricevuta con "ciao"
+	    	   	    	 if(strcmp(stringa, "ciao") == 0) {
+	    	   	    		ledyellowon(); // Accendi il LED
+	    	   	    	} else {
+	    	   				ledyellowoff();
+	    	   			 }
 
-	    	   else{
-	    		   i=0;
-	    		   if(strcmp(stringa,"c")==0) {
-	    			   ledyellowon();
-	    		   }
-	    		   stringa[0]='\0';
-	    	   }
+	    	   		 // Resetta l'indice per la prossima stringa
+	    	   	    	i = 0;
+	    	   	    }
 	       }
   }
 }

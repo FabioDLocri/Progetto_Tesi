@@ -33,19 +33,21 @@ void TaskCalcoloSOC(void *argument)
 
   for (;;)
   {
-	  xQueueReceive( QueuemisuretoSOC,&incremento, 0 );
-	  if (i<8){
-		  dato+=incremento;
-		  i++;
-	  }
+	  if (xQueueReceive(QueuemisuretoSOC, &incremento, portMAX_DELAY) == pdPASS)
+	          {
+	              dato += incremento;
+	              i++;
 
-	  else  {
-		  i=0;
-		  xreturn = xQueueSend( QueueSOCtocom, &dato,0 );
-		  if (xreturn!=pdTRUE){
-		  		debugprint("non scrive nella coda da SOC a com\r\n");
-		  }
-	  		dato=0;
-	  }
+	              if (i >= 8)
+	              {
+	                  xreturn = xQueueSend(QueueSOCtocom, &dato, 0);
+	                  if (xreturn != pdTRUE)
+	                  {
+	                      debugprint("non scrive nella coda da SOC a com\r\n");
+	                  }
+	                  dato = 0;
+	                  i = 0;
+	              }
+	          }
   }
 }
