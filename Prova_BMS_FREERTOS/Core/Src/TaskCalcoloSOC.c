@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "funzioni_SOC.h"
 #include "global.h"
+#include "Comunicazione_UART.h"
 
 /*
 void TaskCalcoloSOC(void *argument)
@@ -25,16 +26,26 @@ void TaskCalcoloSOC(void *argument)
 
 void TaskCalcoloSOC(void *argument)
 {
-	uint8_t buffer[8];
+	static uint8_t i=0;
+	uint8_t incremento;
 	static uint8_t dato=0;
+	BaseType_t xreturn;
+
   for (;;)
   {
-	  xStreamBufferReceive( BuffertoSOC, (void*) buffer, sizeof( buffer[8] ), pdMS_TO_TICKS( 20 ) );
-
-	  for (int i=0; i<8;i++){
-		  dato +=buffer[i];
+	  xQueueReceive( QueuemisuretoSOC,&incremento, 0 );
+	  if (i<8){
+		  dato+=incremento;
+		  i++;
 	  }
 
-	  xQueueSend( QueueSOCtocom, &buffer, 0);
+	  else  {
+		  i=0;
+		  xreturn = xQueueSend( QueueSOCtocom, &dato,0 );
+		  if (xreturn!=pdTRUE){
+		  		debugprint("non scrive nella coda da SOC a com\r\n");
+		  }
+	  		dato=0;
+	  }
   }
 }

@@ -52,22 +52,18 @@ void TaskComunicazione(void *argument)
 	char uart_buf[50];
   for (;;)
   {
-	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(200) );
+	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(1) );
 
-	  if( xHandle == NULL )
-	       {
-		  	  debugprint("è passato troppo tempo dalla richiesta\n");
-	       }
-	       else if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretocom )
+	  if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretocom )
 	       {
 	          xQueueReceive( Queuemisuretocom, &incremento, 0 );
-	          snprintf(uart_buf, sizeof(uart_buf), "incremento = %d\n",incremento);
+	          snprintf(uart_buf, sizeof(uart_buf), "incremento = %d \r\n",incremento);
 	          debugprint(uart_buf);
 	       }
 	       else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtocom )
 	       {
 	          xQueueReceive(QueueSOCtocom, &sommabuffer, 0 );
-	          snprintf(uart_buf, sizeof(uart_buf), "la somma del buffer è = %d\n",sommabuffer);
+	          snprintf(uart_buf, sizeof(uart_buf), "la somma del buffer è = %d \r\n",sommabuffer);
 	          debugprint(uart_buf);
 	       }
 

@@ -23,8 +23,8 @@ extern QueueHandle_t Queuemisuretomain;
 extern QueueHandle_t Queuemisuretocom;
 extern QueueHandle_t Queueuarttomain;
 extern QueueHandle_t QueueSOCtocom;
+extern QueueHandle_t QueuemisuretoSOC;
 
-extern StreamBufferHandle_t BuffertoSOC;
 
 extern QueueSetHandle_t Settomain;
 extern QueueSetHandle_t Settocom;

@@ -53,12 +53,7 @@ void MainTask(void *argument)
   for (;;)
   {
 	  xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(1) );
-		debugprint("arriva fino a qua");
-	  if( xHandle == NULL )
-	       {
-		  	  debugprint("è passato troppo tempo dalla richiesta\n");
-	       }
-	       else if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretomain )
+	  if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretomain )
 	       {
 	          xQueueReceive( Queuemisuretomain,(void *)&incremento, 0 );
 
@@ -81,7 +76,7 @@ void MainTask(void *argument)
 
 	    	   else{
 	    		   i=0;
-	    		   if(strcmp(stringa,"ciao")==0) {
+	    		   if(strcmp(stringa,"c")==0) {
 	    			   ledyellowon();
 	    		   }
 	    		   stringa[0]='\0';

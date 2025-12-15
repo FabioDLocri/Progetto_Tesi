@@ -50,7 +50,11 @@ void TaskMisure(void *argument)
 	TickType_t xLastExecutionTime = xTaskGetTickCount();
 	uint8_t numero=0;
 	BaseType_t xreturn;
+
 	for (;;){
+		if(numero==16){
+			numero=0;
+		}
 		numero=numero+1;
 
 		xreturn = xQueueSend( Queuemisuretomain, &numero, 0 );
@@ -59,11 +63,13 @@ void TaskMisure(void *argument)
 		}
 		xreturn = xQueueSend( Queuemisuretocom, &numero,0 );
 		if (xreturn!=pdTRUE){
-			debugprint("non scrive nella coda da misure a com");
+			debugprint("non scrive nella coda da misure a com\n\r");
 		}
+		xreturn = xQueueSend( QueuemisuretoSOC, &numero,0 );
+				if (xreturn!=pdTRUE){
+					debugprint("non scrive nella coda da misure a SOC\n\r");
+				}
 
-		xStreamBufferSend( BuffertoSOC, (void *)&numero, sizeof(numero), 0 );
-
-		vTaskDelayUntil(&xLastExecutionTime, pdMS_TO_TICKS(100));
+		vTaskDelayUntil(&xLastExecutionTime, pdMS_TO_TICKS(1000));
   }
 }

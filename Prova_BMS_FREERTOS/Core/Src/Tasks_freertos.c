@@ -20,7 +20,8 @@ SemaphoreHandle_t UARTSemHandle;
 QueueHandle_t Queuemisuretomain;
 QueueHandle_t Queuemisuretocom;
 QueueHandle_t Queueuarttomain;
- QueueHandle_t QueueSOCtocom;
+QueueHandle_t QueueSOCtocom;
+QueueHandle_t QueuemisuretoSOC;
 
 StreamBufferHandle_t BuffertoSOC;
 
@@ -33,11 +34,22 @@ BaseType_t xreturn;
 
 void StartTasks(void)
 {
-	xTaskCreate(MainTask, "MainTask",1024, NULL, 24, NULL);
-	xTaskCreate(TaskMisure, "TaskMisure",1024 , NULL, 25, NULL);
-	xTaskCreate(TaskComunicazione, "TaskComunicazione",1024, NULL, 23, NULL);
-	xTaskCreate(TaskCalcoloSOC, "TaskCalcoloSOC",1024, NULL, 22, NULL);
-
+	xreturn=xTaskCreate(MainTask, "MainTask",128, NULL, 25, NULL);
+	if (xreturn!=pdPASS){
+		debugprint("Task1 non creato correttamente\r\n");
+	}
+	xreturn=xTaskCreate(TaskMisure, "TaskMisure",1024 , NULL, 26, NULL);
+	if (xreturn!=pdPASS){
+		debugprint("Task2 non creato correttamente\r\n");
+	}
+	xreturn=xTaskCreate(TaskComunicazione, "TaskComunicazione",512, NULL, 24, NULL);
+	if (xreturn!=pdPASS){
+		debugprint("Task3 non creato correttamente\r\n");
+	}
+	xreturn = xTaskCreate(TaskCalcoloSOC, "TaskCalcoloSOC",512, NULL, 23, NULL);
+	if (xreturn!=pdPASS){
+		debugprint("Task4 non creato correttamente\r\n");
+	}
 
 	//Creo i semafori per le interrupt
 	SPITXSemHandle = xSemaphoreCreateBinary();
@@ -57,8 +69,18 @@ void StartTasks(void)
 	Queuemisuretocom = xQueueCreate(8,sizeof(uint8_t));
 	Queueuarttomain = xQueueCreate(2,sizeof(uint8_t));
 	QueueSOCtocom = xQueueCreate(8,sizeof(uint8_t));
-	BuffertoSOC = xStreamBufferCreate(24*sizeof(uint8_t),8*sizeof(uint8_t));
 
+	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
+//	BuffertoSOC = xStreamBufferCreate(24*sizeof(uint8_t),sizeof(uint8_t));
+
+    Settocom = xQueueCreateSet( 8 + 8 );
+	if (Settocom == NULL) {
+		debugprint("Errore creazione Settocom\n");
+	}
+    Settomain = xQueueCreateSet( 8 + 2 );
+	if (Settomain == NULL) {
+		debugprint("Errore creazione Settomain\n");
+	}
 
 	xreturn = xQueueAddToSet( Queuemisuretocom, Settocom );
 	if (xreturn!=pdPASS){
