@@ -52,7 +52,7 @@ void TaskComunicazione(void *argument)
 	char uart_buf[50];
   for (;;)
   {
-	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(1) );
+	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(2000) );
 
 	  if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretocom )
 	       {

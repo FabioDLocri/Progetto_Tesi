@@ -88,6 +88,13 @@ void MainTask(void *argument)
 	    	   	   {
 	    	  		   ledyellowoff();
 	    	   	   }
+	    	  	   if(strcmp(stringa, "pippo") == 0) {
+	    	  		   ledgreenon(); // Accendi il LED
+	    	   	   }
+	    	  	   else
+	    	   	   {
+	    	  		   ledgreenoff();
+	    	   	   }
 	    	   		 // Resetta l'indice per la prossima stringa
 	    	   	   i = 0;
 	    	   }

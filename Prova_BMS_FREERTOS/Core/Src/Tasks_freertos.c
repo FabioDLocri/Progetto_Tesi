@@ -67,7 +67,7 @@ void StartTasks(void)
 	//creati per provare il progetto
 	Queuemisuretomain = xQueueCreate(8,sizeof(uint8_t));
 	Queuemisuretocom = xQueueCreate(8,sizeof(uint8_t));
-	Queueuarttomain = xQueueCreate(2,sizeof(uint8_t));
+	Queueuarttomain = xQueueCreate(8,sizeof(uint8_t));
 	QueueSOCtocom = xQueueCreate(8,sizeof(uint8_t));
 
 	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
@@ -118,6 +118,6 @@ void UARTCompleteCallback(UART_HandleTypeDef *huart)
 
 void UARTRXCompleteCallback(UART_HandleTypeDef *huart)
 {
-	xQueueSendToBackFromISR(Queueuarttomain,uartbuffer,1 );
+	xQueueSendToBackFromISR(Queueuarttomain,&uartbuffer,NULL);
 	HAL_UART_Receive_IT(&huart3,&uartbuffer,1);
 }
