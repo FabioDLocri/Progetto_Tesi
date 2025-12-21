@@ -47,15 +47,16 @@ void MainTask(void *argument)
 		QueueSetMemberHandle_t xHandle;
 
 		uint8_t incremento;
-		char carattere;
+		static char carattere=0;
 		char stringa[50]={0};
 		uint8_t i=0;
+		BaseType_t xreturn;
   for (;;)
   {
-	  xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(1) );
+	  xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(2000) );
 	  if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretomain )
 	       {
-	          xQueueReceive( Queuemisuretomain,(void *)&incremento, 0 );
+	          xQueueReceive( Queuemisuretomain,(void *)&incremento, pdMS_TO_TICKS(2000) );
 
 	          if ((incremento%2)==1){
 	        	  ledredon();
@@ -66,27 +67,30 @@ void MainTask(void *argument)
 	       else if( xHandle == ( QueueSetMemberHandle_t ) Queueuarttomain )
 	       {
 
-	    	   xQueueReceive(Queueuarttomain,(void *) &carattere, 0 );
-
-	    	   	    if(carattere != '\n' && carattere != '\r')
-	    	   	    {
-	    	   	    	stringa[i] = carattere;
-	    	   	    	i++;
-	    	   	    }
-	    	   	    else
-	    	   	    {
-	    	   			// Aggiungi il carattere nullo per terminare la stringa
-	    	   			stringa[i] = '\0';
-	    	   		 // Confronta la stringa ricevuta con "ciao"
-	    	   	    	 if(strcmp(stringa, "ciao") == 0) {
-	    	   	    		ledyellowon(); // Accendi il LED
-	    	   	    	} else {
-	    	   				ledyellowoff();
-	    	   			 }
-
+	    	   xreturn= xQueueReceive(Queueuarttomain,(void *) &carattere, pdMS_TO_TICKS(2000) );
+	    	   if (xreturn!=pdTRUE){
+	    		   debugprint("non ricevo dalla coda\n\r");
+	    	   }
+	    	   if(carattere != '\n' && carattere != '\r')
+	    	   {
+	    		   stringa[i] = carattere;
+	    		   i++;
+	    	   }
+	    	   else
+	    	   {
+	   			// Aggiungi il carattere nullo per terminare la stringa
+	    		   stringa[i] = '\0';
+	    	    // Confronta la stringa ricevuta con "ciao"
+	    	  	   if(strcmp(stringa, "ciao") == 0) {
+	    	  		   ledyellowon(); // Accendi il LED
+	    	   	   }
+	    	  	   else
+	    	   	   {
+	    	  		   ledyellowoff();
+	    	   	   }
 	    	   		 // Resetta l'indice per la prossima stringa
-	    	   	    	i = 0;
-	    	   	    }
+	    	   	   i = 0;
+	    	   }
 	       }
   }
 }
