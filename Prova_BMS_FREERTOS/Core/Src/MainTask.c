@@ -18,25 +18,56 @@
 void MainTask(void *argument)
 {
 	QueueSetMemberHandle_t xHandle;
+	Batteria Pacco_bat;
+	xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(100) );
+	char stringa[50] ={0};
+	uint8_t i=0;
+	BaseType_t xreturn;
+	static char carattere=0;
 
   for (;;)
   {
-	  xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(100) );
-	  Batteria Pacco_bat;
-	  char stringa[50];
 
-	  if( xHandle == NULL )
+	xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(2000) );
+	  if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretomain )
 	       {
-		  	  debugprint("è passato troppo tempo dalla richiesta\n");
-	       }
-	       else if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretomain )
-	       {
-	          xQueueReceive( Queuemisuretomain,(void *)&Pacco_bat, 0 );
-
+	          xQueueReceive( Queuemisuretomain,(void *)&Pacco_bat, pdMS_TO_TICKS(500) );
 	       }
 	       else if( xHandle == ( QueueSetMemberHandle_t ) Queueuarttomain )
 	       {
-	          xQueueReceive(Queueuarttomain,(void *) &stringa, 0 );
+
+	    	   xreturn= xQueueReceive(Queueuarttomain,(void *) &carattere, pdMS_TO_TICKS(2000) );
+
+	    	   if (xreturn!=pdTRUE){
+	    		   debugprint("non ricevo dalla coda\n\r");
+	    	   }
+	    	   if(carattere != '\n' && carattere != '\r')
+	    	   {
+	    		   stringa[i] = carattere;
+	    		   i++;
+	    	   }
+	    	   else
+	    	   {
+	   			// Aggiungo il carattere nullo per terminare la stringa
+	    		   stringa[i] = '\0';
+	    	    // Confronta la stringa ricevuta con "ciao"
+	    	  	   if(strcmp(stringa, "ciao") == 0) {
+	    	  		   ledyellowon(); // Accendi il LED
+	    	   	   }
+	    	  	   else
+	    	   	   {
+	    	  		   ledyellowoff();
+	    	   	   }
+	    	  	   if(strcmp(stringa, "pippo") == 0) {
+	    	  		   ledgreenon(); // Accendi il LED
+	    	   	   }
+	    	  	   else
+	    	   	   {
+	    	  		   ledgreenoff();
+	    	   	   }
+	    	   		 // Resetta l'indice per la prossima stringa
+	    	   	   i = 0;
+	    	   }
 	       }
   }
 }

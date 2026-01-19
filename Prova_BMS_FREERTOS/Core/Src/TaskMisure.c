@@ -23,6 +23,7 @@ extern UART_HandleTypeDef huart3;
 	float tensione_GPIO[6]={0};
 	Status_register Status;
 	Datatocom Misura;
+	BaseType_t xreturn;
 
 
 	ltc6811_configure();
@@ -35,10 +36,20 @@ extern UART_HandleTypeDef huart3;
 		Misura.Pack=Pacco_bat;
 		Misura.reg=Status;
 
-		xQueueSend( Queuemisuretomain, &Pacco_bat, 0 );
-		xQueueSend( Queuemisuretocom, &Misura,0 );
+		xreturn = xQueueSend( Queuemisuretomain, &Pacco_bat, 0 );
+		if (xreturn!=pdTRUE){
+			debugprint("non scrive nella coda da misure a main");
+		}
 
-		xStreamBufferSend( BuffertoSOC, (void *)&Pacco_bat, sizeof(Pacco_bat), 0 );
+		xreturn = xQueueSend( Queuemisuretocom, &Misura,0 );
+		if (xreturn!=pdTRUE){
+			debugprint("non scrive nella coda da misure a com\n\r");
+		}
+
+		xreturn = xQueueSend( QueuemisuretoSOC, &Pacco_bat, 0 );
+		if (xreturn!=pdTRUE){
+			debugprint("non scrive nella coda da misure a SOC\n\r");
+		}
 
 		vTaskDelayUntil(&xLastExecutionTime, pdMS_TO_TICKS(100));
   }
@@ -66,9 +77,9 @@ void TaskMisure(void *argument)
 			debugprint("non scrive nella coda da misure a com\n\r");
 		}
 		xreturn = xQueueSend( QueuemisuretoSOC, &numero,0 );
-				if (xreturn!=pdTRUE){
-					debugprint("non scrive nella coda da misure a SOC\n\r");
-				}
+		if (xreturn!=pdTRUE){
+			debugprint("non scrive nella coda da misure a SOC\n\r");
+		}
 
 		vTaskDelayUntil(&xLastExecutionTime, pdMS_TO_TICKS(1000));
   }

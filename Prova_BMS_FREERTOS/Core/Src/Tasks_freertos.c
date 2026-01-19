@@ -58,10 +58,11 @@ void StartTasks(void)
 
 /*	Queuemisuretomain = xQueueCreate(8,sizeof(Batteria));
 	Queuemisuretocom = xQueueCreate(8,sizeof(Datatocom));
-	Queueuarttomain = xQueueCreate(2,sizeof(uint8_t));
+	Queueuarttomain = xQueueCreate(8,sizeof(uint8_t));
 	QueueSOCtocom = xQueueCreate(8,sizeof(float[N_celle]));
 
-	BuffertoSOC = xStreamBufferCreate(24*sizeof(Batteria),8*sizeof(Batteria));
+	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
+
 */
 
 	//creati per provare il progetto
@@ -71,7 +72,6 @@ void StartTasks(void)
 	QueueSOCtocom = xQueueCreate(8,sizeof(uint8_t));
 
 	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
-//	BuffertoSOC = xStreamBufferCreate(24*sizeof(uint8_t),sizeof(uint8_t));
 
     Settocom = xQueueCreateSet( 8 + 8 );
 	if (Settocom == NULL) {

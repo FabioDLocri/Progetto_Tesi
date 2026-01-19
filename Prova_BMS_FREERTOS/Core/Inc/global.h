@@ -31,9 +31,6 @@ typedef struct {
 }Batteria;
 
 
-
-
-
 typedef struct {
 	float somma_celle;
 	float int_temperature;
