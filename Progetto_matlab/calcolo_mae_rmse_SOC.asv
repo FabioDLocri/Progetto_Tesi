@@ -32,8 +32,8 @@ function [mae, rmse] = calcolo_mae_rmse_SOC(y_true, y_pred, t)
     rmse = sqrt(mean(err.^2, 1));
 
     % Stampa risultati
-    fprintf('MAE  per SOC Cella:  '); fprintf('%.6f  ', mae); fprintf('\n');
-    fprintf('RMSE per SOC Cella:  '); fprintf('%.6f  ', rmse); fprintf('\n');
+    fprintf('MAE  per Cella:  '); fprintf('%.6f  ', mae); fprintf('\n');
+    fprintf('RMSE per Cella:  '); fprintf('%.6f  ', rmse); fprintf('\n');
 
     % Grafici (4 subplot)
     figure;

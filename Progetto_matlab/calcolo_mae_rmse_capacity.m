@@ -54,15 +54,19 @@ function [mae, rmse] = calcolo_mae_rmse_capacity(c, y_pred, t)
     for k = 1:4
         subplot(2,2,k);
         if nargin < 3 || isempty(t)
-            plot(err(:,k), 'LineWidth', 1.2);
+            plot(err(:,k), 'LineWidth', 1.5);
             xlabel('Campione');
+            m = max(abs(err(:,k)));
+            ylim([-1.1*m, 1.1*m]);
         else
             t = t(:);
             if size(err,1) ~= numel(t)
                 error('t deve avere la stessa lunghezza dei segnali (campioni).');
             end
-            plot(t, err(:,k), 'LineWidth', 1.2);
+            plot(t, err(:,k), 'LineWidth', 1.5);
             xlabel('Tempo [s]');
+            m = max(abs(err(:,k)));
+            ylim([-1.1*m, 1.1*m]);     
         end
         grid on;
         ylabel(sprintf('Errore Capacità Cella %d', k));
