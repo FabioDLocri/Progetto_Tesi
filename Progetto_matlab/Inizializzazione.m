@@ -20,7 +20,7 @@ cell.c1 = mdl_par.c1;
 %%%%%%%%%%%%%%% parametri delle celle %%%%%%%%%%%%%%%%%%%%
 Ncell=4;         %
 c_nom=1;        % [Ah] il fattore 1/3600 per convertire da [As] lo considero quando integro la corrente per calcolare il SoC in simulink per
-c_var=0.1;
+c_var=0.2;
 batt.soc0 = 1 + zeros(Ncell,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -30,11 +30,11 @@ c_max=c_nom*(1+c_var);
 
 batt.ncell = Ncell;
 batt.c_nom = c_nom;
-batt.c_var = 0.05;
+batt.c_var = c_var;
 batt.c_cell =  (c_max:-(c_max-c_min)/(Ncell-1):c_min)';
-batt.r0 = (cell.r0*cell.capacity) ./ batt.c_cell;       %scalo i risultati per la capacità che considero
-batt.r1= (cell.r1*cell.capacity) ./ batt.c_cell;
-batt.c1= (cell.c1*cell.capacity) ./ batt.c_cell;
+batt.r0 = (cell.r0/cell.capacity) .* batt.c_cell;       %scalo i risultati per la capacità che considero
+batt.r1= (cell.r1/cell.capacity) .* batt.c_cell;
+batt.c1= (cell.c1/cell.capacity) .* batt.c_cell;
 batt.soc=cell.soc;
 batt.ocv=cell.ocv;
 batt.soc0 = 1 + zeros(Ncell,1);
@@ -42,11 +42,11 @@ batt.soc0 = 1 + zeros(Ncell,1);
 %uso gli stessi parametri precedenti, ma facendo in modo che l'AEKF non
 %sappia la Capacità vera delle celle.
 pack.ncell = Ncell;
-pack.c_nom = batt.c_cell; %c_nom;
+pack.c_nom = batt.c_nom; %c_nom;
 pack.c_cell=([1 1 1 1].*c_nom)';
-pack.r0=cell.r0*cell.capacity ./ pack.c_cell;
-pack.r1=cell.r1*cell.capacity ./ pack.c_cell;
-pack.c1=cell.c1*cell.capacity ./ pack.c_cell;
+pack.r0=cell.r0/cell.capacity .* pack.c_cell;
+pack.r1=cell.r1/cell.capacity .* pack.c_cell;
+pack.c1=cell.c1/cell.capacity .* pack.c_cell;
 pack.soc=cell.soc;
 pack.ocv=cell.ocv;
 pack.soc0 = 1 + zeros(Ncell,1);
