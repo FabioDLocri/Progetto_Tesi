@@ -100,11 +100,14 @@ current_input_simulink = [time_vector, current_profile];
 
 fprintf('Inizializzazione completata. Le variabili globali e i parametri del pacco sono pronti.\n');
 
+fprintf('Esecuzione Simulazione Simulink\n');
+
 simIn = Simulink.SimulationInput("BMS_SOC");
 out = sim(simIn);
 
 
 %% Calcolo MAE (mean absolute error) e RMSE (root mean square error)
+fprintf('Calcolo errori\n');
 SOC_true = out.get('SOC_true');
 SOC_mis = out.get('SOC_mis');
 tout = out.get('tout');
