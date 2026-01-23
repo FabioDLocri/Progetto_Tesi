@@ -19,7 +19,7 @@ cell.c1 = mdl_par.c1;
 
 %%%%%%%%%%%%%%% parametri delle celle %%%%%%%%%%%%%%%%%%%%
 Ncell=4;         %
-c_nom=2;        % [Ah] il fattore 1/3600 per convertire da [As] lo considero quando integro la corrente per calcolare il SoC in simulink per
+c_nom=1;        % [Ah] il fattore 1/3600 per convertire da [As] lo considero quando integro la corrente per calcolare il SoC in simulink per
 c_var=0.2;
 batt.soc0 = 1 + zeros(Ncell,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
