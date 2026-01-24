@@ -20,13 +20,13 @@ cell.c1 = mdl_par.c1;
 %%%%%%%%%%%%%%% parametri delle celle %%%%%%%%%%%%%%%%%%%%
 Ncell=4;         %
 c_nom=2;        % [Ah] il fattore 1/3600 per convertire da [As] lo considero quando integro la corrente per calcolare il SoC in simulink per
-c_var=0.15;
+c_var=0.2;
 batt.soc0 = 1 + zeros(Ncell,1);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 c_min=c_nom*(1-c_var);
-c_max=c_nom*(1+c_var);
+c_max=c_nom*(1);
 
 batt.ncell = Ncell;
 batt.c_nom = c_nom;
@@ -116,3 +116,18 @@ Capacity_mis = out.get("Capacity_mis");
 [mae, rmse] = calcolo_mae_rmse_SOC(SOC_true.Data, SOC_mis.Data,SOC_true.Time);
 
 [mae_cap, rmse_cap] = calcolo_mae_rmse_capacity( batt.c_cell, Capacity_mis.Data, Capacity_mis.Time);
+
+%% funzione calcolo SOH
+Q_nom=batt.c_nom;
+Q_meas = Capacity_mis.Data;     % 4x1xN
+
+% Converte in 4xN
+Q_meas2 = squeeze(Q_meas);   % 4xN
+
+% SOH istantaneo per cella (4xN)
+SOH_vec = (Q_meas2 ./ Q_nom) * 100;
+
+% SOH medio per cella (4x1)
+SOH_mean = mean(SOH_vec, 2)
+
+
