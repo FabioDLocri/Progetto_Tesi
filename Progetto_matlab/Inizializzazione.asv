@@ -120,6 +120,6 @@ Capacity_mis = out.get("Capacity_mis");
 %% funzione calcolo SOH
 
 
-SOH = calcolo_SOH(batt.c_nom, Capacity_mis.Data);
+SOH = calcolo_SOH(, Capacity_mis.Data);
 
 
