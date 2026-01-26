@@ -34,15 +34,31 @@ switch k
             c_min=c_nom*(1-c_var);
             c_max=c_nom*(1);
             batt.c_cell = (c_max:-(c_max-c_min)/(Ncell-1):c_min)';
+            pack.sigma_v = 0.0005;
+            pack.sigma_i = 0.02;
+            pack.offset_v = 0;
+            pack.offset_i = 0;
     case 2
             c_nom=8;
             batt.c_cell = [7.2 7.6 8 7.7]';
+            pack.sigma_v = 0;
+            pack.sigma_i = 0;
+            pack.offset_v = 0.02;
+            pack.offset_i = -0.1;
     case 3
             c_nom=6;
             batt.c_cell = [6.3 6 4.5 5.5]';
+            pack.sigma_v = 0.2;
+            pack.sigma_i = 0.03;
+            pack.offset_v = 0.002;
+            pack.offset_i = 0.2;
     case 4
             c_nom=3;
             batt.c_cell = [3 2.9 2.8 1.8]';
+            pack.sigma_v = 0;
+            pack.sigma_i = 0;
+            pack.offset_v = 0;
+            pack.offset_i = 0;
 end
 
 
@@ -143,7 +159,6 @@ end
     plot(squeeze(SOC_error.Time), Err_perc);
     xlabel('Time (s)');
     ylabel('State of Charge error(%)');
-     ylim([-0.1, 0.4]);
     title(sprintf('SOC Error simulazione: %d',k));
 
     %Plottiamo i risultati della capacità
@@ -168,8 +183,7 @@ end
     subplot(3,1,3);
     plot(squeeze(Capacity_err.Time), Capacity_err_perc);
     xlabel('Time (s)');
-    ylabel('Capacity error (%)');
-    ylim([-1, 2]); 
+    ylabel('Capacity error (%)'); 
     title(sprintf('Capacity Error simulazione: %d',k));
 end
 

@@ -34,15 +34,31 @@ switch k
             c_min=c_nom*(1-c_var);
             c_max=c_nom*(1);
             batt.c_cell = (c_max:-(c_max-c_min)/(Ncell-1):c_min)';
+            pack.sigma_v = 0.0005;
+            pack.sigma_i = 0.02;
+            pack.offset_v = 0;
+            pack.offset_i = 0;
     case 2
             c_nom=8;
             batt.c_cell = [7.2 7.6 8 7.7]';
+            pack.sigma_v = 0;
+            pack.sigma_i = 0;
+            pack.offset_v = 0.02;
+            pack.offset_i = -0.1;
     case 3
             c_nom=6;
             batt.c_cell = [6.3 6 4.5 5.5]';
+            pack.sigma_v = 0.2;
+            pack.sigma_i = 0.03;
+            pack.offset_v = 0.00;
+            pack.offset_i = -0.1;
     case 4
-            c_nom=2;
-            batt.c_cell = [2 1.9 1.8 1.7]';
+            c_nom=3;
+            batt.c_cell = [3 2.9 2.8 1.8]';
+            pack.sigma_v = 0;
+            pack.sigma_i = 0;
+            pack.offset_v = 0;
+            pack.offset_i = 0;
 end
 
 
@@ -130,46 +146,44 @@ end
     Capacity_err=out(k).get("Capacity_err");
 
     %plottiamo i parametri del SOC
-    figure('Name',sprintf('Q celle %2f',batt.c_cell));
-    subplot(3,1,1);
-    plot(SOC_true.Time, SOC_true.Data);
-    xlabel('Time (s)');
-    ylabel('State of Charge (SOC)');
-    title(sprintf('SOC True simulazione %d',k));
+    figure('Name',sprintf('Q celle %4.2f',batt.c_cell),'NumberTitle','off');
     
-    subplot(3,1,2);
-    plot(squeeze(SOC_mis.Time), squeeze(SOC_mis.Data));
+    subplot(2,1,1);
+    plot(squeeze(SOC_mis.Time), squeeze(SOC_mis.Data)*100);
     xlabel('Time (s)');
-    ylabel('State of Charge Ext(SOC)');
+    ylabel('State of Charge Ext (%)');
     title(sprintf('SOC EXT simulazione %d',k));
     
-    subplot(3,1,3);
-    plot(squeeze(SOC_error.Time), squeeze(SOC_error.Data));
+    Err_perc=squeeze(SOC_error.Data)/c_nom*100;
+    subplot(2,1,2);
+    plot(squeeze(SOC_error.Time), Err_perc);
     xlabel('Time (s)');
-    ylabel('State of Charge error)');
+    ylabel('State of Charge error(%)');
     title(sprintf('SOC Error simulazione: %d',k));
 
     %Plottiamo i risultati della capacità
     N=length(Capacity_mis.Time);
     V=repmat(batt.c_cell,1,N);
-    figure('Name',sprintf('Q celle %2f',batt.c_cell));
-
+    
+    figure('Name',sprintf('Q celle %4.2f',batt.c_cell),'NumberTitle','off');
     subplot(3,1,1);
     plot(squeeze(Capacity_mis.Time), squeeze(V));
     xlabel('Time (s)');
-    ylabel('Capacità');
+    ylabel('Capacità (Ah)');
     title(sprintf('Capacità simulazione %d',k));
     
     subplot(3,1,2);
     plot(squeeze(Capacity_mis.Time), squeeze(Capacity_mis.Data));
     xlabel('Time (s)');
-    ylabel('Capacity Ext');
+    ylabel('Capacity Ext (Ah)');
     title(sprintf('Capacity EXT simulazione %d',k));
     
+
+    Capacity_err_perc=squeeze(Capacity_err.Data)/c_nom*100;
     subplot(3,1,3);
-    plot(squeeze(Capacity_err.Time), squeeze(Capacity_err.Data));
+    plot(squeeze(Capacity_err.Time), Capacity_err_perc);
     xlabel('Time (s)');
-    ylabel('Capacity error');
+    ylabel('Capacity error (%)'); 
     title(sprintf('Capacity Error simulazione: %d',k));
 end
 
