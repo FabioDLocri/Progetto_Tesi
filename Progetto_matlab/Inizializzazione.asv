@@ -127,27 +127,50 @@ end
     SOC_mis = out(k).get('SOC_mis');
     SOC_error = out(k).get('SOC_err');
     Capacity_mis = out(k).get("Capacity_mis");
+    Capacity_err=out(k).get("Capacity_err");
 
-    figure;
-    % Plotting the true and measured SOC for comparison
+    %plottiamo i parametri del SOC
+    figure('Name',sprintf('Q celle %2f',batt.c_cell));
     subplot(3,1,1);
     plot(SOC_true.Time, SOC_true.Data);
     xlabel('Time (s)');
     ylabel('State of Charge (SOC)');
-    title('SOC_True cella %d',k);
+    title(sprintf('SOC True simulazione %d',k));
     
     subplot(3,1,2);
     plot(squeeze(SOC_mis.Time), squeeze(SOC_mis.Data));
     xlabel('Time (s)');
     ylabel('State of Charge Ext(SOC)');
-    title('SOC EXT cella %d',k);
+    title(sprintf('SOC EXT simulazione %d',k));
     
-    subplot(3,1,2);
-    plot(squeeze(SOC_mis.Time), squeeze(SOC_mis.Data));
+    subplot(3,1,3);
+    plot(squeeze(SOC_error.Time), squeeze(SOC_error.Data));
     xlabel('Time (s)');
     ylabel('State of Charge error)');
-    title('SOC Error cella: %d',k);
+    title(sprintf('SOC Error simulazione: %d',k));
 
+    %Plottiamo i risultati della capacità
+    N=length(Capacity_mis.Time);
+    V=repmat(batt.c_cell,1,N);
+    figure('Name',sprintf('Q celle %2f',batt.c_cell));
+
+    subplot(3,1,1);
+    plot(squeeze(Capacity_mis.Time), squeeze(V));
+    xlabel('Time (s)');
+    ylabel('Capacità');
+    title(sprintf('Capacità simulazione %d',k));
+    
+    subplot(3,1,2);
+    plot(squeeze(Capacity_mis.Time), squeeze(Capacity_mis.Data));
+    xlabel('Time (s)');
+    ylabel('Capacity Ext');
+    title(sprintf('Capacity EXT simulazione %d',k));
+    
+    subplot(3,1,3);
+    plot(squeeze(Capacity_err.Time), squeeze(Capacity_err.Data));
+    xlabel('Time (s)');
+    ylabel('Capacity error');
+    title(sprintf('Capacity Error simulazione: %d',k));
 end
 
 
