@@ -22,8 +22,8 @@ QueueHandle_t Queuemisuretocom;
 QueueHandle_t Queueuarttomain;
 QueueHandle_t QueueSOCtocom;
 QueueHandle_t QueuemisuretoSOC;
+QueueHandle_t QueueSOCtomain;
 
-StreamBufferHandle_t BuffertoSOC;
 
 QueueSetHandle_t Settomain;
 QueueSetHandle_t Settocom;
@@ -60,6 +60,7 @@ void StartTasks(void)
 	Queuemisuretocom = xQueueCreate(8,sizeof(Datatocom));
 	Queueuarttomain = xQueueCreate(8,sizeof(uint8_t));
 	QueueSOCtocom = xQueueCreate(8,sizeof(float[N_celle]));
+	QueueSOCtomain = xQueueCreate(8,sizeof(float[N_celle]));
 
 	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
 
@@ -70,6 +71,7 @@ void StartTasks(void)
 	Queuemisuretocom = xQueueCreate(8,sizeof(uint8_t));
 	Queueuarttomain = xQueueCreate(8,sizeof(uint8_t));
 	QueueSOCtocom = xQueueCreate(8,sizeof(uint8_t));
+	QueueSOCtomain = xQueueCreate(8,sizeof(uint8_t));
 
 	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
 
@@ -77,27 +79,32 @@ void StartTasks(void)
 	if (Settocom == NULL) {
 		debugprint("Errore creazione Settocom\n");
 	}
-    Settomain = xQueueCreateSet( 8 + 2 );
+    Settomain = xQueueCreateSet( 8 + 8 + 8);
 	if (Settomain == NULL) {
 		debugprint("Errore creazione Settomain\n");
 	}
 
 	xreturn = xQueueAddToSet( Queuemisuretocom, Settocom );
 	if (xreturn!=pdPASS){
-		debugprint("la coda non è inserita nel settocom");
+		debugprint("la coda da misure non è inserita nel settocom");
 	}
 	xreturn = xQueueAddToSet( QueueSOCtocom, Settocom );
 	if (xreturn!=pdPASS){
-		debugprint("la coda non è inserita nel settocom");
+		debugprint("la coda dal SOC non è inserita nel settocom");
 	}
 
 	xreturn = xQueueAddToSet( Queuemisuretomain, Settomain );
 	if (xreturn!=pdPASS){
-		debugprint("la coda non è inserita nel settomain");
+		debugprint("la coda da misure non è inserita nel settomain");
 	}
 	xreturn = xQueueAddToSet( Queueuarttomain, Settomain );
 	if (xreturn!=pdPASS){
-		debugprint("la coda non è inserita nel settomain");
+		debugprint("la coda dall'uart non è inserita nel settomain");
+	}
+
+	xreturn = xQueueAddToSet( QueueSOCtomain, Settomain );
+	if (xreturn!=pdPASS){
+		debugprint("la coda dal SOC non è inserita nel settomain");
 	}
 
 	HAL_UART_Receive_IT(&huart3, &uartbuffer, 1);

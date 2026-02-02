@@ -33,7 +33,7 @@ void MainTask(void *argument)
 	       {
 	          xQueueReceive( Queuemisuretomain,(void *)&Pacco_bat, pdMS_TO_TICKS(500) );
 	       }
-	       else if( xHandle == ( QueueSetMemberHandle_t ) Queueuarttomain )
+	   else if( xHandle == ( QueueSetMemberHandle_t ) Queueuarttomain )
 	       {
 
 	    	   xreturn= xQueueReceive(Queueuarttomain,(void *) &carattere, pdMS_TO_TICKS(2000) );
@@ -69,6 +69,11 @@ void MainTask(void *argument)
 	    	   	   i = 0;
 	    	   }
 	       }
+	   else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtomain
+	   	   {
+	   	   	   //da modificare per vedere che dato passa la coda
+	   	   	   xQueueReceive( QueueSOCtomain,(void *)&Pacco_bat, pdMS_TO_TICKS(500) );
+	   	   }
   }
 }
 */

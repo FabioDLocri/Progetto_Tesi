@@ -1,8 +1,8 @@
-../Core/Src/global.c:23:6:ledredoff	8	static
-../Core/Src/global.c:27:6:ledyellowoff	8	static
-../Core/Src/global.c:31:6:ledgreenoff	8	static
-../Core/Src/global.c:36:6:ledredon	8	static
-../Core/Src/global.c:40:6:ledyellowon	8	static
-../Core/Src/global.c:44:6:ledgreenon	8	static
-../Core/Src/global.c:48:6:CSSPION	16	static
-../Core/Src/global.c:58:6:CSSPIOFF	16	static
+../Core/Src/global.c:17:6:ledredoff	8	static
+../Core/Src/global.c:21:6:ledyellowoff	8	static
+../Core/Src/global.c:25:6:ledgreenoff	8	static
+../Core/Src/global.c:30:6:ledredon	8	static
+../Core/Src/global.c:34:6:ledyellowon	8	static
+../Core/Src/global.c:38:6:ledgreenon	8	static
+../Core/Src/global.c:42:6:CSSPION	16	static
+../Core/Src/global.c:52:6:CSSPIOFF	16	static

@@ -17,9 +17,25 @@
 void TaskCalcoloSOC(void *argument)
 {
 	Batteria Pacco[8];
-  for (;;)
-  {
-	  xStreamBufferReceive( BuffertoSOC, (void*) Pacco, sizeof( Pacco[8] ), pdMS_TO_TICKS( 20 ) );
+	BaseType_t xreturn;
+
+  	for (;;)
+  	{
+		xQueueReceive(QueuemisuretoSOC, &Pacco, pdMS_TO_TICKS(500));
+	  // si usa l'AEKF per calcolare SOC e AEKF
+
+	   	xreturn = xQueueSend(QueueSOCtocom, &dato,pdMS_TO_TICKS(2000));
+	    if (xreturn != pdTRUE)
+	    {
+	   		debugprint("non scrive nella coda da SOC a com\r\n");
+	    }
+
+	    xreturn = xQueueSend(QueueSOCtomain, &dato, pdMS_TO_TICKS(2000));
+	    if (xreturn != pdTRUE)
+	    {
+	   		debugprint("non scrive nella coda da SOC a main\r\n");
+	    }
+
   }
 }
 */

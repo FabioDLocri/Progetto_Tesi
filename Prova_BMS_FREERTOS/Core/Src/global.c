@@ -12,12 +12,6 @@
 
 
 
-SoCConfig cfg={
-        .capacity_Ah = 20.0f,    // capacità nominale 20 Ah
-        .eta_charge = 0.995f,
-        .eta_discharge = 1.000f
-};
-
 
 //Macro per accendere o spegnere i led sulla board
 void ledredoff(void){

@@ -43,17 +43,6 @@ typedef struct{
 	Status_register reg;
 }Datatocom;
 
-// Configurazione per il calcolo SoC
-typedef struct {
-    // Capacità cella in Ah (necessaria per il coulomb counting)
-    float capacity_Ah;
-
-    // Efficienze per correzione coulomb counting
-    float eta_charge;     // es: 0.995 (perdita in carica)
-    float eta_discharge;  // es: 1.000 o 0.999
-} SoCConfig;
-
-extern SoCConfig cfg;
 
 //Macro per accendere o spegnere i led sulla board
 

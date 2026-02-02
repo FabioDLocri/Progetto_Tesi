@@ -55,7 +55,7 @@
 SPI_HandleTypeDef hspi3;
 SPI_HandleTypeDef hspi5;
 
-UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart2; // uart di debug
 UART_HandleTypeDef huart3;
 
 /* Definitions for defaultTask */

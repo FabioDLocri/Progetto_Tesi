@@ -16,7 +16,7 @@ cell.r0 = mdl_par.r0;
 cell.r1 = mdl_par.r1;
 cell.c1 = mdl_par.c1;
 
-for k=1:4
+
     
     %%%%%%%%%%%%%%% parametri delle celle %%%%%%%%%%%%%%%%%%%%
     Ncell=4;         %
@@ -25,40 +25,41 @@ for k=1:4
     batt.soc0 = 1 + zeros(Ncell,1);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
+for k=1:4
+    
 switch k
     case 1
             c_nom=2;
             c_min=c_nom*(1-c_var);
             c_max=c_nom*(1);
             batt.c_cell = (c_max:-(c_max-c_min)/(Ncell-1):c_min)';
-            pack.sigma_v = 0.000001;
-            pack.sigma_i = 0.000001;
-            pack.offset_v = 0.003;
-            pack.offset_i = 0.0016;
-    case 2
-            c_nom=8;
-            batt.c_cell = [7.2 7.6 8 7.7]';
-            pack.sigma_v = 0;
-            pack.sigma_i = 0;
-            pack.offset_v = 0.02;
-            pack.offset_i = -0.001;
-    case 3
-            c_nom=6;
-            batt.c_cell = [6.3 6 4.5 5.5]';
-            pack.sigma_v = 0.000001;
-            pack.sigma_i = 0.000001;
-            pack.offset_v = 0.01;
-            pack.offset_i = 0.0016;
-    case 4
-            c_nom=3;
-            batt.c_cell = [3 2.9 2.8 1.8]';
             pack.sigma_v = 0;
             pack.sigma_i = 0;
             pack.offset_v = 0;
             pack.offset_i = 0;
+    case 2
+            c_nom=20;
+            batt.c_cell = [20 19.9 19.8 17]';
+            pack.sigma_v = 0;
+            pack.sigma_i = 0;
+            pack.offset_v = 0;
+            pack.offset_i = 0;
+    case 3
+            c_nom=2;
+            c_min=c_nom*(1-c_var);
+            c_max=c_nom*(1);
+            batt.c_cell = (c_max:-(c_max-c_min)/(Ncell-1):c_min)';
+            pack.sigma_v = 0.000001;
+            pack.sigma_i = 0.000001;
+            pack.offset_v = 0.001;
+            pack.offset_i = 0.001;
+    case 4
+            c_nom=20;
+            batt.c_cell = [20 19.9 19.8 17]';
+            pack.sigma_v = 0.000001;
+            pack.sigma_i = 0.000001;
+            pack.offset_v = 0.001;
+            pack.offset_i = 0.001;
 end
 
 
@@ -72,6 +73,8 @@ end
     batt.soc=cell.soc;
     batt.ocv=cell.ocv;
     batt.soc0 = 1 + zeros(Ncell,1);
+    
+ 
 
     %uso gli stessi parametri precedenti, ma facendo in modo che l'AEKF non
     %sappia la Capacità vera delle celle.
@@ -84,6 +87,20 @@ end
     pack.soc=cell.soc;
     pack.ocv=cell.ocv;
     pack.soc0 = 1 + zeros(Ncell,1);
+    
+    %calcoliamo la tabella delle derivata
+    SOC_grid =cell.soc;
+    OCV_tab  =cell.ocv;
+    
+    n_points = length(SOC_grid);
+    dSOC = SOC_grid(2) - SOC_grid(1);
+    dOCV_temp = diff(OCV_tab) / dSOC;
+    dOCV_tab = zeros(n_points, 1);
+    for i = 1:n_points-1
+        dOCV_tab(i) = dOCV_temp(i);
+    end
+    dOCV_tab(n_points) = dOCV_temp(n_points-1);
+    pack.docv=dOCV_tab;
 
     % Parametri Bilanciamento DC-DC
 
@@ -123,9 +140,9 @@ end
         current_profile(idx + 2*sim_duration+(401:550)) = -3.5;   % carica
         current_profile(idx + 2*sim_duration+(751:900)) =  1.5;   % scarica leggera
 
-        current_profile(idx + 3*sim_duration+(101:300)) =  -3;   % scarica
-        current_profile(idx + 3*sim_duration+(401:550)) = 3.5;   % carica
-        current_profile(idx + 3*sim_duration+(751:900)) =  -1.5;   % scarica leggera
+        current_profile(idx + 3*sim_duration+(101:300)) =  -3;   % carica
+        current_profile(idx + 3*sim_duration+(401:550)) = 3.5;   % scarica
+        current_profile(idx + 3*sim_duration+(751:900)) =  -1.5;   % carica leggera
 
 
     end
@@ -137,17 +154,17 @@ end
     fprintf('Esecuzione Simulazione Simulink n: %d \n',k);
 
     simIn = Simulink.SimulationInput("BMS_SOC");
-    out(k) = sim(simIn);
+    out = sim(simIn);
     
-    SOC_true = out(k).get('SOC_true');
-    SOC_mis = out(k).get('SOC_mis');
-    SOC_error = out(k).get('SOC_err');
-    Capacity_mis = out(k).get("Capacity_mis");
-    Capacity_err=out(k).get("Capacity_err");
-    V_cell=out(k).get("V_cell");
-    I_cell=out(k).get("I_cell");
-    V_cell_noisy=out(k).get("V_cell_noisy");
-    I_cell_noisy=out(k).get("I_cell_noisy");
+    SOC_true = out.get('SOC_true');
+    SOC_mis = out.get('SOC_mis');
+    SOC_error = out.get('SOC_err');
+    Capacity_mis = out.get("Capacity_mis");
+    Capacity_err=out.get("Capacity_err");
+    V_cell=out.get("V_cell");
+    I_cell=out.get("I_cell");
+    V_cell_noisy=out.get("V_cell_noisy");
+    I_cell_noisy=out.get("I_cell_noisy");
 
     %plottiamo i parametri del SOC
     figure('Name',sprintf('Q celle %4.2f',batt.c_cell),'NumberTitle','off');
@@ -168,17 +185,17 @@ end
     title(sprintf('SOC Error simulazione: %d',k));
 
     %Plottiamo i risultati della capacità
-    N=length(Capacity_mis.Time);
-    V=repmat(batt.c_cell,1,N);
-    
+    % N=length(Capacity_mis.Time);
+    % V=repmat(batt.c_cell,1,N);
+    % 
     figure('Name',sprintf('Q celle %4.2f',batt.c_cell),'NumberTitle','off');
-    subplot(3,1,1);
-    plot(squeeze(Capacity_mis.Time), squeeze(V));
-    xlabel('Time (s)');
-    ylabel('Capacità (Ah)');
-    title(sprintf('Capacità simulazione %d',k));
+    % subplot(3,1,1);
+    % plot(squeeze(Capacity_mis.Time), squeeze(V));
+    % xlabel('Time (s)');
+    % ylabel('Capacità (Ah)');
+    % title(sprintf('Capacità simulazione %d',k));
     
-    subplot(3,1,2);
+    subplot(2,1,1);
     plot(squeeze(Capacity_mis.Time), squeeze(Capacity_mis.Data));
     xlabel('Time (s)');
     ylabel('Capacity Ext (Ah)');
@@ -186,7 +203,7 @@ end
     
 
     Capacity_err_perc=squeeze(Capacity_err.Data)./batt.c_cell*100;
-    subplot(3,1,3);
+    subplot(2,1,2);
     plot(squeeze(Capacity_err.Time), Capacity_err_perc);
     xlabel('Time (s)');
     ylabel('Capacity error (%)'); 
@@ -222,5 +239,3 @@ end
     title(sprintf('Corrente celle con rumore simulazione: %d',k));
 
 end
-
-
