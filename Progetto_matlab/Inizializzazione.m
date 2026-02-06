@@ -125,16 +125,14 @@ end
     pv_profile_raw_interp.I= interp1(pv_profile_raw.date_time, pv_profile_raw.I, pv_profile_raw_interp.t, 'linear');
 
     pv_pk = 10;
-    start_day = 1;   % giorno dell'anno
+    start_day = 48;   % giorno dell'anno
     n_days    = 5;  % durata simulazione
 
-
-    anno_pvprofile = year(pv_profile_raw_interp.t(1));
-    t0 = datetime(anno_pvprofile,1,1) + days(start_day - 1);
+ 
+    t0 = pv_profile_raw_interp.t(1) + days(start_day - 1);
     t1 = t0 + days(n_days) - minutes(1);
 
-    anno_loadprofile = year(load_profile_raw.t(1));
-    t2 = datetime(anno_loadprofile,1,1) + days(start_day - 1);
+    t2 = load_profile_raw.t(1) + days(start_day - 1);
     t3 = t2 + days(n_days) - minutes(1);
 
 
