@@ -72,14 +72,14 @@ void stampa_temperatura_interna(Status_register reg){
        xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
 }
 
-void stampa_SOC(float *SOC){
+void stampa_SOC(Batteria *Pacco){
 	// Stampa SOC della prima cella
 		char buffer[50];
 
 		for (int i = 0; i < N_celle; i++)
 		   {
 			// Converti float in stringa
-			int length = sprintf(buffer, "Il SOC della cella %d è: %.2f\r\n",i+1, SOC[i]);
+			int length = sprintf(buffer, "Il SOC della cella %d è: %.2f\r\n",i+1, Pacco->Cell[i].SOC);
 			// Invia via UART
 			HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
 			xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));

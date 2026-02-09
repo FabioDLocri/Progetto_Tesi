@@ -19,7 +19,7 @@ void stampa_temperatura_interna(Status_register reg);
 
 void stampa_somma_celle(Status_register reg);
 
-void stampa_SOC(float*);
+void stampa_SOC(Batteria*);
 
 void debugprint(const char *msg);
 

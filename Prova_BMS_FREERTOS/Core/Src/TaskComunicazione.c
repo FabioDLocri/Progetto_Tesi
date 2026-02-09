@@ -19,7 +19,7 @@ void TaskComunicazione(void *argument)
 {
 	Datatocom Misure;
 	QueueSetMemberHandle_t xHandle;
-	float SOC[N_celle];
+	Batteria Pacco;
   for (;;)
   {
 	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(2000) );
@@ -37,8 +37,8 @@ void TaskComunicazione(void *argument)
 	       }
 	       else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtocom )
 	       {
-	          xQueueReceive(QueueSOCtocom, &SOC, pdMS_TO_TICKS(2000) );
-	          stampa_SOC(&SOC);
+	          xQueueReceive(QueueSOCtocom, &Pacco, pdMS_TO_TICKS(2000) );
+	          stampa_SOC(&Pacco);
 	       }
 
   }

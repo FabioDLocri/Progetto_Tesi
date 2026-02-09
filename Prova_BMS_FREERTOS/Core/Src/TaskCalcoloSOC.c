@@ -27,13 +27,13 @@ void TaskCalcoloSOC(void *argument)
 		{
 			Pacco.Cell[i].SOC=Pacco.Cell[i].tensione+5/4;
 		}
-	   	xreturn = xQueueSend(QueueSOCtocom, &Pacco.Cell->SOC,pdMS_TO_TICKS(200));
+	   	xreturn = xQueueSend(QueueSOCtocom, &Pacco,pdMS_TO_TICKS(200));
 	    if (xreturn != pdTRUE)
 	    {
 	   		debugprint("non scrive nella coda da SOC a com\r\n");
 	    }
 
-	    xreturn = xQueueSend(QueueSOCtomain, &Pacco.Cell->SOC, pdMS_TO_TICKS(200));
+	    xreturn = xQueueSend(QueueSOCtomain, &Pacco, pdMS_TO_TICKS(200));
 	    if (xreturn != pdTRUE)
 	    {
 	   		debugprint("non scrive nella coda da SOC a main\r\n");

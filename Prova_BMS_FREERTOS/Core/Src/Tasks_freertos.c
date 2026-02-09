@@ -56,11 +56,11 @@ void StartTasks(void)
 	SPIRXSemHandle = xSemaphoreCreateBinary();
 	UARTSemHandle = xSemaphoreCreateBinary();
 
-	Queuemisuretomain = xQueueCreate(4,sizeof(Batteria));
-	Queuemisuretocom = xQueueCreate(4,sizeof(Datatocom));
+	Queuemisuretomain = xQueueCreate(3,sizeof(Batteria));
+	Queuemisuretocom = xQueueCreate(3,sizeof(Datatocom));
 	Queueuarttomain = xQueueCreate(8,sizeof(uint8_t));
-	QueueSOCtocom = xQueueCreate(2,sizeof(float[N_celle]));
-	QueueSOCtomain = xQueueCreate(2,sizeof(float[N_celle]));
+	QueueSOCtocom = xQueueCreate(2,sizeof(Batteria));
+	QueueSOCtomain = xQueueCreate(2,sizeof(Batteria));
 
 	QueuemisuretoSOC = xQueueCreate(4,sizeof(Batteria));
 

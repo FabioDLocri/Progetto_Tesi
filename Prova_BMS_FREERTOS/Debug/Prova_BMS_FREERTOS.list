@@ -23,25 +23,25 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
   9 .ARM.attributes 0000002e  00000000  00000000  000141dc  2**0
                   CONTENTS, READONLY
- 10 .debug_info   00028090  00000000  00000000  0001420a  2**0
+ 10 .debug_info   00028086  00000000  00000000  0001420a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 11 .debug_abbrev 00004f8a  00000000  00000000  0003c29a  2**0
+ 11 .debug_abbrev 00004f6f  00000000  00000000  0003c290  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 12 .debug_aranges 00001d60  00000000  00000000  00041228  2**3
+ 12 .debug_aranges 00001d60  00000000  00000000  00041200  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_rnglists 000016b0  00000000  00000000  00042f88  2**0
+ 13 .debug_rnglists 000016b1  00000000  00000000  00042f60  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_macro  0003d8ad  00000000  00000000  00044638  2**0
+ 14 .debug_macro  0003d8ad  00000000  00000000  00044611  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_line   00028451  00000000  00000000  00081ee5  2**0
+ 15 .debug_line   00028451  00000000  00000000  00081ebe  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_str    00177943  00000000  00000000  000aa336  2**0
+ 16 .debug_str    00177943  00000000  00000000  000aa30f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .comment      00000043  00000000  00000000  00221c79  2**0
+ 17 .comment      00000043  00000000  00000000  00221c52  2**0
                   CONTENTS, READONLY
- 18 .debug_frame  00008e1c  00000000  00000000  00221cbc  2**2
+ 18 .debug_frame  00008e1c  00000000  00000000  00221c98  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_line_str 00000070  00000000  00000000  0022aad8  2**0
+ 19 .debug_line_str 00000070  00000000  00000000  0022aab4  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2605,7 +2605,7 @@ void stampa_temperatura_interna(Status_register reg){
 
 080017c8 <stampa_SOC>:
 
-void stampa_SOC(float *SOC){
+void stampa_SOC(Batteria *Pacco){
  80017c8:	b580      	push	{r7, lr}
  80017ca:	b094      	sub	sp, #80	@ 0x50
  80017cc:	af02      	add	r7, sp, #8
@@ -2616,363 +2616,365 @@ void stampa_SOC(float *SOC){
 		for (int i = 0; i < N_celle; i++)
  80017d0:	2300      	movs	r3, #0
  80017d2:	647b      	str	r3, [r7, #68]	@ 0x44
- 80017d4:	e025      	b.n	8001822 <stampa_SOC+0x5a>
+ 80017d4:	e029      	b.n	800182a <stampa_SOC+0x62>
 		   {
 			// Converti float in stringa
-			int length = sprintf(buffer, "Il SOC della cella %d è: %.2f\r\n",i+1, SOC[i]);
+			int length = sprintf(buffer, "Il SOC della cella %d è: %.2f\r\n",i+1, Pacco->Cell[i].SOC);
  80017d6:	6c7b      	ldr	r3, [r7, #68]	@ 0x44
- 80017d8:	1c59      	adds	r1, r3, #1
- 80017da:	6c7b      	ldr	r3, [r7, #68]	@ 0x44
- 80017dc:	009b      	lsls	r3, r3, #2
- 80017de:	687a      	ldr	r2, [r7, #4]
- 80017e0:	4413      	add	r3, r2
- 80017e2:	edd3 7a00 	vldr	s15, [r3]
- 80017e6:	eeb7 7ae7 	vcvt.f64.f32	d7, s15
- 80017ea:	f107 030c 	add.w	r3, r7, #12
- 80017ee:	ed8d 7b00 	vstr	d7, [sp]
- 80017f2:	460a      	mov	r2, r1
- 80017f4:	490f      	ldr	r1, [pc, #60]	@ (8001834 <stampa_SOC+0x6c>)
- 80017f6:	4618      	mov	r0, r3
- 80017f8:	f00d f950 	bl	800ea9c <siprintf>
- 80017fc:	6438      	str	r0, [r7, #64]	@ 0x40
+ 80017d8:	1c58      	adds	r0, r3, #1
+ 80017da:	6879      	ldr	r1, [r7, #4]
+ 80017dc:	6c7a      	ldr	r2, [r7, #68]	@ 0x44
+ 80017de:	4613      	mov	r3, r2
+ 80017e0:	009b      	lsls	r3, r3, #2
+ 80017e2:	4413      	add	r3, r2
+ 80017e4:	009b      	lsls	r3, r3, #2
+ 80017e6:	440b      	add	r3, r1
+ 80017e8:	3310      	adds	r3, #16
+ 80017ea:	edd3 7a00 	vldr	s15, [r3]
+ 80017ee:	eeb7 7ae7 	vcvt.f64.f32	d7, s15
+ 80017f2:	f107 030c 	add.w	r3, r7, #12
+ 80017f6:	ed8d 7b00 	vstr	d7, [sp]
+ 80017fa:	4602      	mov	r2, r0
+ 80017fc:	490f      	ldr	r1, [pc, #60]	@ (800183c <stampa_SOC+0x74>)
+ 80017fe:	4618      	mov	r0, r3
+ 8001800:	f00d f94c 	bl	800ea9c <siprintf>
+ 8001804:	6438      	str	r0, [r7, #64]	@ 0x40
 			// Invia via UART
 			HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
- 80017fe:	6c3b      	ldr	r3, [r7, #64]	@ 0x40
- 8001800:	b29a      	uxth	r2, r3
- 8001802:	f107 030c 	add.w	r3, r7, #12
- 8001806:	4619      	mov	r1, r3
- 8001808:	480b      	ldr	r0, [pc, #44]	@ (8001838 <stampa_SOC+0x70>)
- 800180a:	f006 fea3 	bl	8008554 <HAL_UART_Transmit_IT>
+ 8001806:	6c3b      	ldr	r3, [r7, #64]	@ 0x40
+ 8001808:	b29a      	uxth	r2, r3
+ 800180a:	f107 030c 	add.w	r3, r7, #12
+ 800180e:	4619      	mov	r1, r3
+ 8001810:	480b      	ldr	r0, [pc, #44]	@ (8001840 <stampa_SOC+0x78>)
+ 8001812:	f006 fe9f 	bl	8008554 <HAL_UART_Transmit_IT>
 			xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
- 800180e:	4b0b      	ldr	r3, [pc, #44]	@ (800183c <stampa_SOC+0x74>)
- 8001810:	681b      	ldr	r3, [r3, #0]
- 8001812:	f44f 71fa 	mov.w	r1, #500	@ 0x1f4
- 8001816:	4618      	mov	r0, r3
- 8001818:	f00a fa34 	bl	800bc84 <xQueueSemaphoreTake>
+ 8001816:	4b0b      	ldr	r3, [pc, #44]	@ (8001844 <stampa_SOC+0x7c>)
+ 8001818:	681b      	ldr	r3, [r3, #0]
+ 800181a:	f44f 71fa 	mov.w	r1, #500	@ 0x1f4
+ 800181e:	4618      	mov	r0, r3
+ 8001820:	f00a fa30 	bl	800bc84 <xQueueSemaphoreTake>
 		for (int i = 0; i < N_celle; i++)
- 800181c:	6c7b      	ldr	r3, [r7, #68]	@ 0x44
- 800181e:	3301      	adds	r3, #1
- 8001820:	647b      	str	r3, [r7, #68]	@ 0x44
- 8001822:	6c7b      	ldr	r3, [r7, #68]	@ 0x44
- 8001824:	2b0b      	cmp	r3, #11
- 8001826:	ddd6      	ble.n	80017d6 <stampa_SOC+0xe>
+ 8001824:	6c7b      	ldr	r3, [r7, #68]	@ 0x44
+ 8001826:	3301      	adds	r3, #1
+ 8001828:	647b      	str	r3, [r7, #68]	@ 0x44
+ 800182a:	6c7b      	ldr	r3, [r7, #68]	@ 0x44
+ 800182c:	2b0b      	cmp	r3, #11
+ 800182e:	ddd2      	ble.n	80017d6 <stampa_SOC+0xe>
 		   }
 }
- 8001828:	bf00      	nop
- 800182a:	bf00      	nop
- 800182c:	3748      	adds	r7, #72	@ 0x48
- 800182e:	46bd      	mov	sp, r7
- 8001830:	bd80      	pop	{r7, pc}
+ 8001830:	bf00      	nop
  8001832:	bf00      	nop
- 8001834:	08012328 	.word	0x08012328
- 8001838:	24000464 	.word	0x24000464
- 800183c:	24000204 	.word	0x24000204
+ 8001834:	3748      	adds	r7, #72	@ 0x48
+ 8001836:	46bd      	mov	sp, r7
+ 8001838:	bd80      	pop	{r7, pc}
+ 800183a:	bf00      	nop
+ 800183c:	08012328 	.word	0x08012328
+ 8001840:	24000464 	.word	0x24000464
+ 8001844:	24000204 	.word	0x24000204
 
-08001840 <debugprint>:
+08001848 <debugprint>:
 
 
 void debugprint(const char *msg){
- 8001840:	b580      	push	{r7, lr}
- 8001842:	b082      	sub	sp, #8
- 8001844:	af00      	add	r7, sp, #0
- 8001846:	6078      	str	r0, [r7, #4]
+ 8001848:	b580      	push	{r7, lr}
+ 800184a:	b082      	sub	sp, #8
+ 800184c:	af00      	add	r7, sp, #0
+ 800184e:	6078      	str	r0, [r7, #4]
 	HAL_UART_Transmit_IT(&huart3, (uint8_t*)msg, strlen(msg));
- 8001848:	6878      	ldr	r0, [r7, #4]
- 800184a:	f7fe fda9 	bl	80003a0 <strlen>
- 800184e:	4603      	mov	r3, r0
- 8001850:	b29b      	uxth	r3, r3
- 8001852:	461a      	mov	r2, r3
- 8001854:	6879      	ldr	r1, [r7, #4]
- 8001856:	4807      	ldr	r0, [pc, #28]	@ (8001874 <debugprint+0x34>)
- 8001858:	f006 fe7c 	bl	8008554 <HAL_UART_Transmit_IT>
+ 8001850:	6878      	ldr	r0, [r7, #4]
+ 8001852:	f7fe fda5 	bl	80003a0 <strlen>
+ 8001856:	4603      	mov	r3, r0
+ 8001858:	b29b      	uxth	r3, r3
+ 800185a:	461a      	mov	r2, r3
+ 800185c:	6879      	ldr	r1, [r7, #4]
+ 800185e:	4807      	ldr	r0, [pc, #28]	@ (800187c <debugprint+0x34>)
+ 8001860:	f006 fe78 	bl	8008554 <HAL_UART_Transmit_IT>
 	xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
- 800185c:	4b06      	ldr	r3, [pc, #24]	@ (8001878 <debugprint+0x38>)
- 800185e:	681b      	ldr	r3, [r3, #0]
- 8001860:	f44f 71fa 	mov.w	r1, #500	@ 0x1f4
- 8001864:	4618      	mov	r0, r3
- 8001866:	f00a fa0d 	bl	800bc84 <xQueueSemaphoreTake>
+ 8001864:	4b06      	ldr	r3, [pc, #24]	@ (8001880 <debugprint+0x38>)
+ 8001866:	681b      	ldr	r3, [r3, #0]
+ 8001868:	f44f 71fa 	mov.w	r1, #500	@ 0x1f4
+ 800186c:	4618      	mov	r0, r3
+ 800186e:	f00a fa09 	bl	800bc84 <xQueueSemaphoreTake>
 }
- 800186a:	bf00      	nop
- 800186c:	3708      	adds	r7, #8
- 800186e:	46bd      	mov	sp, r7
- 8001870:	bd80      	pop	{r7, pc}
  8001872:	bf00      	nop
- 8001874:	24000464 	.word	0x24000464
- 8001878:	24000204 	.word	0x24000204
+ 8001874:	3708      	adds	r7, #8
+ 8001876:	46bd      	mov	sp, r7
+ 8001878:	bd80      	pop	{r7, pc}
+ 800187a:	bf00      	nop
+ 800187c:	24000464 	.word	0x24000464
+ 8001880:	24000204 	.word	0x24000204
 
-0800187c <MainTask>:
+08001884 <MainTask>:
 #include "Manage_bms.h"
 #include "FreeRTOS.h"
 #include "string.h"
 
 void MainTask(void *argument)
 {
- 800187c:	b580      	push	{r7, lr}
- 800187e:	b0d0      	sub	sp, #320	@ 0x140
- 8001880:	af00      	add	r7, sp, #0
- 8001882:	f507 73a0 	add.w	r3, r7, #320	@ 0x140
- 8001886:	f5a3 739e 	sub.w	r3, r3, #316	@ 0x13c
- 800188a:	6018      	str	r0, [r3, #0]
+ 8001884:	b580      	push	{r7, lr}
+ 8001886:	b0d0      	sub	sp, #320	@ 0x140
+ 8001888:	af00      	add	r7, sp, #0
+ 800188a:	f507 73a0 	add.w	r3, r7, #320	@ 0x140
+ 800188e:	f5a3 739e 	sub.w	r3, r3, #316	@ 0x13c
+ 8001892:	6018      	str	r0, [r3, #0]
 	QueueSetMemberHandle_t xHandle;
 	Batteria Pacco_bat;
 	xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(100) );
- 800188c:	4b48      	ldr	r3, [pc, #288]	@ (80019b0 <MainTask+0x134>)
- 800188e:	681b      	ldr	r3, [r3, #0]
- 8001890:	2164      	movs	r1, #100	@ 0x64
- 8001892:	4618      	mov	r0, r3
- 8001894:	f00a fc82 	bl	800c19c <xQueueSelectFromSet>
- 8001898:	f8c7 0138 	str.w	r0, [r7, #312]	@ 0x138
+ 8001894:	4b48      	ldr	r3, [pc, #288]	@ (80019b8 <MainTask+0x134>)
+ 8001896:	681b      	ldr	r3, [r3, #0]
+ 8001898:	2164      	movs	r1, #100	@ 0x64
+ 800189a:	4618      	mov	r0, r3
+ 800189c:	f00a fc7e 	bl	800c19c <xQueueSelectFromSet>
+ 80018a0:	f8c7 0138 	str.w	r0, [r7, #312]	@ 0x138
 	char stringa[50] ={0};
- 800189c:	f507 73a0 	add.w	r3, r7, #320	@ 0x140
- 80018a0:	f5a3 739c 	sub.w	r3, r3, #312	@ 0x138
- 80018a4:	4618      	mov	r0, r3
- 80018a6:	2332      	movs	r3, #50	@ 0x32
- 80018a8:	461a      	mov	r2, r3
- 80018aa:	2100      	movs	r1, #0
- 80018ac:	f00d f95b 	bl	800eb66 <memset>
+ 80018a4:	f507 73a0 	add.w	r3, r7, #320	@ 0x140
+ 80018a8:	f5a3 739c 	sub.w	r3, r3, #312	@ 0x138
+ 80018ac:	4618      	mov	r0, r3
+ 80018ae:	2332      	movs	r3, #50	@ 0x32
+ 80018b0:	461a      	mov	r2, r3
+ 80018b2:	2100      	movs	r1, #0
+ 80018b4:	f00d f957 	bl	800eb66 <memset>
 	uint8_t i=0;
- 80018b0:	2300      	movs	r3, #0
- 80018b2:	f887 313f 	strb.w	r3, [r7, #319]	@ 0x13f
+ 80018b8:	2300      	movs	r3, #0
+ 80018ba:	f887 313f 	strb.w	r3, [r7, #319]	@ 0x13f
 	static char carattere=0;
 
   for (;;)
   {
 
 	xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(200) );
- 80018b6:	4b3e      	ldr	r3, [pc, #248]	@ (80019b0 <MainTask+0x134>)
- 80018b8:	681b      	ldr	r3, [r3, #0]
- 80018ba:	21c8      	movs	r1, #200	@ 0xc8
- 80018bc:	4618      	mov	r0, r3
- 80018be:	f00a fc6d 	bl	800c19c <xQueueSelectFromSet>
- 80018c2:	f8c7 0138 	str.w	r0, [r7, #312]	@ 0x138
+ 80018be:	4b3e      	ldr	r3, [pc, #248]	@ (80019b8 <MainTask+0x134>)
+ 80018c0:	681b      	ldr	r3, [r3, #0]
+ 80018c2:	21c8      	movs	r1, #200	@ 0xc8
+ 80018c4:	4618      	mov	r0, r3
+ 80018c6:	f00a fc69 	bl	800c19c <xQueueSelectFromSet>
+ 80018ca:	f8c7 0138 	str.w	r0, [r7, #312]	@ 0x138
 	  if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretomain )
- 80018c6:	4b3b      	ldr	r3, [pc, #236]	@ (80019b4 <MainTask+0x138>)
- 80018c8:	681b      	ldr	r3, [r3, #0]
- 80018ca:	f8d7 2138 	ldr.w	r2, [r7, #312]	@ 0x138
- 80018ce:	429a      	cmp	r2, r3
- 80018d0:	d108      	bne.n	80018e4 <MainTask+0x68>
+ 80018ce:	4b3b      	ldr	r3, [pc, #236]	@ (80019bc <MainTask+0x138>)
+ 80018d0:	681b      	ldr	r3, [r3, #0]
+ 80018d2:	f8d7 2138 	ldr.w	r2, [r7, #312]	@ 0x138
+ 80018d6:	429a      	cmp	r2, r3
+ 80018d8:	d108      	bne.n	80018ec <MainTask+0x68>
 	       {
 	          xQueueReceive( Queuemisuretomain,(void *)&Pacco_bat, pdMS_TO_TICKS(200) );
- 80018d2:	4b38      	ldr	r3, [pc, #224]	@ (80019b4 <MainTask+0x138>)
- 80018d4:	681b      	ldr	r3, [r3, #0]
- 80018d6:	f107 013c 	add.w	r1, r7, #60	@ 0x3c
- 80018da:	22c8      	movs	r2, #200	@ 0xc8
- 80018dc:	4618      	mov	r0, r3
- 80018de:	f00a f92f 	bl	800bb40 <xQueueReceive>
- 80018e2:	e7e8      	b.n	80018b6 <MainTask+0x3a>
+ 80018da:	4b38      	ldr	r3, [pc, #224]	@ (80019bc <MainTask+0x138>)
+ 80018dc:	681b      	ldr	r3, [r3, #0]
+ 80018de:	f107 013c 	add.w	r1, r7, #60	@ 0x3c
+ 80018e2:	22c8      	movs	r2, #200	@ 0xc8
+ 80018e4:	4618      	mov	r0, r3
+ 80018e6:	f00a f92b 	bl	800bb40 <xQueueReceive>
+ 80018ea:	e7e8      	b.n	80018be <MainTask+0x3a>
 	       }
 	   else if( xHandle == ( QueueSetMemberHandle_t ) Queueuarttomain )
- 80018e4:	4b34      	ldr	r3, [pc, #208]	@ (80019b8 <MainTask+0x13c>)
- 80018e6:	681b      	ldr	r3, [r3, #0]
- 80018e8:	f8d7 2138 	ldr.w	r2, [r7, #312]	@ 0x138
- 80018ec:	429a      	cmp	r2, r3
- 80018ee:	d14e      	bne.n	800198e <MainTask+0x112>
+ 80018ec:	4b34      	ldr	r3, [pc, #208]	@ (80019c0 <MainTask+0x13c>)
+ 80018ee:	681b      	ldr	r3, [r3, #0]
+ 80018f0:	f8d7 2138 	ldr.w	r2, [r7, #312]	@ 0x138
+ 80018f4:	429a      	cmp	r2, r3
+ 80018f6:	d14e      	bne.n	8001996 <MainTask+0x112>
 	       {
 
 	    	   xreturn= xQueueReceive(Queueuarttomain,(void *) &carattere, pdMS_TO_TICKS(200) );
- 80018f0:	4b31      	ldr	r3, [pc, #196]	@ (80019b8 <MainTask+0x13c>)
- 80018f2:	681b      	ldr	r3, [r3, #0]
- 80018f4:	22c8      	movs	r2, #200	@ 0xc8
- 80018f6:	4931      	ldr	r1, [pc, #196]	@ (80019bc <MainTask+0x140>)
- 80018f8:	4618      	mov	r0, r3
- 80018fa:	f00a f921 	bl	800bb40 <xQueueReceive>
- 80018fe:	f8c7 0134 	str.w	r0, [r7, #308]	@ 0x134
+ 80018f8:	4b31      	ldr	r3, [pc, #196]	@ (80019c0 <MainTask+0x13c>)
+ 80018fa:	681b      	ldr	r3, [r3, #0]
+ 80018fc:	22c8      	movs	r2, #200	@ 0xc8
+ 80018fe:	4931      	ldr	r1, [pc, #196]	@ (80019c4 <MainTask+0x140>)
+ 8001900:	4618      	mov	r0, r3
+ 8001902:	f00a f91d 	bl	800bb40 <xQueueReceive>
+ 8001906:	f8c7 0134 	str.w	r0, [r7, #308]	@ 0x134
 
 	    	   if (xreturn!=pdTRUE){
- 8001902:	f8d7 3134 	ldr.w	r3, [r7, #308]	@ 0x134
- 8001906:	2b01      	cmp	r3, #1
- 8001908:	d002      	beq.n	8001910 <MainTask+0x94>
+ 800190a:	f8d7 3134 	ldr.w	r3, [r7, #308]	@ 0x134
+ 800190e:	2b01      	cmp	r3, #1
+ 8001910:	d002      	beq.n	8001918 <MainTask+0x94>
 	    		   debugprint("non ricevo dalla coda\n\r");
- 800190a:	482d      	ldr	r0, [pc, #180]	@ (80019c0 <MainTask+0x144>)
- 800190c:	f7ff ff98 	bl	8001840 <debugprint>
+ 8001912:	482d      	ldr	r0, [pc, #180]	@ (80019c8 <MainTask+0x144>)
+ 8001914:	f7ff ff98 	bl	8001848 <debugprint>
 	    	   }
 	    	   if(carattere != '\n' && carattere != '\r')
- 8001910:	4b2a      	ldr	r3, [pc, #168]	@ (80019bc <MainTask+0x140>)
- 8001912:	781b      	ldrb	r3, [r3, #0]
- 8001914:	2b0a      	cmp	r3, #10
- 8001916:	d012      	beq.n	800193e <MainTask+0xc2>
- 8001918:	4b28      	ldr	r3, [pc, #160]	@ (80019bc <MainTask+0x140>)
+ 8001918:	4b2a      	ldr	r3, [pc, #168]	@ (80019c4 <MainTask+0x140>)
  800191a:	781b      	ldrb	r3, [r3, #0]
- 800191c:	2b0d      	cmp	r3, #13
- 800191e:	d00e      	beq.n	800193e <MainTask+0xc2>
+ 800191c:	2b0a      	cmp	r3, #10
+ 800191e:	d012      	beq.n	8001946 <MainTask+0xc2>
+ 8001920:	4b28      	ldr	r3, [pc, #160]	@ (80019c4 <MainTask+0x140>)
+ 8001922:	781b      	ldrb	r3, [r3, #0]
+ 8001924:	2b0d      	cmp	r3, #13
+ 8001926:	d00e      	beq.n	8001946 <MainTask+0xc2>
 	    	   {
 	    		   stringa[i] = carattere;
- 8001920:	f897 313f 	ldrb.w	r3, [r7, #319]	@ 0x13f
- 8001924:	4a25      	ldr	r2, [pc, #148]	@ (80019bc <MainTask+0x140>)
- 8001926:	7811      	ldrb	r1, [r2, #0]
- 8001928:	f507 72a0 	add.w	r2, r7, #320	@ 0x140
- 800192c:	f5a2 729c 	sub.w	r2, r2, #312	@ 0x138
- 8001930:	54d1      	strb	r1, [r2, r3]
+ 8001928:	f897 313f 	ldrb.w	r3, [r7, #319]	@ 0x13f
+ 800192c:	4a25      	ldr	r2, [pc, #148]	@ (80019c4 <MainTask+0x140>)
+ 800192e:	7811      	ldrb	r1, [r2, #0]
+ 8001930:	f507 72a0 	add.w	r2, r7, #320	@ 0x140
+ 8001934:	f5a2 729c 	sub.w	r2, r2, #312	@ 0x138
+ 8001938:	54d1      	strb	r1, [r2, r3]
 	    		   i++;
- 8001932:	f897 313f 	ldrb.w	r3, [r7, #319]	@ 0x13f
- 8001936:	3301      	adds	r3, #1
- 8001938:	f887 313f 	strb.w	r3, [r7, #319]	@ 0x13f
- 800193c:	e036      	b.n	80019ac <MainTask+0x130>
+ 800193a:	f897 313f 	ldrb.w	r3, [r7, #319]	@ 0x13f
+ 800193e:	3301      	adds	r3, #1
+ 8001940:	f887 313f 	strb.w	r3, [r7, #319]	@ 0x13f
+ 8001944:	e036      	b.n	80019b4 <MainTask+0x130>
 	    	   }
 	    	   else
 	    	   {
 	   			// Aggiungo il carattere nullo per terminare la stringa
 	    		   stringa[i] = '\0';
- 800193e:	f897 313f 	ldrb.w	r3, [r7, #319]	@ 0x13f
- 8001942:	f507 72a0 	add.w	r2, r7, #320	@ 0x140
- 8001946:	f5a2 729c 	sub.w	r2, r2, #312	@ 0x138
- 800194a:	2100      	movs	r1, #0
- 800194c:	54d1      	strb	r1, [r2, r3]
+ 8001946:	f897 313f 	ldrb.w	r3, [r7, #319]	@ 0x13f
+ 800194a:	f507 72a0 	add.w	r2, r7, #320	@ 0x140
+ 800194e:	f5a2 729c 	sub.w	r2, r2, #312	@ 0x138
+ 8001952:	2100      	movs	r1, #0
+ 8001954:	54d1      	strb	r1, [r2, r3]
 	    	    // Confronta la stringa ricevuta con "ciao"
 	    	  	   if(strcmp(stringa, "ciao") == 0) {
- 800194e:	f107 0308 	add.w	r3, r7, #8
- 8001952:	491c      	ldr	r1, [pc, #112]	@ (80019c4 <MainTask+0x148>)
- 8001954:	4618      	mov	r0, r3
- 8001956:	f7fe fcc3 	bl	80002e0 <strcmp>
- 800195a:	4603      	mov	r3, r0
- 800195c:	2b00      	cmp	r3, #0
- 800195e:	d102      	bne.n	8001966 <MainTask+0xea>
+ 8001956:	f107 0308 	add.w	r3, r7, #8
+ 800195a:	491c      	ldr	r1, [pc, #112]	@ (80019cc <MainTask+0x148>)
+ 800195c:	4618      	mov	r0, r3
+ 800195e:	f7fe fcbf 	bl	80002e0 <strcmp>
+ 8001962:	4603      	mov	r3, r0
+ 8001964:	2b00      	cmp	r3, #0
+ 8001966:	d102      	bne.n	800196e <MainTask+0xea>
 	    	  		   ledyellowon(); // Accendi il LED
- 8001960:	f000 fb80 	bl	8002064 <ledyellowon>
- 8001964:	e001      	b.n	800196a <MainTask+0xee>
+ 8001968:	f000 fb7c 	bl	8002064 <ledyellowon>
+ 800196c:	e001      	b.n	8001972 <MainTask+0xee>
 	    	   	   }
 	    	  	   else
 	    	   	   {
 	    	  		   ledyellowoff();
- 8001966:	f000 fb65 	bl	8002034 <ledyellowoff>
+ 800196e:	f000 fb61 	bl	8002034 <ledyellowoff>
 	    	   	   }
 	    	  	   if(strcmp(stringa, "pippo") == 0)
- 800196a:	f107 0308 	add.w	r3, r7, #8
- 800196e:	4916      	ldr	r1, [pc, #88]	@ (80019c8 <MainTask+0x14c>)
- 8001970:	4618      	mov	r0, r3
- 8001972:	f7fe fcb5 	bl	80002e0 <strcmp>
- 8001976:	4603      	mov	r3, r0
- 8001978:	2b00      	cmp	r3, #0
- 800197a:	d102      	bne.n	8001982 <MainTask+0x106>
+ 8001972:	f107 0308 	add.w	r3, r7, #8
+ 8001976:	4916      	ldr	r1, [pc, #88]	@ (80019d0 <MainTask+0x14c>)
+ 8001978:	4618      	mov	r0, r3
+ 800197a:	f7fe fcb1 	bl	80002e0 <strcmp>
+ 800197e:	4603      	mov	r3, r0
+ 8001980:	2b00      	cmp	r3, #0
+ 8001982:	d102      	bne.n	800198a <MainTask+0x106>
 	    	  	   {
 	    	  		   ledgreenon(); // Accendi il LED
- 800197c:	f000 fb7e 	bl	800207c <ledgreenon>
- 8001980:	e001      	b.n	8001986 <MainTask+0x10a>
+ 8001984:	f000 fb7a 	bl	800207c <ledgreenon>
+ 8001988:	e001      	b.n	800198e <MainTask+0x10a>
 	    	   	   }
 	    	  	   else
 	    	   	   {
 	    	  		   ledgreenoff();
- 8001982:	f000 fb63 	bl	800204c <ledgreenoff>
+ 800198a:	f000 fb5f 	bl	800204c <ledgreenoff>
 	    	   	   }
 	    	   		 // Resetta l'indice per la prossima stringa
 	    	   	   i = 0;
- 8001986:	2300      	movs	r3, #0
- 8001988:	f887 313f 	strb.w	r3, [r7, #319]	@ 0x13f
- 800198c:	e793      	b.n	80018b6 <MainTask+0x3a>
+ 800198e:	2300      	movs	r3, #0
+ 8001990:	f887 313f 	strb.w	r3, [r7, #319]	@ 0x13f
+ 8001994:	e793      	b.n	80018be <MainTask+0x3a>
 	    	   }
 	       }
 	   else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtomain)
- 800198e:	4b0f      	ldr	r3, [pc, #60]	@ (80019cc <MainTask+0x150>)
- 8001990:	681b      	ldr	r3, [r3, #0]
- 8001992:	f8d7 2138 	ldr.w	r2, [r7, #312]	@ 0x138
- 8001996:	429a      	cmp	r2, r3
- 8001998:	d18d      	bne.n	80018b6 <MainTask+0x3a>
+ 8001996:	4b0f      	ldr	r3, [pc, #60]	@ (80019d4 <MainTask+0x150>)
+ 8001998:	681b      	ldr	r3, [r3, #0]
+ 800199a:	f8d7 2138 	ldr.w	r2, [r7, #312]	@ 0x138
+ 800199e:	429a      	cmp	r2, r3
+ 80019a0:	d18d      	bne.n	80018be <MainTask+0x3a>
 	   	   {
 	   	   	   //da modificare per vedere che dato passa la coda
 	   	   	   xQueueReceive( QueueSOCtomain,(void *)&Pacco_bat, pdMS_TO_TICKS(500) );
- 800199a:	4b0c      	ldr	r3, [pc, #48]	@ (80019cc <MainTask+0x150>)
- 800199c:	681b      	ldr	r3, [r3, #0]
- 800199e:	f107 013c 	add.w	r1, r7, #60	@ 0x3c
- 80019a2:	f44f 72fa 	mov.w	r2, #500	@ 0x1f4
- 80019a6:	4618      	mov	r0, r3
- 80019a8:	f00a f8ca 	bl	800bb40 <xQueueReceive>
+ 80019a2:	4b0c      	ldr	r3, [pc, #48]	@ (80019d4 <MainTask+0x150>)
+ 80019a4:	681b      	ldr	r3, [r3, #0]
+ 80019a6:	f107 013c 	add.w	r1, r7, #60	@ 0x3c
+ 80019aa:	f44f 72fa 	mov.w	r2, #500	@ 0x1f4
+ 80019ae:	4618      	mov	r0, r3
+ 80019b0:	f00a f8c6 	bl	800bb40 <xQueueReceive>
 	xHandle = xQueueSelectFromSet( Settomain, pdMS_TO_TICKS(200) );
- 80019ac:	e783      	b.n	80018b6 <MainTask+0x3a>
- 80019ae:	bf00      	nop
- 80019b0:	24000220 	.word	0x24000220
- 80019b4:	24000208 	.word	0x24000208
- 80019b8:	24000210 	.word	0x24000210
- 80019bc:	240001f8 	.word	0x240001f8
- 80019c0:	0801234c 	.word	0x0801234c
- 80019c4:	08012364 	.word	0x08012364
- 80019c8:	0801236c 	.word	0x0801236c
- 80019cc:	2400021c 	.word	0x2400021c
+ 80019b4:	e783      	b.n	80018be <MainTask+0x3a>
+ 80019b6:	bf00      	nop
+ 80019b8:	24000220 	.word	0x24000220
+ 80019bc:	24000208 	.word	0x24000208
+ 80019c0:	24000210 	.word	0x24000210
+ 80019c4:	240001f8 	.word	0x240001f8
+ 80019c8:	0801234c 	.word	0x0801234c
+ 80019cc:	08012364 	.word	0x08012364
+ 80019d0:	0801236c 	.word	0x0801236c
+ 80019d4:	2400021c 	.word	0x2400021c
 
-080019d0 <TaskCalcoloSOC>:
+080019d8 <TaskCalcoloSOC>:
 #include "global.h"
 #include "Comunicazione_UART.h"
 
 
 void TaskCalcoloSOC(void *argument)
 {
- 80019d0:	b580      	push	{r7, lr}
- 80019d2:	b0c2      	sub	sp, #264	@ 0x108
- 80019d4:	af00      	add	r7, sp, #0
- 80019d6:	f507 7384 	add.w	r3, r7, #264	@ 0x108
- 80019da:	f5a3 7382 	sub.w	r3, r3, #260	@ 0x104
- 80019de:	6018      	str	r0, [r3, #0]
+ 80019d8:	b580      	push	{r7, lr}
+ 80019da:	b0c2      	sub	sp, #264	@ 0x108
+ 80019dc:	af00      	add	r7, sp, #0
+ 80019de:	f507 7384 	add.w	r3, r7, #264	@ 0x108
+ 80019e2:	f5a3 7382 	sub.w	r3, r3, #260	@ 0x104
+ 80019e6:	6018      	str	r0, [r3, #0]
 	Batteria Pacco;
 	BaseType_t xreturn;
 
   	for (;;)
   	{
 		xQueueReceive(QueuemisuretoSOC, &Pacco, pdMS_TO_TICKS(2000));
- 80019e0:	4b2d      	ldr	r3, [pc, #180]	@ (8001a98 <TaskCalcoloSOC+0xc8>)
- 80019e2:	681b      	ldr	r3, [r3, #0]
- 80019e4:	f107 0108 	add.w	r1, r7, #8
- 80019e8:	f44f 62fa 	mov.w	r2, #2000	@ 0x7d0
- 80019ec:	4618      	mov	r0, r3
- 80019ee:	f00a f8a7 	bl	800bb40 <xQueueReceive>
+ 80019e8:	4b2b      	ldr	r3, [pc, #172]	@ (8001a98 <TaskCalcoloSOC+0xc0>)
+ 80019ea:	681b      	ldr	r3, [r3, #0]
+ 80019ec:	f107 0108 	add.w	r1, r7, #8
+ 80019f0:	f44f 62fa 	mov.w	r2, #2000	@ 0x7d0
+ 80019f4:	4618      	mov	r0, r3
+ 80019f6:	f00a f8a3 	bl	800bb40 <xQueueReceive>
 	  // si usa l'AEKF per calcolare SOC e AEKF
 		for (int i=0;i<N_celle;i++)
- 80019f2:	2300      	movs	r3, #0
- 80019f4:	f8c7 3104 	str.w	r3, [r7, #260]	@ 0x104
- 80019f8:	e023      	b.n	8001a42 <TaskCalcoloSOC+0x72>
+ 80019fa:	2300      	movs	r3, #0
+ 80019fc:	f8c7 3104 	str.w	r3, [r7, #260]	@ 0x104
+ 8001a00:	e023      	b.n	8001a4a <TaskCalcoloSOC+0x72>
 		{
 			Pacco.Cell[i].SOC=Pacco.Cell[i].tensione+5/4;
- 80019fa:	f507 7384 	add.w	r3, r7, #264	@ 0x108
- 80019fe:	f5a3 7180 	sub.w	r1, r3, #256	@ 0x100
- 8001a02:	f8d7 2104 	ldr.w	r2, [r7, #260]	@ 0x104
- 8001a06:	4613      	mov	r3, r2
- 8001a08:	009b      	lsls	r3, r3, #2
- 8001a0a:	4413      	add	r3, r2
- 8001a0c:	009b      	lsls	r3, r3, #2
- 8001a0e:	440b      	add	r3, r1
- 8001a10:	edd3 7a00 	vldr	s15, [r3]
- 8001a14:	eeb7 7a00 	vmov.f32	s14, #112	@ 0x3f800000  1.0
- 8001a18:	ee77 7a87 	vadd.f32	s15, s15, s14
- 8001a1c:	f507 7384 	add.w	r3, r7, #264	@ 0x108
- 8001a20:	f5a3 7180 	sub.w	r1, r3, #256	@ 0x100
- 8001a24:	f8d7 2104 	ldr.w	r2, [r7, #260]	@ 0x104
- 8001a28:	4613      	mov	r3, r2
- 8001a2a:	009b      	lsls	r3, r3, #2
- 8001a2c:	4413      	add	r3, r2
- 8001a2e:	009b      	lsls	r3, r3, #2
- 8001a30:	440b      	add	r3, r1
- 8001a32:	3310      	adds	r3, #16
- 8001a34:	edc3 7a00 	vstr	s15, [r3]
+ 8001a02:	f507 7384 	add.w	r3, r7, #264	@ 0x108
+ 8001a06:	f5a3 7180 	sub.w	r1, r3, #256	@ 0x100
+ 8001a0a:	f8d7 2104 	ldr.w	r2, [r7, #260]	@ 0x104
+ 8001a0e:	4613      	mov	r3, r2
+ 8001a10:	009b      	lsls	r3, r3, #2
+ 8001a12:	4413      	add	r3, r2
+ 8001a14:	009b      	lsls	r3, r3, #2
+ 8001a16:	440b      	add	r3, r1
+ 8001a18:	edd3 7a00 	vldr	s15, [r3]
+ 8001a1c:	eeb7 7a00 	vmov.f32	s14, #112	@ 0x3f800000  1.0
+ 8001a20:	ee77 7a87 	vadd.f32	s15, s15, s14
+ 8001a24:	f507 7384 	add.w	r3, r7, #264	@ 0x108
+ 8001a28:	f5a3 7180 	sub.w	r1, r3, #256	@ 0x100
+ 8001a2c:	f8d7 2104 	ldr.w	r2, [r7, #260]	@ 0x104
+ 8001a30:	4613      	mov	r3, r2
+ 8001a32:	009b      	lsls	r3, r3, #2
+ 8001a34:	4413      	add	r3, r2
+ 8001a36:	009b      	lsls	r3, r3, #2
+ 8001a38:	440b      	add	r3, r1
+ 8001a3a:	3310      	adds	r3, #16
+ 8001a3c:	edc3 7a00 	vstr	s15, [r3]
 		for (int i=0;i<N_celle;i++)
- 8001a38:	f8d7 3104 	ldr.w	r3, [r7, #260]	@ 0x104
- 8001a3c:	3301      	adds	r3, #1
- 8001a3e:	f8c7 3104 	str.w	r3, [r7, #260]	@ 0x104
- 8001a42:	f8d7 3104 	ldr.w	r3, [r7, #260]	@ 0x104
- 8001a46:	2b0b      	cmp	r3, #11
- 8001a48:	ddd7      	ble.n	80019fa <TaskCalcoloSOC+0x2a>
+ 8001a40:	f8d7 3104 	ldr.w	r3, [r7, #260]	@ 0x104
+ 8001a44:	3301      	adds	r3, #1
+ 8001a46:	f8c7 3104 	str.w	r3, [r7, #260]	@ 0x104
+ 8001a4a:	f8d7 3104 	ldr.w	r3, [r7, #260]	@ 0x104
+ 8001a4e:	2b0b      	cmp	r3, #11
+ 8001a50:	ddd7      	ble.n	8001a02 <TaskCalcoloSOC+0x2a>
 		}
-	   	xreturn = xQueueSend(QueueSOCtocom, &Pacco.Cell->SOC,pdMS_TO_TICKS(200));
- 8001a4a:	4b14      	ldr	r3, [pc, #80]	@ (8001a9c <TaskCalcoloSOC+0xcc>)
- 8001a4c:	6818      	ldr	r0, [r3, #0]
- 8001a4e:	f107 0308 	add.w	r3, r7, #8
- 8001a52:	f103 0110 	add.w	r1, r3, #16
- 8001a56:	2300      	movs	r3, #0
- 8001a58:	22c8      	movs	r2, #200	@ 0xc8
- 8001a5a:	f009 ff37 	bl	800b8cc <xQueueGenericSend>
- 8001a5e:	f8c7 0100 	str.w	r0, [r7, #256]	@ 0x100
+	   	xreturn = xQueueSend(QueueSOCtocom, &Pacco,pdMS_TO_TICKS(200));
+ 8001a52:	4b12      	ldr	r3, [pc, #72]	@ (8001a9c <TaskCalcoloSOC+0xc4>)
+ 8001a54:	6818      	ldr	r0, [r3, #0]
+ 8001a56:	f107 0108 	add.w	r1, r7, #8
+ 8001a5a:	2300      	movs	r3, #0
+ 8001a5c:	22c8      	movs	r2, #200	@ 0xc8
+ 8001a5e:	f009 ff35 	bl	800b8cc <xQueueGenericSend>
+ 8001a62:	f8c7 0100 	str.w	r0, [r7, #256]	@ 0x100
 	    if (xreturn != pdTRUE)
- 8001a62:	f8d7 3100 	ldr.w	r3, [r7, #256]	@ 0x100
- 8001a66:	2b01      	cmp	r3, #1
- 8001a68:	d002      	beq.n	8001a70 <TaskCalcoloSOC+0xa0>
+ 8001a66:	f8d7 3100 	ldr.w	r3, [r7, #256]	@ 0x100
+ 8001a6a:	2b01      	cmp	r3, #1
+ 8001a6c:	d002      	beq.n	8001a74 <TaskCalcoloSOC+0x9c>
 	    {
 	   		debugprint("non scrive nella coda da SOC a com\r\n");
- 8001a6a:	480d      	ldr	r0, [pc, #52]	@ (8001aa0 <TaskCalcoloSOC+0xd0>)
- 8001a6c:	f7ff fee8 	bl	8001840 <debugprint>
+ 8001a6e:	480c      	ldr	r0, [pc, #48]	@ (8001aa0 <TaskCalcoloSOC+0xc8>)
+ 8001a70:	f7ff feea 	bl	8001848 <debugprint>
 	    }
 
-	    xreturn = xQueueSend(QueueSOCtomain, &Pacco.Cell->SOC, pdMS_TO_TICKS(200));
- 8001a70:	4b0c      	ldr	r3, [pc, #48]	@ (8001aa4 <TaskCalcoloSOC+0xd4>)
- 8001a72:	6818      	ldr	r0, [r3, #0]
- 8001a74:	f107 0308 	add.w	r3, r7, #8
- 8001a78:	f103 0110 	add.w	r1, r3, #16
+	    xreturn = xQueueSend(QueueSOCtomain, &Pacco, pdMS_TO_TICKS(200));
+ 8001a74:	4b0b      	ldr	r3, [pc, #44]	@ (8001aa4 <TaskCalcoloSOC+0xcc>)
+ 8001a76:	6818      	ldr	r0, [r3, #0]
+ 8001a78:	f107 0108 	add.w	r1, r7, #8
  8001a7c:	2300      	movs	r3, #0
  8001a7e:	22c8      	movs	r2, #200	@ 0xc8
  8001a80:	f009 ff24 	bl	800b8cc <xQueueGenericSend>
@@ -2980,13 +2982,13 @@ void TaskCalcoloSOC(void *argument)
 	    if (xreturn != pdTRUE)
  8001a88:	f8d7 3100 	ldr.w	r3, [r7, #256]	@ 0x100
  8001a8c:	2b01      	cmp	r3, #1
- 8001a8e:	d0a7      	beq.n	80019e0 <TaskCalcoloSOC+0x10>
+ 8001a8e:	d0ab      	beq.n	80019e8 <TaskCalcoloSOC+0x10>
 	    {
 	   		debugprint("non scrive nella coda da SOC a main\r\n");
- 8001a90:	4805      	ldr	r0, [pc, #20]	@ (8001aa8 <TaskCalcoloSOC+0xd8>)
- 8001a92:	f7ff fed5 	bl	8001840 <debugprint>
+ 8001a90:	4805      	ldr	r0, [pc, #20]	@ (8001aa8 <TaskCalcoloSOC+0xd0>)
+ 8001a92:	f7ff fed9 	bl	8001848 <debugprint>
 		xQueueReceive(QueuemisuretoSOC, &Pacco, pdMS_TO_TICKS(2000));
- 8001a96:	e7a3      	b.n	80019e0 <TaskCalcoloSOC+0x10>
+ 8001a96:	e7a7      	b.n	80019e8 <TaskCalcoloSOC+0x10>
  8001a98:	24000218 	.word	0x24000218
  8001a9c:	24000214 	.word	0x24000214
  8001aa0:	08012374 	.word	0x08012374
@@ -3001,14 +3003,14 @@ void TaskCalcoloSOC(void *argument)
 void TaskComunicazione(void *argument)
 {
  8001aac:	b590      	push	{r4, r7, lr}
- 8001aae:	f5ad 7d11 	sub.w	sp, sp, #580	@ 0x244
+ 8001aae:	f5ad 7d43 	sub.w	sp, sp, #780	@ 0x30c
  8001ab2:	af3e      	add	r7, sp, #248	@ 0xf8
- 8001ab4:	f507 73a4 	add.w	r3, r7, #328	@ 0x148
- 8001ab8:	f5a3 73a2 	sub.w	r3, r3, #324	@ 0x144
+ 8001ab4:	f507 7304 	add.w	r3, r7, #528	@ 0x210
+ 8001ab8:	f5a3 7303 	sub.w	r3, r3, #524	@ 0x20c
  8001abc:	6018      	str	r0, [r3, #0]
 	Datatocom Misure;
 	QueueSetMemberHandle_t xHandle;
-	float SOC[N_celle];
+	Batteria Pacco;
   for (;;)
   {
 	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(2000) );
@@ -3017,34 +3019,34 @@ void TaskComunicazione(void *argument)
  8001ac2:	f44f 61fa 	mov.w	r1, #2000	@ 0x7d0
  8001ac6:	4618      	mov	r0, r3
  8001ac8:	f00a fb68 	bl	800c19c <xQueueSelectFromSet>
- 8001acc:	f8c7 0144 	str.w	r0, [r7, #324]	@ 0x144
+ 8001acc:	f8c7 020c 	str.w	r0, [r7, #524]	@ 0x20c
 
 	  if( xHandle == NULL )
- 8001ad0:	f8d7 3144 	ldr.w	r3, [r7, #324]	@ 0x144
+ 8001ad0:	f8d7 320c 	ldr.w	r3, [r7, #524]	@ 0x20c
  8001ad4:	2b00      	cmp	r3, #0
  8001ad6:	d103      	bne.n	8001ae0 <TaskComunicazione+0x34>
 	       {
 		  	  debugprint("è passato troppo tempo dalla richiesta\n");
  8001ad8:	4832      	ldr	r0, [pc, #200]	@ (8001ba4 <TaskComunicazione+0xf8>)
- 8001ada:	f7ff feb1 	bl	8001840 <debugprint>
+ 8001ada:	f7ff feb5 	bl	8001848 <debugprint>
  8001ade:	e7ee      	b.n	8001abe <TaskComunicazione+0x12>
 	       }
 	       else if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretocom )
  8001ae0:	4b31      	ldr	r3, [pc, #196]	@ (8001ba8 <TaskComunicazione+0xfc>)
  8001ae2:	681b      	ldr	r3, [r3, #0]
- 8001ae4:	f8d7 2144 	ldr.w	r2, [r7, #324]	@ 0x144
+ 8001ae4:	f8d7 220c 	ldr.w	r2, [r7, #524]	@ 0x20c
  8001ae8:	429a      	cmp	r2, r3
  8001aea:	d144      	bne.n	8001b76 <TaskComunicazione+0xca>
 	       {
 	          xQueueReceive( Queuemisuretocom, &Misure, pdMS_TO_TICKS(2000) );
  8001aec:	4b2e      	ldr	r3, [pc, #184]	@ (8001ba8 <TaskComunicazione+0xfc>)
  8001aee:	681b      	ldr	r3, [r3, #0]
- 8001af0:	f107 013c 	add.w	r1, r7, #60	@ 0x3c
+ 8001af0:	f507 7182 	add.w	r1, r7, #260	@ 0x104
  8001af4:	f44f 62fa 	mov.w	r2, #2000	@ 0x7d0
  8001af8:	4618      	mov	r0, r3
  8001afa:	f00a f821 	bl	800bb40 <xQueueReceive>
 	          stampa_tensioni_celle(Misure);
- 8001afe:	f507 73a4 	add.w	r3, r7, #328	@ 0x148
+ 8001afe:	f507 7304 	add.w	r3, r7, #528	@ 0x210
  8001b02:	f5a3 7486 	sub.w	r4, r3, #268	@ 0x10c
  8001b06:	4668      	mov	r0, sp
  8001b08:	f104 0310 	add.w	r3, r4, #16
@@ -3054,7 +3056,7 @@ void TaskComunicazione(void *argument)
  8001b14:	e894 000f 	ldmia.w	r4, {r0, r1, r2, r3}
  8001b18:	f7ff fda2 	bl	8001660 <stampa_tensioni_celle>
 	          stampa_temperatura_interna(Misure.reg);
- 8001b1c:	f507 73a4 	add.w	r3, r7, #328	@ 0x148
+ 8001b1c:	f507 7304 	add.w	r3, r7, #528	@ 0x210
  8001b20:	f5a3 7386 	sub.w	r3, r3, #268	@ 0x10c
  8001b24:	ed93 6a3e 	vldr	s12, [r3, #248]	@ 0xf8
  8001b28:	edd3 6a3f 	vldr	s13, [r3, #252]	@ 0xfc
@@ -3066,7 +3068,7 @@ void TaskComunicazione(void *argument)
  8001b40:	eef0 1a67 	vmov.f32	s3, s15
  8001b44:	f7ff fe08 	bl	8001758 <stampa_temperatura_interna>
 	          stampa_somma_celle(Misure.reg);
- 8001b48:	f507 73a4 	add.w	r3, r7, #328	@ 0x148
+ 8001b48:	f507 7304 	add.w	r3, r7, #528	@ 0x210
  8001b4c:	f5a3 7386 	sub.w	r3, r3, #268	@ 0x10c
  8001b50:	ed93 6a3e 	vldr	s12, [r3, #248]	@ 0xf8
  8001b54:	edd3 6a3f 	vldr	s13, [r3, #252]	@ 0xfc
@@ -3082,18 +3084,18 @@ void TaskComunicazione(void *argument)
 	       else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtocom )
  8001b76:	4b0d      	ldr	r3, [pc, #52]	@ (8001bac <TaskComunicazione+0x100>)
  8001b78:	681b      	ldr	r3, [r3, #0]
- 8001b7a:	f8d7 2144 	ldr.w	r2, [r7, #324]	@ 0x144
+ 8001b7a:	f8d7 220c 	ldr.w	r2, [r7, #524]	@ 0x20c
  8001b7e:	429a      	cmp	r2, r3
  8001b80:	d19d      	bne.n	8001abe <TaskComunicazione+0x12>
 	       {
-	          xQueueReceive(QueueSOCtocom, &SOC, pdMS_TO_TICKS(2000) );
+	          xQueueReceive(QueueSOCtocom, &Pacco, pdMS_TO_TICKS(2000) );
  8001b82:	4b0a      	ldr	r3, [pc, #40]	@ (8001bac <TaskComunicazione+0x100>)
  8001b84:	681b      	ldr	r3, [r3, #0]
  8001b86:	f107 010c 	add.w	r1, r7, #12
  8001b8a:	f44f 62fa 	mov.w	r2, #2000	@ 0x7d0
  8001b8e:	4618      	mov	r0, r3
  8001b90:	f009 ffd6 	bl	800bb40 <xQueueReceive>
-	          stampa_SOC(&SOC);
+	          stampa_SOC(&Pacco);
  8001b94:	f107 030c 	add.w	r3, r7, #12
  8001b98:	4618      	mov	r0, r3
  8001b9a:	f7ff fe15 	bl	80017c8 <stampa_SOC>
@@ -3194,7 +3196,7 @@ void TaskMisure(void *argument)
  8001c64:	d002      	beq.n	8001c6c <TaskMisure+0xbc>
 			debugprint("non scrive nella coda da misure a main");
  8001c66:	4817      	ldr	r0, [pc, #92]	@ (8001cc4 <TaskMisure+0x114>)
- 8001c68:	f7ff fdea 	bl	8001840 <debugprint>
+ 8001c68:	f7ff fdee 	bl	8001848 <debugprint>
 		}
 
 		xreturn = xQueueSend( Queuemisuretocom, &Misura,pdMS_TO_TICKS(200) );
@@ -3211,7 +3213,7 @@ void TaskMisure(void *argument)
  8001c86:	d002      	beq.n	8001c8e <TaskMisure+0xde>
 			debugprint("non scrive nella coda da misure a com\n\r");
  8001c88:	4810      	ldr	r0, [pc, #64]	@ (8001ccc <TaskMisure+0x11c>)
- 8001c8a:	f7ff fdd9 	bl	8001840 <debugprint>
+ 8001c8a:	f7ff fddd 	bl	8001848 <debugprint>
 		}
 
 		xreturn = xQueueSend( QueuemisuretoSOC, &Pacco_bat, pdMS_TO_TICKS(200) );
@@ -3228,7 +3230,7 @@ void TaskMisure(void *argument)
  8001ca8:	d002      	beq.n	8001cb0 <TaskMisure+0x100>
 			debugprint("non scrive nella coda da misure a SOC\n\r");
  8001caa:	480a      	ldr	r0, [pc, #40]	@ (8001cd4 <TaskMisure+0x124>)
- 8001cac:	f7ff fdc8 	bl	8001840 <debugprint>
+ 8001cac:	f7ff fdcc 	bl	8001848 <debugprint>
 		}
 
 		vTaskDelayUntil(&xLastExecutionTime, pdMS_TO_TICKS(1000));
@@ -3275,7 +3277,7 @@ void StartTasks(void)
  8001cfe:	d002      	beq.n	8001d06 <StartTasks+0x2e>
 		debugprint("MainTask non creato correttamente\r\n");
  8001d00:	4886      	ldr	r0, [pc, #536]	@ (8001f1c <StartTasks+0x244>)
- 8001d02:	f7ff fd9d 	bl	8001840 <debugprint>
+ 8001d02:	f7ff fda1 	bl	8001848 <debugprint>
 	}
 	xreturn=xTaskCreate(TaskMisure, "TaskMisure",1024 , NULL, 26, NULL);
  8001d06:	2300      	movs	r3, #0
@@ -3297,7 +3299,7 @@ void StartTasks(void)
  8001d28:	d002      	beq.n	8001d30 <StartTasks+0x58>
 		debugprint("TaskMisure non creato correttamente\r\n");
  8001d2a:	487f      	ldr	r0, [pc, #508]	@ (8001f28 <StartTasks+0x250>)
- 8001d2c:	f7ff fd88 	bl	8001840 <debugprint>
+ 8001d2c:	f7ff fd8c 	bl	8001848 <debugprint>
 	}
 	xreturn=xTaskCreate(TaskComunicazione, "TaskComunicazione",512, NULL, 24, NULL);
  8001d30:	2300      	movs	r3, #0
@@ -3319,7 +3321,7 @@ void StartTasks(void)
  8001d52:	d002      	beq.n	8001d5a <StartTasks+0x82>
 		debugprint("TaskComunicazione non creato correttamente\r\n");
  8001d54:	4877      	ldr	r0, [pc, #476]	@ (8001f34 <StartTasks+0x25c>)
- 8001d56:	f7ff fd73 	bl	8001840 <debugprint>
+ 8001d56:	f7ff fd77 	bl	8001848 <debugprint>
 	}
 	xreturn = xTaskCreate(TaskCalcoloSOC, "TaskCalcoloSOC",512, NULL, 23, NULL);
  8001d5a:	2300      	movs	r3, #0
@@ -3341,7 +3343,7 @@ void StartTasks(void)
  8001d7c:	d002      	beq.n	8001d84 <StartTasks+0xac>
 		debugprint("TaskCalcoloSOC non creato correttamente\r\n");
  8001d7e:	4870      	ldr	r0, [pc, #448]	@ (8001f40 <StartTasks+0x268>)
- 8001d80:	f7ff fd5e 	bl	8001840 <debugprint>
+ 8001d80:	f7ff fd62 	bl	8001848 <debugprint>
 	}
 
 	//Creo i semafori per le interrupt
@@ -3370,18 +3372,18 @@ void StartTasks(void)
  8001db0:	4a66      	ldr	r2, [pc, #408]	@ (8001f4c <StartTasks+0x274>)
  8001db2:	6013      	str	r3, [r2, #0]
 
-	Queuemisuretomain = xQueueCreate(4,sizeof(Batteria));
+	Queuemisuretomain = xQueueCreate(3,sizeof(Batteria));
  8001db4:	2200      	movs	r2, #0
  8001db6:	21f8      	movs	r1, #248	@ 0xf8
- 8001db8:	2004      	movs	r0, #4
+ 8001db8:	2003      	movs	r0, #3
  8001dba:	f009 fd34 	bl	800b826 <xQueueGenericCreate>
  8001dbe:	4603      	mov	r3, r0
  8001dc0:	4a63      	ldr	r2, [pc, #396]	@ (8001f50 <StartTasks+0x278>)
  8001dc2:	6013      	str	r3, [r2, #0]
-	Queuemisuretocom = xQueueCreate(4,sizeof(Datatocom));
+	Queuemisuretocom = xQueueCreate(3,sizeof(Datatocom));
  8001dc4:	2200      	movs	r2, #0
  8001dc6:	f44f 7184 	mov.w	r1, #264	@ 0x108
- 8001dca:	2004      	movs	r0, #4
+ 8001dca:	2003      	movs	r0, #3
  8001dcc:	f009 fd2b 	bl	800b826 <xQueueGenericCreate>
  8001dd0:	4603      	mov	r3, r0
  8001dd2:	4a60      	ldr	r2, [pc, #384]	@ (8001f54 <StartTasks+0x27c>)
@@ -3394,17 +3396,17 @@ void StartTasks(void)
  8001de0:	4603      	mov	r3, r0
  8001de2:	4a5d      	ldr	r2, [pc, #372]	@ (8001f58 <StartTasks+0x280>)
  8001de4:	6013      	str	r3, [r2, #0]
-	QueueSOCtocom = xQueueCreate(2,sizeof(float[N_celle]));
+	QueueSOCtocom = xQueueCreate(2,sizeof(Batteria));
  8001de6:	2200      	movs	r2, #0
- 8001de8:	2130      	movs	r1, #48	@ 0x30
+ 8001de8:	21f8      	movs	r1, #248	@ 0xf8
  8001dea:	2002      	movs	r0, #2
  8001dec:	f009 fd1b 	bl	800b826 <xQueueGenericCreate>
  8001df0:	4603      	mov	r3, r0
  8001df2:	4a5a      	ldr	r2, [pc, #360]	@ (8001f5c <StartTasks+0x284>)
  8001df4:	6013      	str	r3, [r2, #0]
-	QueueSOCtomain = xQueueCreate(2,sizeof(float[N_celle]));
+	QueueSOCtomain = xQueueCreate(2,sizeof(Batteria));
  8001df6:	2200      	movs	r2, #0
- 8001df8:	2130      	movs	r1, #48	@ 0x30
+ 8001df8:	21f8      	movs	r1, #248	@ 0xf8
  8001dfa:	2002      	movs	r0, #2
  8001dfc:	f009 fd13 	bl	800b826 <xQueueGenericCreate>
  8001e00:	4603      	mov	r3, r0
@@ -3437,7 +3439,7 @@ void StartTasks(void)
  8001e28:	d102      	bne.n	8001e30 <StartTasks+0x158>
 		debugprint("Errore creazione Settocom\n");
  8001e2a:	4850      	ldr	r0, [pc, #320]	@ (8001f6c <StartTasks+0x294>)
- 8001e2c:	f7ff fd08 	bl	8001840 <debugprint>
+ 8001e2c:	f7ff fd0c 	bl	8001848 <debugprint>
 	}
     Settomain = xQueueCreateSet( 8 + 8 + 8);
  8001e30:	2018      	movs	r0, #24
@@ -3452,7 +3454,7 @@ void StartTasks(void)
  8001e42:	d102      	bne.n	8001e4a <StartTasks+0x172>
 		debugprint("Errore creazione Settomain\n");
  8001e44:	484b      	ldr	r0, [pc, #300]	@ (8001f74 <StartTasks+0x29c>)
- 8001e46:	f7ff fcfb 	bl	8001840 <debugprint>
+ 8001e46:	f7ff fcff 	bl	8001848 <debugprint>
 	}
 
 	xreturn = xQueueAddToSet( Queuemisuretocom, Settocom );
@@ -3473,7 +3475,7 @@ void StartTasks(void)
  8001e66:	d002      	beq.n	8001e6e <StartTasks+0x196>
 		debugprint("la coda da misure non è inserita nel settocom");
  8001e68:	4843      	ldr	r0, [pc, #268]	@ (8001f78 <StartTasks+0x2a0>)
- 8001e6a:	f7ff fce9 	bl	8001840 <debugprint>
+ 8001e6a:	f7ff fced 	bl	8001848 <debugprint>
 	}
 	xreturn = xQueueAddToSet( QueueSOCtocom, Settocom );
  8001e6e:	4b3b      	ldr	r3, [pc, #236]	@ (8001f5c <StartTasks+0x284>)
@@ -3493,7 +3495,7 @@ void StartTasks(void)
  8001e8a:	d002      	beq.n	8001e92 <StartTasks+0x1ba>
 		debugprint("la coda dal SOC non è inserita nel settocom");
  8001e8c:	483b      	ldr	r0, [pc, #236]	@ (8001f7c <StartTasks+0x2a4>)
- 8001e8e:	f7ff fcd7 	bl	8001840 <debugprint>
+ 8001e8e:	f7ff fcdb 	bl	8001848 <debugprint>
 	}
 
 	xreturn = xQueueAddToSet( Queuemisuretomain, Settomain );
@@ -3514,7 +3516,7 @@ void StartTasks(void)
  8001eae:	d002      	beq.n	8001eb6 <StartTasks+0x1de>
 		debugprint("la coda da misure non è inserita nel settomain");
  8001eb0:	4833      	ldr	r0, [pc, #204]	@ (8001f80 <StartTasks+0x2a8>)
- 8001eb2:	f7ff fcc5 	bl	8001840 <debugprint>
+ 8001eb2:	f7ff fcc9 	bl	8001848 <debugprint>
 	}
 	xreturn = xQueueAddToSet( Queueuarttomain, Settomain );
  8001eb6:	4b28      	ldr	r3, [pc, #160]	@ (8001f58 <StartTasks+0x280>)
@@ -3534,7 +3536,7 @@ void StartTasks(void)
  8001ed2:	d002      	beq.n	8001eda <StartTasks+0x202>
 		debugprint("la coda dall'uart non è inserita nel settomain");
  8001ed4:	482b      	ldr	r0, [pc, #172]	@ (8001f84 <StartTasks+0x2ac>)
- 8001ed6:	f7ff fcb3 	bl	8001840 <debugprint>
+ 8001ed6:	f7ff fcb7 	bl	8001848 <debugprint>
 	}
 
 	xreturn = xQueueAddToSet( QueueSOCtomain, Settomain );
@@ -3555,7 +3557,7 @@ void StartTasks(void)
  8001ef6:	d002      	beq.n	8001efe <StartTasks+0x226>
 		debugprint("la coda dal SOC non è inserita nel settomain");
  8001ef8:	4823      	ldr	r0, [pc, #140]	@ (8001f88 <StartTasks+0x2b0>)
- 8001efa:	f7ff fca1 	bl	8001840 <debugprint>
+ 8001efa:	f7ff fca5 	bl	8001848 <debugprint>
 	}
 
 	HAL_UART_Receive_IT(&huart3, &uartbuffer, 1);
@@ -3569,7 +3571,7 @@ void StartTasks(void)
  8001f0c:	bd80      	pop	{r7, pc}
  8001f0e:	bf00      	nop
  8001f10:	08012468 	.word	0x08012468
- 8001f14:	0800187d 	.word	0x0800187d
+ 8001f14:	08001885 	.word	0x08001885
  8001f18:	2400022c 	.word	0x2400022c
  8001f1c:	08012474 	.word	0x08012474
  8001f20:	08012498 	.word	0x08012498
@@ -3579,7 +3581,7 @@ void StartTasks(void)
  8001f30:	08001aad 	.word	0x08001aad
  8001f34:	080124e0 	.word	0x080124e0
  8001f38:	08012510 	.word	0x08012510
- 8001f3c:	080019d1 	.word	0x080019d1
+ 8001f3c:	080019d9 	.word	0x080019d9
  8001f40:	08012520 	.word	0x08012520
  8001f44:	240001fc 	.word	0x240001fc
  8001f48:	24000200 	.word	0x24000200
