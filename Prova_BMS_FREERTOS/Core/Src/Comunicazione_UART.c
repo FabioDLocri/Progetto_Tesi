@@ -18,7 +18,7 @@
 #include "Tasks_freertos.h"
 
 extern UART_HandleTypeDef huart3;
-extern UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart2;	//Uart di debug
 
 void stampa_tensioni_celle(Datatocom Data){
 	// Stampa risultati misurazione celle
@@ -29,7 +29,7 @@ void stampa_tensioni_celle(Datatocom Data){
 		      int length = sprintf(buffer, "Valore %d: %.2f V\r\n",i+1, Data.Pack.Cell[i].tensione);
 		       // Invia via UART
 		      HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
-		      xSemaphoreTake(UARTSemHandle, osWaitForever);
+		      xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
 		   }
 }
 
@@ -42,13 +42,13 @@ void stampa_tensioni_GPIO(float *GPIO_voltages){
        int length = sprintf(buffer, "Valore GPIO %d: %.2f V\r\n",i+1, GPIO_voltages[i]);
        // Invia via UART
        HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
-       xSemaphoreTake(UARTSemHandle, osWaitForever);
+       xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
     }
 	    // Converti float in stringa
 	int length = sprintf(buffer, "Valore Second Reference: %.2f V\r\n", GPIO_voltages[5]);
 	    // Invia via UART
 	HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
-	xSemaphoreTake(UARTSemHandle, osWaitForever);
+	xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
 }
 
 void stampa_somma_celle(Status_register reg){
@@ -59,7 +59,7 @@ void stampa_somma_celle(Status_register reg){
        int length = sprintf(buffer, "La tensione di somma delle celle è: %.2f V\r\n", reg.somma_celle);
        // Invia via UART
        HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
-       xSemaphoreTake(UARTSemHandle, osWaitForever);
+       xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
 }
 
 void stampa_temperatura_interna(Status_register reg){
@@ -69,7 +69,7 @@ void stampa_temperatura_interna(Status_register reg){
        int length = sprintf(buffer, "La temperatura interna del chip è: %.2f\r\n", reg.int_temperature);
        // Invia via UART
        HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
-       xSemaphoreTake(UARTSemHandle, osWaitForever);
+       xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
 }
 
 void stampa_SOC(float *SOC){
@@ -78,15 +78,15 @@ void stampa_SOC(float *SOC){
 		for (int i = 0; i < N_celle; i++)
 		   {
 			// Converti float in stringa
-			int length = sprintf(buffer, "Il SOC della cella %d è: %.2f\r\n",i, SOC[i]);
+			int length = sprintf(buffer, "Il SOC della cella %d è: %.2f\r\n",i+1, SOC[i]);
 			// Invia via UART
 			HAL_UART_Transmit_IT(&huart3, (uint8_t*)buffer, length);
-			xSemaphoreTake(UARTSemHandle, osWaitForever);
+			xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
 		   }
 }
 
 
 void debugprint(const char *msg){
 	HAL_UART_Transmit_IT(&huart3, (uint8_t*)msg, strlen(msg));
-	xSemaphoreTake(UARTSemHandle, portMAX_DELAY);
+	xSemaphoreTake(UARTSemHandle, pdMS_TO_TICKS(500));
 }

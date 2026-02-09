@@ -14,15 +14,15 @@
 #include "global.h"
 #include "funzioni_SOC.h"
 #include "FreeRTOS.h"
-/*
+
 void TaskComunicazione(void *argument)
 {
 	Datatocom Misure;
 	QueueSetMemberHandle_t xHandle;
-	float *SOC;
+	float SOC[N_celle];
   for (;;)
   {
-	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(200) );
+	  xHandle = xQueueSelectFromSet( Settocom, pdMS_TO_TICKS(2000) );
 
 	  if( xHandle == NULL )
 	       {
@@ -30,20 +30,21 @@ void TaskComunicazione(void *argument)
 	       }
 	       else if( xHandle == ( QueueSetMemberHandle_t ) Queuemisuretocom )
 	       {
-	          xQueueReceive( Queuemisuretocom, &Misure, 0 );
+	          xQueueReceive( Queuemisuretocom, &Misure, pdMS_TO_TICKS(2000) );
 	          stampa_tensioni_celle(Misure);
 	          stampa_temperatura_interna(Misure.reg);
 	          stampa_somma_celle(Misure.reg);
 	       }
 	       else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtocom )
 	       {
-	          xQueueReceive(QueueSOCtocom, &SOC, 0 );
+	          xQueueReceive(QueueSOCtocom, &SOC, pdMS_TO_TICKS(2000) );
 	          stampa_SOC(SOC);
 	       }
 
   }
 }
-*/
+
+/*
 void TaskComunicazione(void *argument)
 {
 	uint8_t incremento;
@@ -69,4 +70,4 @@ void TaskComunicazione(void *argument)
 
   }
 }
-
+*/

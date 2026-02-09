@@ -13,24 +13,27 @@
 #include "global.h"
 #include "Comunicazione_UART.h"
 
-/*
+
 void TaskCalcoloSOC(void *argument)
 {
-	Batteria Pacco[8];
+	Batteria Pacco;
 	BaseType_t xreturn;
 
   	for (;;)
   	{
-		xQueueReceive(QueuemisuretoSOC, &Pacco, pdMS_TO_TICKS(500));
+		xQueueReceive(QueuemisuretoSOC, &Pacco, pdMS_TO_TICKS(2000));
 	  // si usa l'AEKF per calcolare SOC e AEKF
-
-	   	xreturn = xQueueSend(QueueSOCtocom, &dato,pdMS_TO_TICKS(2000));
+		for (int i=0;i<N_celle;i++)
+		{
+			Pacco.Cell[i].SOC=Pacco.Cell[i].tensione/4;
+		}
+	   	xreturn = xQueueSend(QueueSOCtocom, &Pacco.Cell->SOC,pdMS_TO_TICKS(200));
 	    if (xreturn != pdTRUE)
 	    {
 	   		debugprint("non scrive nella coda da SOC a com\r\n");
 	    }
 
-	    xreturn = xQueueSend(QueueSOCtomain, &dato, pdMS_TO_TICKS(2000));
+	    xreturn = xQueueSend(QueueSOCtomain, &Pacco.Cell->SOC, pdMS_TO_TICKS(200));
 	    if (xreturn != pdTRUE)
 	    {
 	   		debugprint("non scrive nella coda da SOC a main\r\n");
@@ -38,8 +41,8 @@ void TaskCalcoloSOC(void *argument)
 
   }
 }
-*/
 
+/*
 void TaskCalcoloSOC(void *argument)
 {
 	static uint8_t i=0;
@@ -67,3 +70,4 @@ void TaskCalcoloSOC(void *argument)
 
   }
 }
+*/

@@ -36,19 +36,19 @@ void StartTasks(void)
 {
 	xreturn=xTaskCreate(MainTask, "MainTask",128, NULL, 25, NULL);
 	if (xreturn!=pdPASS){
-		debugprint("Task1 non creato correttamente\r\n");
+		debugprint("MainTask non creato correttamente\r\n");
 	}
 	xreturn=xTaskCreate(TaskMisure, "TaskMisure",1024 , NULL, 26, NULL);
 	if (xreturn!=pdPASS){
-		debugprint("Task2 non creato correttamente\r\n");
+		debugprint("TaskMisure non creato correttamente\r\n");
 	}
 	xreturn=xTaskCreate(TaskComunicazione, "TaskComunicazione",512, NULL, 24, NULL);
 	if (xreturn!=pdPASS){
-		debugprint("Task3 non creato correttamente\r\n");
+		debugprint("TaskComunicazione non creato correttamente\r\n");
 	}
 	xreturn = xTaskCreate(TaskCalcoloSOC, "TaskCalcoloSOC",512, NULL, 23, NULL);
 	if (xreturn!=pdPASS){
-		debugprint("Task4 non creato correttamente\r\n");
+		debugprint("TaskCalcoloSOC non creato correttamente\r\n");
 	}
 
 	//Creo i semafori per le interrupt
@@ -56,26 +56,27 @@ void StartTasks(void)
 	SPIRXSemHandle = xSemaphoreCreateBinary();
 	UARTSemHandle = xSemaphoreCreateBinary();
 
-/*	Queuemisuretomain = xQueueCreate(8,sizeof(Batteria));
-	Queuemisuretocom = xQueueCreate(8,sizeof(Datatocom));
+	Queuemisuretomain = xQueueCreate(4,sizeof(Batteria));
+	Queuemisuretocom = xQueueCreate(4,sizeof(Datatocom));
 	Queueuarttomain = xQueueCreate(8,sizeof(uint8_t));
-	QueueSOCtocom = xQueueCreate(8,sizeof(float[N_celle]));
-	QueueSOCtomain = xQueueCreate(8,sizeof(float[N_celle]));
+	QueueSOCtocom = xQueueCreate(2,sizeof(float[N_celle]));
+	QueueSOCtomain = xQueueCreate(2,sizeof(float[N_celle]));
 
-	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
+	QueuemisuretoSOC = xQueueCreate(4,sizeof(Batteria));
 
-*/
 
+	///////////////////////////////////////////////
 	//creati per provare il progetto
-	Queuemisuretomain = xQueueCreate(8,sizeof(uint8_t));
+/*	Queuemisuretomain = xQueueCreate(8,sizeof(uint8_t));
 	Queuemisuretocom = xQueueCreate(8,sizeof(uint8_t));
 	Queueuarttomain = xQueueCreate(8,sizeof(uint8_t));
 	QueueSOCtocom = xQueueCreate(8,sizeof(uint8_t));
 	QueueSOCtomain = xQueueCreate(8,sizeof(uint8_t));
 
-	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t));
+	QueuemisuretoSOC = xQueueCreate(8,sizeof(uint8_t)); */
+	/////////////////////////////////////////////
 
-    Settocom = xQueueCreateSet( 8 + 8 );
+	Settocom = xQueueCreateSet( 8 + 8 );
 	if (Settocom == NULL) {
 		debugprint("Errore creazione Settocom\n");
 	}

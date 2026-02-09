@@ -1,5 +1,5 @@
 ../Core/Src/Tasks_freertos.c:35:6:StartTasks	12
-../Core/Src/Tasks_freertos.c:113:6:SPITXCompleteCallback	1
-../Core/Src/Tasks_freertos.c:117:6:SPIRXCompleteCallback	1
-../Core/Src/Tasks_freertos.c:121:6:UARTCompleteCallback	1
-../Core/Src/Tasks_freertos.c:126:6:UARTRXCompleteCallback	1
+../Core/Src/Tasks_freertos.c:114:6:SPITXCompleteCallback	1
+../Core/Src/Tasks_freertos.c:118:6:SPIRXCompleteCallback	1
+../Core/Src/Tasks_freertos.c:122:6:UARTCompleteCallback	1
+../Core/Src/Tasks_freertos.c:127:6:UARTRXCompleteCallback	1

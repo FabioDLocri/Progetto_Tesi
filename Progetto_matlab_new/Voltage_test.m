@@ -7,7 +7,7 @@
     pv_profile_raw_interp.I= interp1(pv_profile_raw.date_time, pv_profile_raw.I, pv_profile_raw_interp.t, 'linear');
 
     pv_pk = 10;
-    start_day = 9;   % giorno dell'anno
+    start_day = 48;   % giorno dell'anno
     n_days    = 1;  % durata simulazione
 
  
@@ -32,7 +32,7 @@
     t_sec_loadprofile   = seconds(t_loadprofile - t_loadprofile(1));
     load_profile = [t_sec_loadprofile, i_loadprofile];
     
-
+%%
     %calcoliamo i valori di tensione e corrente dalle celle con il profilo di
     %corrente inizializzato nello script precedente
     simIn = Simulink.SimulationInput("Voltage_estimation");

@@ -8,7 +8,7 @@ clear; clc;
 Hppc_test;
 
 Voltage_test;
-
+%%
 %Inizializziamo i valori di una singola cella
 cell.nominal_voltage = 3.34; %V
 cell.capacity = 2.3;   %Ah, della batteria originale caratterizzata
@@ -28,9 +28,9 @@ c_nom=2.3;        % [Ah]
 batt.ncell = Ncell;
 batt.c_nom = c_nom;
 batt.c_cell = [2.3 2.3 2.3 2.3]';
-batt.r0 = (cell.r0/cell.capacity) .* batt.c_cell;       %scalo i risultati per la capacità che considero
-batt.r1= (cell.r1/cell.capacity) .* batt.c_cell;
-batt.c1= (cell.c1/cell.capacity) .* batt.c_cell;
+batt.r0 = (cell.r0*cell.capacity) ./ batt.c_cell;       %scalo i risultati per la capacità che considero le resistenze scalano al contrario
+batt.r1= (cell.r1*cell.capacity) ./ batt.c_cell;
+batt.c1= (cell.c1/cell.capacity) .* batt.c_cell;        
 batt.soc=cell.soc;
 batt.ocv=cell.ocv;
 batt.soc0 = 1 + zeros(Ncell,1);
@@ -71,14 +71,14 @@ Capacity_err=out.get("Capacity_err");
     plot(squeeze(SOC_ext.Time), squeeze(SOC_ext.Data)*100);
     xlabel('Time (s)');
     ylabel('State of Charge Ext (%)');
-    title(sprintf('SOC EXT simulazione %d',k));
+    title(sprintf('SOC EXT simulazione'));
     
     
     subplot(2,1,2);
     plot(squeeze(SOC_error.Time), (squeeze(SOC_error.Data)*100));
     xlabel('Time (s)');
     ylabel('State of Charge error(%)');
-    title(sprintf('SOC Error simulazione: %d',k));
+    title(sprintf('SOC Error simulazione'));
 
     %Plottiamo i risultati della capacità
     
@@ -88,7 +88,7 @@ Capacity_err=out.get("Capacity_err");
     plot(squeeze(Capacity_mis.Time), squeeze(Capacity_mis.Data));
     xlabel('Time (s)');
     ylabel('Capacity Ext (Ah)');
-    title(sprintf('Capacity EXT simulazione %d',k));
+    title(sprintf('Capacity EXT simulazione'));
     
 
     Capacity_err_perc=squeeze(Capacity_err.Data)./batt.c_cell*100;
@@ -96,5 +96,5 @@ Capacity_err=out.get("Capacity_err");
     plot(squeeze(Capacity_err.Time), Capacity_err_perc);
     xlabel('Time (s)');
     ylabel('Capacity error (%)'); 
-    title(sprintf('Capacity Error simulazione: %d',k));
+    title(sprintf('Capacity Error simulazione'));
 

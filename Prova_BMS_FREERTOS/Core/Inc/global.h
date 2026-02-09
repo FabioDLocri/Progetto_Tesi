@@ -22,6 +22,7 @@ typedef struct {
 	float temperatura;
 	bool COV;// Cell x 	Overvoltage Flag
 	bool CUV;// Cell x 	Undervoltage Flag
+	float SOC;
 }Cella;
 
 typedef struct {

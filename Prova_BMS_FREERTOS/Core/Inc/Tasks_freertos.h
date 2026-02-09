@@ -24,7 +24,7 @@ extern QueueHandle_t Queuemisuretocom;
 extern QueueHandle_t Queueuarttomain;
 extern QueueHandle_t QueueSOCtocom;
 extern QueueHandle_t QueuemisuretoSOC;
-
+extern QueueHandle_t QueueSOCtomain;
 
 extern QueueSetHandle_t Settomain;
 extern QueueSetHandle_t Settocom;

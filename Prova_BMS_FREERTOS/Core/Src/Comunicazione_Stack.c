@@ -98,7 +98,7 @@ HAL_StatusTypeDef ltc6811_send_command(uint16_t command)
 
     void CSSPION(SPI_t SPI_3);
     HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4);
-    xSemaphoreTake(SPITXSemHandle, osWaitForever);
+    xSemaphoreTake(SPITXSemHandle, pdMS_TO_TICKS(200));
     void CSSPIOFF(SPI_t SPI_3);
 
     return status;
@@ -139,7 +139,7 @@ HAL_StatusTypeDef ltc6811_write_data(uint16_t command, uint8_t *data, uint8_t da
 
     void CSSPION(SPI_t SPI_3);
     HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_send, data_len + 6);
-    xSemaphoreTake(SPITXSemHandle, osWaitForever);
+    xSemaphoreTake(SPITXSemHandle, pdMS_TO_TICKS(100));
     void CSSPIOFF(SPI_t SPI_3);
     return status;
 }
@@ -162,9 +162,9 @@ HAL_StatusTypeDef ltc6811_read_data(uint16_t command, uint8_t *rx_data, uint8_t 
 
     void CSSPION(SPI_t SPI_3);
     HAL_StatusTypeDef status1 = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4);
-    xSemaphoreTake(SPITXSemHandle, osWaitForever);
+    xSemaphoreTake(SPITXSemHandle, pdMS_TO_TICKS(3000));
     HAL_StatusTypeDef status = HAL_SPI_Receive_IT(&hspi3, rx_buffer, data_len+2);
-    xSemaphoreTake(SPIRXSemHandle, osWaitForever);
+    xSemaphoreTake(SPIRXSemHandle, pdMS_TO_TICKS(3000));
     void CSSPIOFF(SPI_t SPI_3);
     if (status == HAL_OK) {
         // Copia dati (escludi PEC)
@@ -182,7 +182,8 @@ HAL_StatusTypeDef ltc6811_read_data(uint16_t command, uint8_t *rx_data, uint8_t 
     return status;
 }
 
-uint8_t* ltc6811_set_config(
+void ltc6811_set_config(
+		uint8_t configuration_data[6],
 		bool gpio[5], //GPIO pull-down ON o OFF
 		bool refon,
 		bool dten,
@@ -193,7 +194,6 @@ uint8_t* ltc6811_set_config(
 		bool dcto[4]
 		)
 {
-	uint8_t configuration_data[6];
     configuration_data[0]= (refon<<2)+(dten<<1)+adcopt;
     // CFGR0: GPIO pull-down OFF, REFON=0, ADCOPT=0
     for(int i=0; i<5; i++)
@@ -222,7 +222,6 @@ uint8_t* ltc6811_set_config(
     	configuration_data[5] += dcc[i+8]<<i;
         };
 
-    return *configuration_data;
 }
 
 
@@ -237,7 +236,7 @@ HAL_StatusTypeDef ltc6811_configure(void)
 	bool dcc_default[12] = {0};
 	bool dcto_default[4] = {0};
 
-	*config_data=ltc6811_set_config(gpio_default, 0, 0, 0, UV_THRESHOLD, OV_THRESHOLD, dcc_default, dcto_default);
+	ltc6811_set_config(config_data, gpio_default, 0, 0, 0, UV_THRESHOLD, OV_THRESHOLD, dcc_default, dcto_default);
     // Invia dati di configurazione
     return ltc6811_write_data(0x0001, config_data, 6);
 }

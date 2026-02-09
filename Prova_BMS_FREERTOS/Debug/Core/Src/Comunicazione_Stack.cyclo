@@ -5,8 +5,8 @@
 ../Core/Src/Comunicazione_Stack.c:86:19:ltc6811_send_command	1
 ../Core/Src/Comunicazione_Stack.c:108:19:ltc6811_write_data	4
 ../Core/Src/Comunicazione_Stack.c:148:19:ltc6811_read_data	4
-../Core/Src/Comunicazione_Stack.c:185:10:ltc6811_set_config	4
-../Core/Src/Comunicazione_Stack.c:231:19:ltc6811_configure	1
-../Core/Src/Comunicazione_Stack.c:246:20:ltc6811_read_cell_voltages	7
-../Core/Src/Comunicazione_Stack.c:290:20:ltc6811_read_gpio_voltages	5
-../Core/Src/Comunicazione_Stack.c:326:20:ltc6811_read_status	5
+../Core/Src/Comunicazione_Stack.c:185:6:ltc6811_set_config	4
+../Core/Src/Comunicazione_Stack.c:230:19:ltc6811_configure	1
+../Core/Src/Comunicazione_Stack.c:245:20:ltc6811_read_cell_voltages	7
+../Core/Src/Comunicazione_Stack.c:289:20:ltc6811_read_gpio_voltages	5
+../Core/Src/Comunicazione_Stack.c:325:20:ltc6811_read_status	5
