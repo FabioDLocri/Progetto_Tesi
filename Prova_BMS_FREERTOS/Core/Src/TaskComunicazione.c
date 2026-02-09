@@ -38,7 +38,7 @@ void TaskComunicazione(void *argument)
 	       else if( xHandle == ( QueueSetMemberHandle_t ) QueueSOCtocom )
 	       {
 	          xQueueReceive(QueueSOCtocom, &SOC, pdMS_TO_TICKS(2000) );
-	          stampa_SOC(SOC);
+	          stampa_SOC(&SOC);
 	       }
 
   }

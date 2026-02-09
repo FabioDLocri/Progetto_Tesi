@@ -25,7 +25,7 @@ void TaskCalcoloSOC(void *argument)
 	  // si usa l'AEKF per calcolare SOC e AEKF
 		for (int i=0;i<N_celle;i++)
 		{
-			Pacco.Cell[i].SOC=Pacco.Cell[i].tensione/4;
+			Pacco.Cell[i].SOC=Pacco.Cell[i].tensione+5/4;
 		}
 	   	xreturn = xQueueSend(QueueSOCtocom, &Pacco.Cell->SOC,pdMS_TO_TICKS(200));
 	    if (xreturn != pdTRUE)

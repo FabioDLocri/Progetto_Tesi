@@ -96,10 +96,10 @@ HAL_StatusTypeDef ltc6811_send_command(uint16_t command)
     tx_data[2] = (pec >> 8) & 0xFF;     // PEC0
     tx_data[3] = pec & 0xFF;            // PEC1
 
-    void CSSPION(SPI_t SPI_3);
+    CSSPION(SPI_3);
     HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4);
     xSemaphoreTake(SPITXSemHandle, pdMS_TO_TICKS(200));
-    void CSSPIOFF(SPI_t SPI_3);
+    CSSPIOFF(SPI_3);
 
     return status;
 }
@@ -137,10 +137,10 @@ HAL_StatusTypeDef ltc6811_write_data(uint16_t command, uint8_t *data, uint8_t da
         tx_send[4+i] = tx_buffer[i];
     }
 
-    void CSSPION(SPI_t SPI_3);
+    CSSPION(SPI_3);
     HAL_StatusTypeDef status = HAL_SPI_Transmit_IT(&hspi3, tx_send, data_len + 6);
     xSemaphoreTake(SPITXSemHandle, pdMS_TO_TICKS(100));
-    void CSSPIOFF(SPI_t SPI_3);
+    CSSPIOFF(SPI_3);
     return status;
 }
 
@@ -160,12 +160,12 @@ HAL_StatusTypeDef ltc6811_read_data(uint16_t command, uint8_t *rx_data, uint8_t 
     uint8_t rx_buffer[data_len + 2];
 
 
-    void CSSPION(SPI_t SPI_3);
+    CSSPION(SPI_3);
     HAL_StatusTypeDef status1 = HAL_SPI_Transmit_IT(&hspi3, tx_data, 4);
     xSemaphoreTake(SPITXSemHandle, pdMS_TO_TICKS(3000));
     HAL_StatusTypeDef status = HAL_SPI_Receive_IT(&hspi3, rx_buffer, data_len+2);
     xSemaphoreTake(SPIRXSemHandle, pdMS_TO_TICKS(3000));
-    void CSSPIOFF(SPI_t SPI_3);
+    CSSPIOFF(SPI_3);
     if (status == HAL_OK) {
         // Copia dati (escludi PEC)
         for (int i = 0; i < data_len; i++) {

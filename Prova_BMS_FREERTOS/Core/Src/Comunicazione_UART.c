@@ -75,6 +75,7 @@ void stampa_temperatura_interna(Status_register reg){
 void stampa_SOC(float *SOC){
 	// Stampa SOC della prima cella
 		char buffer[50];
+
 		for (int i = 0; i < N_celle; i++)
 		   {
 			// Converti float in stringa
