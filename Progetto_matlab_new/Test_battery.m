@@ -8,29 +8,30 @@ clear; clc;
 Hppc_test;
 
 Voltage_test;
+
 %%
 %Inizializziamo i valori di una singola cella
-cell.nominal_voltage = 3.34; %V
-cell.capacity = 2.3;   %Ah, della batteria originale caratterizzata
-cell.ocv = parameter_discharge.OCV';
-cell.soc = parameter_discharge.SOC';
-cell.r0 = parameter_discharge.R0';
-cell.r1 = parameter_discharge.R1';
-cell.c1 = parameter_discharge.C1';
+cell.nominal_voltage = 3.7; %V
+cell.capacity = 55.84;   %Ah, della batteria originale caratterizzata
+cell.ocv = parameter_charge.OCV;
+cell.soc = parameter_charge.SOC;
+cell.r0 = parameter_charge.R0;
+cell.r1 = parameter_charge.R1;
+cell.c1 = parameter_charge.C1;
 
 %%%%%%%%%%%%%%% parametri delle celle %%%%%%%%%%%%%%%%%%%%
 Ncell=4;         %
-c_nom=2.3;        % [Ah]
+c_nom=55.84;        % [Ah]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %inizializziamo i parametri dell'intero pacco batteria in funzione di
 %quelle della singola cella
 batt.ncell = Ncell;
 batt.c_nom = c_nom;
-batt.c_cell = [2.3 2.3 2.3 2.3]';
-batt.r0 = (cell.r0*cell.capacity) ./ batt.c_cell;       %scalo i risultati per la capacità che considero le resistenze scalano al contrario
-batt.r1= (cell.r1*cell.capacity) ./ batt.c_cell;
-batt.c1= (cell.c1/cell.capacity) .* batt.c_cell;        
+batt.c_cell = [55.84 55.84 55.84 55.84]';
+batt.r0 = (cell.r0*cell.capacity) ./ (batt.c_nom*[1 1 1 1]');       %scalo i risultati per la capacità che considero, le resistenze scalano al contrario
+batt.r1= (cell.r1*cell.capacity) ./ (batt.c_nom*[1 1 1 1]');
+batt.c1= (cell.c1/cell.capacity) .* (batt.c_nom*[1 1 1 1]');        
 batt.soc=cell.soc;
 batt.ocv=cell.ocv;
 batt.soc0 = 1 + zeros(Ncell,1);
@@ -55,6 +56,7 @@ batt_param.Value = batt;
 batt_param.StorageClass = 'SimulinkGlobal';
 
 simIn = Simulink.SimulationInput("Test_Aekf");
+
 %Prelevo le uscite
 out = sim(simIn);
 
@@ -63,7 +65,7 @@ SOC_error = out.get('SOC_err');
 Capacity_mis = out.get("Capacity_mis");
 Capacity_err=out.get("Capacity_err");
 
-    
+   
     %plottiamo i parametri del SOC
     figure('Name',sprintf('Q celle %4.2f',batt.c_cell),'NumberTitle','off');
     
