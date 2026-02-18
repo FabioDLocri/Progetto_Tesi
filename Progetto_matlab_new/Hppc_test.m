@@ -19,7 +19,7 @@
     Pct_profile.I_disch_ts = generate_PCT_profile_f( Pct_profile.I_pulse, Pct_profile.t_pulse, Pct_profile.t_relax, Pct_profile.N_pulses, Pct_profile.Ts);
     %% Discharge mode
     set_param(strcat(model,'/','SoC_ThrMode'),'Operator','<=')
-    set_param(strcat(model,'/','SoC_ThrVal'),'Value','0.001')
+    set_param(strcat(model,'/','SoC_ThrVal'),'Value','0.0001')
     set_param(strcat(model,'/','Cell'),'stateOfCharge',"1");
     I_source=Pct_profile.I_disch_ts;
 
@@ -34,7 +34,7 @@
     I_source=Pct_profile.I_ch_ts;
     
     set_param(strcat(model,'/','SoC_ThrMode'),'Operator','>=')
-    set_param(strcat(model,'/','SoC_ThrVal'),'Value','0.999')
+    set_param(strcat(model,'/','SoC_ThrVal'),'Value','1')
     set_param(strcat(model,'/','Cell'),'stateOfCharge',"0");  
     
     simIn = Simulink.SimulationInput("Parameter_estimation");
@@ -49,7 +49,7 @@
     hppc.v = [Hppc_discharge.v.Data(:);Hppc_charge.v.Data(:)];
     hppc.i = [Hppc_discharge.i.Data(:);Hppc_charge.i.Data(:)];
 
-    SOCbreakpoint=linspace(0,1,21);
+    SOCbreakpoint=linspace(0,1,26);
     equivalentCircuitModel = ecm(1); %creo il modello quivalente costituito da un gruppo RC
     equivalentCircuitModel.SOCBreakpoints=SOCbreakpoint;
     equivalentCircuitModel.ResistanceSOCBreakpoints=SOCbreakpoint;
