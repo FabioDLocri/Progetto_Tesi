@@ -11,8 +11,8 @@
     pv_profile_raw_interp.I= interp1(pv_profile_raw.date_time, pv_profile_raw.I, pv_profile_raw_interp.t, 'linear');
 
     pv_pk = 10;
-    start_day = 55;   % giorno dell'anno
-    n_days    = 0.5;  % durata simulazione
+    start_day = 56;   % giorno dell'anno
+    n_days    = 1;  % durata simulazione
 
  
     t0 = pv_profile_raw_interp.t(1) + days(start_day - 1);

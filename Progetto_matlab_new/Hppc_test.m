@@ -19,7 +19,7 @@
     Pct_profile.I_disch_ts = generate_PCT_profile_f( Pct_profile.I_pulse, Pct_profile.t_pulse, Pct_profile.t_relax, Pct_profile.N_pulses, Pct_profile.Ts);
     %% Discharge mode
     set_param(strcat(model,'/','SoC_ThrMode'),'Operator','<=')
-    set_param(strcat(model,'/','SoC_ThrVal'),'Value','0.0001')
+    set_param(strcat(model,'/','SoC_ThrVal'),'Value','0')
     set_param(strcat(model,'/','Cell'),'stateOfCharge',"1");
     I_source=Pct_profile.I_disch_ts;
 
@@ -44,7 +44,7 @@
     Hppc_charge.i = out.get('I_cell');
  %%
     %di default la carica è positiva, mentre la scarica è negativa
-    t_offset = Hppc_discharge.v.Time(end);
+    t_offset = Hppc_discharge.v.Time(end)+1;
     hppc.t = [Hppc_discharge.v.Time(:);Hppc_charge.v.Time(:)+t_offset];
     hppc.v = [Hppc_discharge.v.Data(:);Hppc_charge.v.Data(:)];
     hppc.i = [Hppc_discharge.i.Data(:);Hppc_charge.i.Data(:)];
